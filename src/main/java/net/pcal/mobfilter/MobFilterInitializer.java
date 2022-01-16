@@ -29,7 +29,6 @@ public class MobFilterInitializer implements ModInitializer {
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
-            LOGGER.info("[MobStop] initializing...");
             MobFilterService.getInstance().loadConfig();
 	    //            registerCommands(server);
         });

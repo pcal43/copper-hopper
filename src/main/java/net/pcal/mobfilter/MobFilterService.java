@@ -48,6 +48,7 @@ public class MobFilterService {
                             BlockPos.Mutable pos,
                             double sd) {
         final MobFilterRules.SpawnRequest req = new SpawnRequest(sw, sg, sa, cg, se, pos, sd, this.debugEnabled);
+        if (this.debugEnabled) LOGGER.debug("[MobFilter] checking "+req);
         return ruleList.canSpawn(req);
     }
 
