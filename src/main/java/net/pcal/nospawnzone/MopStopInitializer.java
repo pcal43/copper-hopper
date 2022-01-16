@@ -1,9 +1,5 @@
-package net.pcal.mobstop
+package net.pcal.mobstop;
 
-import lain.mods.peacefulsurface.api.PeaceAPI;
-import lain.mods.peacefulsurface.impl.JsonRule;
-import lain.mods.peacefulsurface.impl.fabric.FabricEntityObj;
-import lain.mods.peacefulsurface.impl.fabric.FabricWorldObj;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.entity.EntityType;
@@ -24,9 +20,9 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-public class FabricPeacefulSurface implements ModInitializer {
+public class MopStopInitializer implements ModInitializer {
 
-    public static final Logger LOGGER = LogManager.getLogger(MobStop.class)
+    public static final Logger LOGGER = LogManager.getLogger(MopStopInitializer.class);
 
 	/**
     private static final Map<EntityType<?>, FabricEntityObj> entities = new WeakHashMap<>();
@@ -57,7 +53,7 @@ public class FabricPeacefulSurface implements ModInitializer {
                 registerCommands(server);
         });
 	**/
-        reloadConfig();
+        //reloadConfig();
     }
 
     /**
@@ -74,6 +70,7 @@ public class FabricPeacefulSurface implements ModInitializer {
     }
     **/
 
+    /**
     public void reloadConfig() {
         try {
             LOGGER.info("[PeacefulSurface] Loading filters...");
@@ -100,5 +97,6 @@ public class FabricPeacefulSurface implements ModInitializer {
             PeaceAPI.clearFilters();
         }
     }
+     **/
 
 }
