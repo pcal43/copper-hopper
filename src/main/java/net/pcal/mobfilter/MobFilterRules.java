@@ -53,6 +53,9 @@ abstract class MobFilterRules {
             for (final FilterCheck check : checks) {
                 if (!check.isMatch(request)) return null;
             }
+            if (request.debugEnabled()) {
+                LOGGER.debug("[MobFilter] "+this.ruleName+" evaluated to "+action+" for "+request);
+            }
             return action;
         }
     }
@@ -69,7 +72,8 @@ abstract class MobFilterRules {
                         ChunkGenerator chunkGenerator,
                         SpawnSettings.SpawnEntry spawnEntry,
                         BlockPos blockPos,
-                        double squaredDistance) {
+                        double squaredDistance,
+                        boolean debugEnabled) {
     }
 
     interface FilterCheck {
@@ -118,6 +122,7 @@ abstract class MobFilterRules {
             return false;
         }
     }
+
     record SpawnGroupCheck(SpawnGroup req) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest spawn) {

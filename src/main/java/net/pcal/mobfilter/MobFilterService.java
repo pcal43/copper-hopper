@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
-import static net.pcal.mobfilter.MobFilterRules.FilterAction.DENY;
 
 /**
  *
@@ -48,15 +47,15 @@ public class MobFilterService {
                             SpawnSettings.SpawnEntry se,
                             BlockPos.Mutable pos,
                             double sd) {
-        final MobFilterRules.SpawnRequest req = new SpawnRequest(sw, sg, sa, cg, se, pos, sd);
+        final MobFilterRules.SpawnRequest req = new SpawnRequest(sw, sg, sa, cg, se, pos, sd, this.debugEnabled);
         return ruleList.canSpawn(req);
     }
 
     public void loadConfig() {
         LOGGER.info("[MobFilter] loading configuration");
         List<FilterRule> rules = new ArrayList<FilterRule>();
-        List<FilterCheck> checks = List.of(new DimensionCheck(new Identifier("minecraft:overworld")));
-        FilterRule worldRule = new FilterRule("no-overworld", checks, DENY);
+        List<FilterCheck> checks = List.of(new DimensionCheck(new Identifier("minecraft:overworld")), new SpawnGroupCheck(SpawnGroup.MONSTER));
+        FilterRule worldRule = new FilterRule("no-overworld", checks, FilterAction.DENY);
         this.ruleList = new FilterRuleList(List.of(worldRule));
         this.debugEnabled = true;
     }

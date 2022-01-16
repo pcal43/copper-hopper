@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Mob Filter",
-  "description": "Filter mob spawning.",
+  "description": "Filter which mobs can spawn.",
   "authors": [
     "Me!"
   ],
@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.pcal.movfilter.MobFilterInitializer"
+      "net.pcal.mobfilter.MobFilterInitializer"
     ]
   },
   "mixins": [
