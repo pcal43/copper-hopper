@@ -17,7 +17,6 @@ import java.util.List;
 
 
 import static java.util.Objects.requireNonNull;
-import static net.pcal.mobfilter.MobFilterRules.FilterAction.ALLOW;
 
 abstract class MobFilterRules {
 
@@ -30,41 +29,32 @@ abstract class MobFilterRules {
             this.rules = requireNonNull(rules);
         }
 
-        public boolean canSpawn(SpawnRequest request) {
+        public boolean disallowSpawn(SpawnRequest request) {
             for (FilterRule rule : rules) {
-                FilterAction action = rule.getAction(request);
-                if (action != null) return action == ALLOW;
+                Boolean disallowSpawn = rule.disallowSpawn(request);
+                if (disallowSpawn != null) return disallowSpawn;
             }
-            return true;
+            return false;
         }
     }
 
     record FilterRule(String ruleName,
                       Collection<FilterCheck> checks,
-                      FilterAction action) {
+                      boolean disallowSpawnWhenMatched) {
 
         FilterRule {
             requireNonNull(ruleName);
-            requireNonNull(action);
+            requireNonNull(disallowSpawnWhenMatched);
             requireNonNull(checks);
         }
 
-        public FilterAction getAction(SpawnRequest request) {
+        public Boolean disallowSpawn(SpawnRequest request) {
             for (final FilterCheck check : checks) {
                 if (!check.isMatch(request)) return null;
             }
-            if (request.debugEnabled()) {
-                LOGGER.debug("[MobFilter] "+this.ruleName+" evaluated to "+action+" for "+request);
-            }
-            return action;
+            return this.disallowSpawnWhenMatched;
         }
     }
-
-    enum FilterAction {
-        ALLOW,
-        DENY,
-    }
-
 
     record SpawnRequest(ServerWorld serverWorld,
                         SpawnGroup spawnGroup,
@@ -72,8 +62,7 @@ abstract class MobFilterRules {
                         ChunkGenerator chunkGenerator,
                         SpawnSettings.SpawnEntry spawnEntry,
                         BlockPos blockPos,
-                        double squaredDistance,
-                        boolean debugEnabled) {
+                        double squaredDistance) {
     }
 
     interface FilterCheck {

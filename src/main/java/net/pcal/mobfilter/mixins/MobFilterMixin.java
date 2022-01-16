@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+@SuppressWarnings("ALL")
 @Mixin(SpawnHelper.class)
 public abstract class MobFilterMixin {
 
@@ -25,7 +26,10 @@ public abstract class MobFilterMixin {
                                           BlockPos.Mutable pos,
                                           double sd,
                                           CallbackInfoReturnable<Boolean> returnable) {
-        returnable.setReturnValue(MobFilterService.getInstance().canSpawn(sw,sg,sa,cg,se,pos,sd));
+        if (returnable.getReturnValue()) {
+            final boolean disallowSpawn = MobFilterService.getInstance().disallowSpawn(sw, sg, sa, cg, se, pos, sd);
+            returnable.setReturnValue(!disallowSpawn);
+        }
     }
 
 }
