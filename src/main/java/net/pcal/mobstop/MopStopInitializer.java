@@ -22,7 +22,7 @@ import java.util.WeakHashMap;
 
 public class MopStopInitializer implements ModInitializer {
 
-    public static final Logger LOGGER = LogManager.getLogger(MopStopInitializer.class);
+    private static final Logger LOGGER = LogManager.getLogger(MopStopInitializer.class);
 
 	/**
     private static final Map<EntityType<?>, FabricEntityObj> entities = new WeakHashMap<>();
@@ -44,7 +44,7 @@ public class MopStopInitializer implements ModInitializer {
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
-	    LOGGER.info("[MobStop] initializing...");
+            LOGGER.info("[MobStop] initializing...");
 	    //            registerCommands(server);
         });
 	/**
