@@ -1,28 +1,13 @@
-package net.pcal.mobstop;
+package net.pcal.mobfilter;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.minecraft.entity.EntityType;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Style;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
-import net.minecraft.world.WorldAccess;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Map;
-import java.util.WeakHashMap;
+public class MobFilterInitializer implements ModInitializer {
 
-public class MopStopInitializer implements ModInitializer {
-
-    private static final Logger LOGGER = LogManager.getLogger(MopStopInitializer.class);
+    private static final Logger LOGGER = LogManager.getLogger(MobFilterInitializer.class);
 
 	/**
     private static final Map<EntityType<?>, FabricEntityObj> entities = new WeakHashMap<>();
@@ -45,6 +30,7 @@ public class MopStopInitializer implements ModInitializer {
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
             LOGGER.info("[MobStop] initializing...");
+            MobFilterService.getInstance().loadConfig();
 	    //            registerCommands(server);
         });
 	/**

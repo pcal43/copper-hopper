@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "mobfilter",
   "version": "${version}",
 
-  "name": "Mob Stop",
-  "description": "Stop the mobs!",
+  "name": "Mob Filter",
+  "description": "Filter mob spawning.",
   "authors": [
     "Me!"
   ],
   "contact": {
     "homepage": "https://github.com/pcal43/",
-    "sources": "https://github.com/pcal43/mobstop"
+    "sources": "https://github.com/pcal43/mobfilter"
   },
 
   "license": "CC0-1.0",
@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.pcal.mobstop.MobStopInitializer"
+      "net.pcal.movfilter.MobFilterInitializer"
     ]
   },
   "mixins": [
