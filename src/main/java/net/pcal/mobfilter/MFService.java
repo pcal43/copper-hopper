@@ -15,12 +15,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 
+import static java.util.Objects.requireNonNull;
 import static net.pcal.mobfilter.MFRules.*;
 
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
@@ -51,6 +51,8 @@ public class MFService {
 
     private final Logger logger = LogManager.getLogger(MFService.class);
     private FilterRuleList ruleList;
+    final Path configFilePath = Paths.get("config", "mobfilter.yaml");
+    final File configFile = configFilePath.toFile();
 
     // ===================================================================================
     // Public methods
@@ -77,24 +79,34 @@ public class MFService {
     }
 
     /**
+     * Write a default configuration file if none exists.
+     */
+    public void createDefaultConfig() {
+        //
+        // write out default config file if none exists
+        //
+        if (!configFile.exists()) {
+            try (InputStream in = this.getClass().getClassLoader().getResourceAsStream("default-mobfilter.yaml")) {
+                if (in == null) {
+                    throw new IllegalStateException("unable to load default-mobfilter.yaml");
+                }
+                java.nio.file.Files.copy(in, configFilePath);
+                logger.info("[MobFilter] wrote default mobfilter.yaml");
+            } catch(Exception e) {
+                logger.catching(Level.ERROR, e);
+                logger.error("[MobFilter] Failed to write default configuration file to "+configFile.getAbsolutePath());
+            }
+        }
+    }
+
+    /**
      * Re/loads mobfilter.yaml and initializes a new FiluterRuleList.
      */
     public void loadConfig() {
-        final Path configFilePath = Paths.get(".", "config", "mobfilter.yaml");
-        final File configFile = configFilePath.toFile();
+        this.ruleList = null;
+        createDefaultConfig();
         try {
-            //
-            // write out default config file if none exists
-            //
-            if (!configFile.exists()) {
-                try (InputStream in = this.getClass().getClassLoader().getResourceAsStream("default-mobfilter.yaml")) {
-                    if (in == null) {
-                        throw new IllegalStateException("unable to load default-mobfilter.yaml");
-                    }
-                    java.nio.file.Files.copy(in, configFilePath);
-                }
-                logger.info("[MobFilter] wrote default mobfilter.yaml");
-            }
+            setLogLevel(Level.INFO);
             //
             // load the config file and build the rules
             //
@@ -102,26 +114,25 @@ public class MFService {
             try (final InputStream in = new FileInputStream(configFile)) {
                 config = MFConfig.load(in);
             }
+            if (config == null) {
+                this.logger.warn("[MobFilter] Empty configuration at "+configFile.getAbsolutePath());
+                return;
+            }
             this.ruleList = buildRules(config);
             if (this.ruleList == null) {
-                this.logger.warn("[MobFilter] No mob filtering rules configured in "+configFile.getAbsolutePath());
+                this.logger.warn("[MobFilter] No rules configured in "+configFile.getAbsolutePath());
             }
             //
-            // adjust logging level
+            // adjust logging to configured level
             //
-            final Level logLevel;
             if (config.logLevel != null) {
                 Level configuredLevel = Level.getLevel(config.logLevel);
                 if (configuredLevel == null) {
                     logger.error("[MobFilter] Invalid logLevel " + config.logLevel + " in mobfilter.yaml, using INFO");
-                    logLevel = Level.INFO;
                 } else {
-                    logLevel = configuredLevel;
+                    setLogLevel(configuredLevel);
                 }
-            } else {
-                logLevel = Level.INFO;
             }
-            Configurator.setLevel(MFService.class.getName(), logLevel);
             logger.info("[MobFilter] configuration loaded, log level is " + logger.getLevel());
         } catch (Exception e) {
             logger.catching(Level.ERROR, e);
@@ -132,11 +143,17 @@ public class MFService {
     // ===================================================================================
     // Private
 
+    private void setLogLevel(Level logLevel) {
+        Configurator.setLevel(MFService.class.getName(), logLevel);
+    }
+
     /**
      * Build the runtime rule structures from the configuration.  Returns null if the configuration contains
      * no rules.
      */
     private static FilterRuleList buildRules(ConfigurationFile fromConfig) {
+        requireNonNull(fromConfig);
+        if (fromConfig.rules == null) return null;
         final ImmutableList.Builder<FilterRule> rulesBuilder = ImmutableList.builder();
         int i = 0;
         for (final MFConfig.Rule configRule : fromConfig.rules) {
