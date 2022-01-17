@@ -32,14 +32,16 @@ abstract class MFRules {
         }
 
         public boolean isSpawnDisallowed(SpawnRequest request) {
+            request.logger().trace(()->"[MobFilter] REQUEST "+request);
             for (FilterRule rule : rules) {
+                request.logger().trace(()->"[MobFilter]   RULE '"+rule.ruleName+"'");
                 Boolean disallowSpawn = rule.disallowSpawn(request);
                 if (disallowSpawn != null) {
-                    request.logger().trace(()->"[MobFilter] "+rule.ruleName+" matched");
+                    request.logger().trace(()->"[MobFilter]   RETURN "+disallowSpawn);
                     return disallowSpawn;
                 }
             }
-            request.logger().trace(()->"[MobFilter] no rules matched");
+            request.logger().trace(()->"[MobFilter]   RETURN false - no rules matched");
             return false;
         }
     }
@@ -69,6 +71,16 @@ abstract class MFRules {
                         BlockPos blockPos,
                         double squaredDistance,
                         Logger logger) {
+
+        public String getEntityId() {
+           return String.valueOf(Registry.ENTITY_TYPE.getId(this.spawnEntry.type)); // FIXME is this right?
+        }
+
+        public String getBiomeId() {
+            final Biome biome = this.serverWorld().getBiome(this.blockPos());
+            return String.valueOf(BuiltinRegistries.BIOME.getId(biome)); // FIXME is this right?
+        }
+
     }
 
     interface FilterCheck {
@@ -81,7 +93,7 @@ abstract class MFRules {
             // FIXME how do you get the Identifier for a DimensionType?  Don't understand what 'effects' is
             // but it seems to work.  May break custom dimensions.
             final String dimensionName = req.serverWorld.getDimension().getEffects().toString();
-            req.logger().trace(()->"[MobFilter] DimensionCheck: "+dimensionName+ " in "+dimensionNames);
+            req.logger().trace(()->"[MobFilter]     DimensionCheck: "+dimensionName+ " in "+dimensionNames);
             return this.dimensionNames.contains(dimensionName);
         }
     }
@@ -98,7 +110,7 @@ abstract class MFRules {
                 return false;
             }
             final String worldName = swp.getLevelName();
-            req.logger().trace(()->"[MobFilter] WorldNameCheck: "+worldName+ " in "+worldNames);
+            req.logger().trace(()->"[MobFilter]     WorldNameCheck: "+worldName+ " in "+worldNames);
             return worldNames.contains(worldName);
         }
     }
@@ -106,7 +118,7 @@ abstract class MFRules {
     record SpawnGroupCheck(EnumSet<SpawnGroup> groups) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            req.logger().trace(()->"[MobFilter] SpawnGroupCheck: "+this.groups+ " "+req.spawnGroup+" "+this.groups.contains(req.spawnGroup));
+            req.logger().trace(()->"[MobFilter]     SpawnGroupCheck: "+this.groups+ " "+req.spawnGroup+" "+this.groups.contains(req.spawnGroup));
             return this.groups.contains(req.spawnGroup);
         }
     }
@@ -114,18 +126,15 @@ abstract class MFRules {
     record BiomeCheck(StringSet biomeIds) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            final Biome biome = req.serverWorld().getBiome(req.blockPos());
-            String biomeId = String.valueOf(BuiltinRegistries.BIOME.getId(biome)); // FIXME?
-            req.logger().trace(()->"[MobFilter] BiomeCheck "+biomeId+" in "+biomeIds);
-            return this.biomeIds.contains(biomeId);
+            req.logger().trace(()->"[MobFilter]     BiomeCheck "+req.getBiomeId()+" in "+biomeIds);
+            return this.biomeIds.contains(req.getBiomeId());
         }
     }
     record EntityIdCheck(StringSet entityIds) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            String entityId = String.valueOf(Registry.ENTITY_TYPE.getId(req.spawnEntry.type)); // FIXME?
-            req.logger().trace(()->"[MobFilter] EntityNameCheck "+entityId+" in "+entityIds);
-            return this.entityIds.contains(entityId);
+            req.logger().trace(()->"[MobFilter]     EntityNameCheck "+req.getEntityId()+" in "+entityIds);
+            return this.entityIds.contains(req.getEntityId());
         }
     }
 
@@ -133,7 +142,7 @@ abstract class MFRules {
         @Override
         public boolean isMatch(SpawnRequest req) {
             int val = req.blockPos.getComponentAlongAxis(this.axis);
-            req.logger().trace(()->"[MobFilter] BlockPosCheck "+axis+" "+min+" <= "+val+" <= "+max);
+            req.logger().trace(()->"[MobFilter]     BlockPosCheck "+axis+" "+min+" <= "+val+" <= "+max);
             return min <= val && val <= max;
         }
     }
@@ -142,7 +151,7 @@ abstract class MFRules {
         @Override
         public boolean isMatch(SpawnRequest req) {
             int val = req.serverWorld().getLightLevel(req.blockPos);
-            req.logger().trace(()->"[MobFilter] LightLevelCheck "+min+" <= "+val+" <= "+max);
+            req.logger().trace(()->"[MobFilter]     LightLevelCheck "+min+" <= "+val+" <= "+max);
             return min <= val && val <= max;
         }
     }
@@ -151,7 +160,7 @@ abstract class MFRules {
         @Override
         public boolean isMatch(SpawnRequest req) {
             long val = req.serverWorld.getTimeOfDay();
-            req.logger().trace(()->"[MobFilter] TimeOfDayCheck "+min+" <= "+val+" <= "+max);
+            req.logger().trace(()->"[MobFilter]     TimeOfDayCheck "+min+" <= "+val+" <= "+max);
             return min <= val && val <= max;
         }
     }

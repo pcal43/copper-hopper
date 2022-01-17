@@ -54,9 +54,9 @@ public class MFService {
         final MFRules.SpawnRequest req = new SpawnRequest(sw, sg, sa, cg, se, pos, sd, this.logger);
         final boolean disallowSpawn = ruleList.isSpawnDisallowed(req);
         if (disallowSpawn) {
-            logger.debug(() -> "[MobFilter] DISALLOW " + req);
+            logger.debug(() -> "[MobFilter] DISALLOW " + req.getEntityId()+" at ["+ req.blockPos().toShortString()+"]");
         } else {
-            logger.trace(() -> "[MobFilter] ALLOW " + req);
+            logger.trace(() -> "[MobFilter] ALLOW " + req.getEntityId()+" at ["+ req.blockPos().toShortString()+"]");
         }
         return disallowSpawn;
     }
@@ -81,7 +81,7 @@ public class MFService {
             logLevel = Level.INFO;
         }
         Configurator.setLevel(MFService.class.getName(), logLevel);
-        logger.info("[MobFilter] configuration loaded, debug level is "+logger.getLevel());
+        logger.info("[MobFilter] configuration loaded, log level is "+logger.getLevel());
     }
 
 
