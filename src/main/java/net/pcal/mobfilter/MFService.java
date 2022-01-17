@@ -133,7 +133,7 @@ public class MFService {
                     setLogLevel(configuredLevel);
                 }
             }
-            logger.info("[MobFilter] configuration loaded, log level is " + logger.getLevel());
+            logger.info("[MobFilter] "+ruleList.getSize()+" rule(s) loaded.  Log level is " + logger.getLevel());
         } catch (Exception e) {
             logger.catching(Level.ERROR, e);
             logger.error("[MobFilter] Failed to load configuration from "+configFile.getAbsolutePath());

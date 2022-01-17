@@ -46,6 +46,11 @@ abstract class MFRules {
             request.logger().trace(()->"[MobFilter]   RETURN true (no rules matched)");
             return true;
         }
+
+        public int getSize() {
+            return this.rules.size();
+        }
+
     }
 
 
@@ -78,6 +83,7 @@ abstract class MFRules {
             }
             return this.action == ALLOW_SPAWN;
         }
+
     }
 
     /**

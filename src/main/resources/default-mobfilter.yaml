@@ -75,10 +75,26 @@
 
 
 
+#
+# NOTES
+#
+# Filter rules are processed in order and processing stops as soon as a matching rule is found.  This means you can
+# put blanket exclusions at the top of your rules list, e.g.,
+#
+# rules:
+#  - name: Always do normal spawning in Nether and End
+#    what: ALLOW_SPAWN
+#    when:
+#      dimensionId: ['minecraft:nether', 'minecreate:the_end']
+#
+# ...more rules
+#
+
+
 
 #
 # logLevel
 #     This sets log4j logging level for the mod.  Set to 'DEBUG' to log each time a spawn is disallowed.
-#     Set to 'TRACE' to see detailed logging on rule evaluation.  Be careful - this will fill up your logfiles.
+#     Set to 'TRACE' to see detailed logging on rule evaluation.  Be careful - this can quickly fill up your logfiles.
 #
-# logLevel: TRACE
+# logLevel: DEBUG
