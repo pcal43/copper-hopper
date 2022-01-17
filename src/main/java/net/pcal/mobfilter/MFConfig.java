@@ -20,26 +20,27 @@ public class MFConfig {
         public Rule[] rules;
     }
 
-    public static enum SpawnAction {
-        ALLOW,
-        DISALLOW
+    public static enum What {
+        ALLOW_SPAWN,
+        DISALLOW_SPAWN
     }
 
     public static class Rule {
         public String name;
-        public SpawnAction spawn;
+        public What what;
         public When when;
     }
 
     public static class When {
-        public String[] world;
-        public String[] dimension;
+        public String[] worldName;
+        public String[] dimensionId;
         public String[] entityId;
-        public String[] biome;
+        public String[] biomeId;
         public SpawnGroup[] spawnGroup;
         public String[] blockX;
         public String[] blockY;
         public String[] blockZ;
+        public String[] blockId;
         public String[] timeOfDay;
         public String[] lightLevel;
     }

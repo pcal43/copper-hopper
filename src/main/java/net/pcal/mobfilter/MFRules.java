@@ -1,7 +1,9 @@
 package net.pcal.mobfilter;
 
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -81,6 +83,13 @@ abstract class MFRules {
             return String.valueOf(BuiltinRegistries.BIOME.getId(biome)); // FIXME is this right?
         }
 
+        /**
+         * Return the id of the block that the spawn is happening on.
+         */
+        public String getBlockId() {
+            final BlockEntity be = serverWorld.getBlockEntity(this.blockPos); // FIXME do we need to check at y+1?
+            return String.valueOf(Registry.BLOCK_ENTITY_TYPE.getId(be.getType()));
+        }
     }
 
     interface FilterCheck {
@@ -144,6 +153,14 @@ abstract class MFRules {
             int val = req.blockPos.getComponentAlongAxis(this.axis);
             req.logger().trace(()->"[MobFilter]     BlockPosCheck "+axis+" "+min+" <= "+val+" <= "+max);
             return min <= val && val <= max;
+        }
+    }
+
+    record BlockIdCheck(StringSet blockIds) implements FilterCheck {
+        @Override
+        public boolean isMatch(SpawnRequest req) {
+            req.logger().trace(()->"[MobFilter]     BlockIdCheck "+req.getEntityId()+" in "+blockIds);
+            return this.blockIds.contains(req.getBlockId());
         }
     }
 

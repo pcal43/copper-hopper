@@ -1,0 +1,105 @@
+
+#
+# MobFilter sample configuration.
+#
+
+
+#
+# The 'rules' configuration element contains a list of filtering rules that are checked when a new mob is
+# about to spawn.  Each rule has three keys:
+#
+# name - A human-readable name for the rule, useful mainly for debugging.
+# what - Indicates what to do when the rule matches.  Must be DISALLOW_SPAWN or ALLOW_SPAWN.
+# when - A list of conditions that must be true in order for the rule to match.
+#
+# The 'when' section may contain any of the following keys:
+#
+# spawnGroup
+#   List of net.minecraft.entity.SpawnGroup values, such as MONSTER or CREATURE.  The condition matches
+#   if the mob to be spawned is a member of one of the groups.
+#
+# dimension
+#   List of dimension identifiers, e.g., 'minecraft:overworld'.  Matches if mob is spawning in a listed dimension.
+#
+# world
+#   List of world names, e.g., 'My World'.  Matches if mob is spawning in a listed world.
+#
+#
+
+rules:
+
+#
+# EXAMPLE RULES
+#
+
+# Prevent hostile mobs from spawning within a specific area of the overworld.
+
+#  - name: 'Safe Zone'
+#    what: DISALLOW_SPAWN
+#    when:
+#      spawnGroup: [MONSTER]
+#      dimension: ['minecraft:overworld']
+#      blockX: [-128, 234]
+#      blockY: [33, MAX]
+#      blockZ: [63, 512]
+
+
+
+# Prevent creepers from ever spawning
+
+#  - name: No Creepers Ever
+#    what: DISALLOW_SPAWN
+#    when:
+#      entityId : [minecraft:creeper]
+
+
+
+
+
+
+
+  - name: No Filtering in Nether and End
+    what: ALLOW_SPAWN
+      dimension: [minecraft:the_end, minecraft:nether]
+
+
+
+  - rule: Light Test
+    what: ALLOW_SPAWN
+    when:
+      lightLevel: [MIN, 2]
+      timeOfDay: [12000, 0]
+  # https://minecraft.fandom.com/wiki/Daylight_cycle
+
+
+
+  - name: No Creepers Ever
+    what: DISALLOW_SPAWN
+    when:
+      entityId : [minecraft:creeper]
+
+
+
+  - rule: No Hostile Mobs above Sea Level
+    what: DISALLOW_SPAWN
+    when:
+      spawnGroup: [MONSTER]
+      dimension: [minecraft:overworld]
+      blockY: [63, MAX]
+
+
+
+  - name: Maeve Safe Zone
+    spawn: DISALLOW
+    when:
+      spawnGroup: [MONSTER]
+      world: [New World, Other World]
+      dimension: [minecraft:overworld]
+
+
+#
+# logLevel - log4j logging level.  INFO by default.  DEBUG logs disallowed spawns.  TRACE logs details about
+# rule evaluation.  Both will fill up your logfiles very quickly.
+#
+
+# logLevel: TRACE

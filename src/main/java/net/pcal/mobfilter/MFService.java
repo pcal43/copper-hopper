@@ -44,6 +44,9 @@ public class MFService {
     private final Logger logger = LogManager.getLogger(MFService.class);
     private FilterRuleList ruleList;
 
+    /**
+     * Main function that determines whether to allow a particular mob spawn event to occur.
+     */
     public boolean disallowSpawn(ServerWorld sw,
                                  SpawnGroup sg,
                                  StructureAccessor sa,
@@ -96,9 +99,9 @@ public class MFService {
                 checks.add(new SpawnGroupCheck(enumSet));
             }
             if (when.entityId != null) checks.add(new EntityIdCheck(StringSet.of(when.entityId)));
-            if (when.world != null) checks.add(new WorldNameCheck(StringSet.of(when.world)));
-            if (when.dimension != null) checks.add(new DimensionCheck(StringSet.of(when.dimension)));
-            if (when.biome != null) checks.add(new BiomeCheck(StringSet.of(when.biome)));
+            if (when.worldName != null) checks.add(new WorldNameCheck(StringSet.of(when.worldName)));
+            if (when.dimensionId != null) checks.add(new DimensionCheck(StringSet.of(when.dimensionId)));
+            if (when.biomeId != null) checks.add(new BiomeCheck(StringSet.of(when.biomeId)));
 
             if (when.blockX != null) {
                 int[] range =  parseRange(when.blockX);
@@ -112,6 +115,11 @@ public class MFService {
                 int[] range =  parseRange(when.blockZ);
                 checks.add(new BlockPosCheck(Direction.Axis.Z, range[0], range[1]));
             }
+            if (when.blockZ != null) {
+                int[] range =  parseRange(when.blockZ);
+                checks.add(new BlockPosCheck(Direction.Axis.Z, range[0], range[1]));
+            }
+
             if (when.timeOfDay != null) {
                 int[] range =  parseRange(when.timeOfDay);
                 checks.add(new TimeOfDayCheck(range[0], range[1]));
@@ -121,7 +129,7 @@ public class MFService {
                 checks.add(new LightLevelCheck(range[0], range[1]));
             }
             String ruleName = configRule.name != null ? configRule.name : "rule" + i;
-            rulesBuilder.add(new FilterRule(ruleName, checks.build(), configRule.spawn == MFConfig.SpawnAction.DISALLOW));
+            rulesBuilder.add(new FilterRule(ruleName, checks.build(), configRule.what == MFConfig.What.DISALLOW_SPAWN));
             i++;
         }
         return new FilterRuleList(rulesBuilder.build());

@@ -2,20 +2,21 @@ logLevel: 'TRACE'
 
 rules:
   - name: 'Nether Default'
-    spawn: ALLOW
+    what: ALLOW_SPAWN
     when:
-      dimension: ['minecraft:the_nether']
+      dimensionId: ['minecraft:the_nether']
 
   - name: 'Maeve Safe Zone'
-    spawn: DISALLOW
+    what: DISALLOW_SPAWN
     when:
       spawnGroup: [MONSTER]
-      world: ['New World']
-      dimension: ['minecraft:overworld']
+      worldName: ['New World']
+      dimensionId: ['minecraft:overworld']
       entityId: ['minecraft:sheep']
-      biome: ['minecraft:plains']
+      biomeId: ['minecraft:plains']
+      blockId: ['minecraft:cobblestone']
       timeOfDay: [0, 1000]
-      blockY: [63, MAX]
-      chunkX: [2,3]
-#      - light: [4, 10]
-#       - weather: []
+      blockX: [-128, 234]
+      blockY: [33, MAX]
+      blockZ: [63, 512]
+
