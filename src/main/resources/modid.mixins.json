@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.pcal.mobfilter.mixins",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "MFMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

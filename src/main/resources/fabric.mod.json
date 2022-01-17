@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "mobfilter",
+  "version": "${version}",
+  "name": "Mob Filter",
+  "description": "Rules-based filtering of mob spawns.",
+  "authors": [
+    "Me!"
+  ],
+  "contact": {
+    "homepage": "https://github.com/pcal43/",
+    "sources": "https://github.com/pcal43/mob-filter"
+  },
+  "license": "Apache-2.0",
+  "icon": "mobfilter-icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.pcal.mobfilter.MFInitializer"
+    ]
+  },
+  "mixins": [
+    "modid.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
