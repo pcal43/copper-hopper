@@ -5,7 +5,7 @@ import net.minecraft.entity.SpawnGroup;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import java.io.*;
+import java.io.InputStream;
 
 /**
  * Object model for the config file.

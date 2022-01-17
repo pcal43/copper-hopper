@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "mobfilter",
   "version": "${version}",
-
   "name": "Mob Filter",
   "description": "Filter which mobs can spawn.",
   "authors": [
@@ -12,10 +11,8 @@
     "homepage": "https://github.com/pcal43/",
     "sources": "https://github.com/pcal43/mobfilter"
   },
-
   "license": "CC0-1.0",
   "icon": "assets/modid/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -25,7 +22,6 @@
   "mixins": [
     "modid.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.11.3",
     "fabric": "*",

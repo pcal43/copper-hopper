@@ -4,18 +4,18 @@ rules:
   - name: 'Nether Default'
     what: ALLOW_SPAWN
     when:
-      dimensionId: ['minecraft:the_nether']
+      dimensionId: [ 'minecraft:the_nether' ]
 
   - name: 'Maeve Safe Zone'
     what: DISALLOW_SPAWN
     when:
-      spawnGroup: [MONSTER]
-      worldName: ['New World']
-      dimensionId: ['minecraft:overworld']
-      entityId: ['minecraft:sheep']
-      biomeId: ['minecraft:plains']
-      blockId: ['minecraft:cobblestone']
-      timeOfDay: [0, 1000]
-      blockX: [-128, 234]
-      blockY: [33, MAX]
-      blockZ: [63, 512]
+      spawnGroup: [ MONSTER ]
+      worldName: [ 'New World' ]
+      dimensionId: [ 'minecraft:overworld' ]
+      entityId: [ 'minecraft:sheep' ]
+      biomeId: [ 'minecraft:plains' ]
+      blockId: [ 'minecraft:cobblestone' ]
+      timeOfDay: [ 0, 1000 ]
+      blockX: [ -128, 234 ]
+      blockY: [ 33, MAX ]
+      blockZ: [ 63, 512 ]

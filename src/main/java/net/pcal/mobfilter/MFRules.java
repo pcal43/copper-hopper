@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-
 import static java.util.Objects.requireNonNull;
 import static net.pcal.mobfilter.MFRules.FilterRuleAction.ALLOW_SPAWN;
 
@@ -34,16 +33,16 @@ abstract class MFRules {
         }
 
         public boolean isSpawnAllowed(SpawnRequest request) {
-            request.logger().trace(()->"[MobFilter] IS_SPAWN_ALLOWED "+request);
+            request.logger().trace(() -> "[MobFilter] IS_SPAWN_ALLOWED " + request);
             for (FilterRule rule : rules) {
-                request.logger().trace(()->"[MobFilter]   RULE '"+rule.ruleName+"'");
+                request.logger().trace(() -> "[MobFilter]   RULE '" + rule.ruleName + "'");
                 Boolean isSpawnAllowed = rule.isSpawnAllowed(request);
                 if (isSpawnAllowed != null) {
-                    request.logger().trace(()->"[MobFilter]   RETURN "+isSpawnAllowed);
+                    request.logger().trace(() -> "[MobFilter]   RETURN " + isSpawnAllowed);
                     return isSpawnAllowed;
                 }
             }
-            request.logger().trace(()->"[MobFilter]   RETURN true (no rules matched)");
+            request.logger().trace(() -> "[MobFilter]   RETURN true (no rules matched)");
             return true;
         }
 
@@ -52,7 +51,6 @@ abstract class MFRules {
         }
 
     }
-
 
 
     public enum FilterRuleAction {
@@ -102,7 +100,7 @@ abstract class MFRules {
          * Return the entity id of the mob that is going to spawn.
          */
         public String getEntityId() {
-           return String.valueOf(Registry.ENTITY_TYPE.getId(this.spawnEntry.type)); // FIXME is this right?
+            return String.valueOf(Registry.ENTITY_TYPE.getId(this.spawnEntry.type)); // FIXME is this right?
         }
 
         /**
@@ -156,7 +154,7 @@ abstract class MFRules {
     record DimensionCheck(StringSet dimensionIds) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            req.logger().trace(()->"[MobFilter]     DimensionCheck "+req.getDimensionId()+" in "+dimensionIds);
+            req.logger().trace(() -> "[MobFilter]     DimensionCheck " + req.getDimensionId() + " in " + dimensionIds);
             return this.dimensionIds.contains(req.getBiomeId());
         }
     }
@@ -164,7 +162,7 @@ abstract class MFRules {
     record WorldNameCheck(StringSet worldNames) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            req.logger().trace(()->"[MobFilter]     WorldNameCheck: "+req.getWorldName()+ " in "+worldNames);
+            req.logger().trace(() -> "[MobFilter]     WorldNameCheck: " + req.getWorldName() + " in " + worldNames);
             return worldNames.contains(req.getWorldName());
         }
     }
@@ -172,7 +170,7 @@ abstract class MFRules {
     record SpawnGroupCheck(EnumSet<SpawnGroup> groups) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            req.logger().trace(()->"[MobFilter]     SpawnGroupCheck: "+this.groups+ " "+req.spawnGroup+" "+this.groups.contains(req.spawnGroup));
+            req.logger().trace(() -> "[MobFilter]     SpawnGroupCheck: " + this.groups + " " + req.spawnGroup + " " + this.groups.contains(req.spawnGroup));
             return this.groups.contains(req.spawnGroup);
         }
     }
@@ -180,14 +178,15 @@ abstract class MFRules {
     record BiomeCheck(StringSet biomeIds) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            req.logger().trace(()->"[MobFilter]     BiomeCheck "+req.getBiomeId()+" in "+biomeIds);
+            req.logger().trace(() -> "[MobFilter]     BiomeCheck " + req.getBiomeId() + " in " + biomeIds);
             return this.biomeIds.contains(req.getBiomeId());
         }
     }
+
     record EntityIdCheck(StringSet entityIds) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            req.logger().trace(()->"[MobFilter]     EntityNameCheck "+req.getEntityId()+" in "+entityIds);
+            req.logger().trace(() -> "[MobFilter]     EntityNameCheck " + req.getEntityId() + " in " + entityIds);
             return this.entityIds.contains(req.getEntityId());
         }
     }
@@ -196,7 +195,7 @@ abstract class MFRules {
         @Override
         public boolean isMatch(SpawnRequest req) {
             int val = req.blockPos.getComponentAlongAxis(this.axis);
-            req.logger().trace(()->"[MobFilter]     BlockPosCheck "+axis+" "+min+" <= "+val+" <= "+max);
+            req.logger().trace(() -> "[MobFilter]     BlockPosCheck " + axis + " " + min + " <= " + val + " <= " + max);
             return min <= val && val <= max;
         }
     }
@@ -204,7 +203,7 @@ abstract class MFRules {
     record BlockIdCheck(StringSet blockIds) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            req.logger().trace(()->"[MobFilter]     BlockIdCheck "+req.getEntityId()+" in "+blockIds);
+            req.logger().trace(() -> "[MobFilter]     BlockIdCheck " + req.getEntityId() + " in " + blockIds);
             return this.blockIds.contains(req.getBlockId());
         }
     }
@@ -213,7 +212,7 @@ abstract class MFRules {
         @Override
         public boolean isMatch(SpawnRequest req) {
             int val = req.serverWorld().getLightLevel(req.blockPos);
-            req.logger().trace(()->"[MobFilter]     LightLevelCheck "+min+" <= "+val+" <= "+max);
+            req.logger().trace(() -> "[MobFilter]     LightLevelCheck " + min + " <= " + val + " <= " + max);
             return min <= val && val <= max;
         }
     }
@@ -222,7 +221,7 @@ abstract class MFRules {
         @Override
         public boolean isMatch(SpawnRequest req) {
             long val = req.serverWorld.getTimeOfDay();
-            req.logger().trace(()->"[MobFilter]     TimeOfDayCheck "+min+" <= "+val+" <= "+max);
+            req.logger().trace(() -> "[MobFilter]     TimeOfDayCheck " + min + " <= " + val + " <= " + max);
             return min <= val && val <= max;
         }
     }

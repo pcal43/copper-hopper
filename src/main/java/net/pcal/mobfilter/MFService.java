@@ -15,15 +15,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 
-import static java.util.Objects.requireNonNull;
-import static net.pcal.mobfilter.MFRules.*;
-
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+
+import static java.util.Objects.requireNonNull;
+import static net.pcal.mobfilter.MFRules.*;
 
 
 /**
@@ -92,9 +94,9 @@ public class MFService {
                 }
                 java.nio.file.Files.copy(in, configFilePath);
                 logger.info("[MobFilter] wrote default mobfilter.yaml");
-            } catch(Exception e) {
+            } catch (Exception e) {
                 logger.catching(Level.ERROR, e);
-                logger.error("[MobFilter] Failed to write default configuration file to "+configFile.getAbsolutePath());
+                logger.error("[MobFilter] Failed to write default configuration file to " + configFile.getAbsolutePath());
             }
         }
     }
@@ -115,12 +117,12 @@ public class MFService {
                 config = MFConfig.load(in);
             }
             if (config == null) {
-                this.logger.warn("[MobFilter] Empty configuration at "+configFile.getAbsolutePath());
+                this.logger.warn("[MobFilter] Empty configuration at " + configFile.getAbsolutePath());
                 return;
             }
             this.ruleList = buildRules(config);
             if (this.ruleList == null) {
-                this.logger.warn("[MobFilter] No rules configured in "+configFile.getAbsolutePath());
+                this.logger.warn("[MobFilter] No rules configured in " + configFile.getAbsolutePath());
             }
             //
             // adjust logging to configured level
@@ -133,10 +135,10 @@ public class MFService {
                     setLogLevel(configuredLevel);
                 }
             }
-            logger.info("[MobFilter] "+ruleList.getSize()+" rule(s) loaded.  Log level is " + logger.getLevel());
+            logger.info("[MobFilter] " + ruleList.getSize() + " rule(s) loaded.  Log level is " + logger.getLevel());
         } catch (Exception e) {
             logger.catching(Level.ERROR, e);
-            logger.error("[MobFilter] Failed to load configuration from "+configFile.getAbsolutePath());
+            logger.error("[MobFilter] Failed to load configuration from " + configFile.getAbsolutePath());
         }
     }
 
@@ -202,7 +204,7 @@ public class MFService {
             i++;
         }
         final List<FilterRule> rules = rulesBuilder.build();
-        return rules.isEmpty() ? null :  new FilterRuleList(rulesBuilder.build());
+        return rules.isEmpty() ? null : new FilterRuleList(rulesBuilder.build());
     }
 
     /**
@@ -216,7 +218,7 @@ public class MFService {
         out[0] = "MIN".equals(configValues[0]) ? Integer.MIN_VALUE : Integer.parseInt(configValues[0]);
         out[1] = "MAX".equals(configValues[1]) ? Integer.MAX_VALUE : Integer.parseInt(configValues[1]);
         if (out[0] > out[1]) {
-            throw new IllegalArgumentException("Invalid min/max range: "+ Arrays.toString(configValues));
+            throw new IllegalArgumentException("Invalid min/max range: " + Arrays.toString(configValues));
         }
         return out;
     }
