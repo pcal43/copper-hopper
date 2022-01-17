@@ -3,7 +3,6 @@ package net.pcal.mobfilter;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -20,6 +19,7 @@ import java.util.*;
 
 
 import static java.util.Objects.requireNonNull;
+import static net.pcal.mobfilter.MFRules.FilterRuleAction.ALLOW_SPAWN;
 
 @SuppressWarnings("SpellCheckingInspection")
 abstract class MFRules {
@@ -33,38 +33,56 @@ abstract class MFRules {
             this.rules = requireNonNull(rules);
         }
 
-        public boolean isSpawnDisallowed(SpawnRequest request) {
-            request.logger().trace(()->"[MobFilter] REQUEST "+request);
+        public boolean isSpawnAllowed(SpawnRequest request) {
+            request.logger().trace(()->"[MobFilter] IS_SPAWN_ALLOWED "+request);
             for (FilterRule rule : rules) {
                 request.logger().trace(()->"[MobFilter]   RULE '"+rule.ruleName+"'");
-                Boolean disallowSpawn = rule.disallowSpawn(request);
-                if (disallowSpawn != null) {
-                    request.logger().trace(()->"[MobFilter]   RETURN "+disallowSpawn);
-                    return disallowSpawn;
+                Boolean isSpawnAllowed = rule.isSpawnAllowed(request);
+                if (isSpawnAllowed != null) {
+                    request.logger().trace(()->"[MobFilter]   RETURN "+isSpawnAllowed);
+                    return isSpawnAllowed;
                 }
             }
-            request.logger().trace(()->"[MobFilter]   RETURN false - no rules matched");
-            return false;
+            request.logger().trace(()->"[MobFilter]   RETURN true (no rules matched)");
+            return true;
         }
     }
 
+
+
+    public enum FilterRuleAction {
+        ALLOW_SPAWN,
+        DISALLOW_SPAWN
+    }
+
+    /**
+     * One rule to be evaluated in the filter chain.
+     */
     record FilterRule(String ruleName,
                       Collection<FilterCheck> checks,
-                      boolean disallowSpawnWhenMatched) {
+                      FilterRuleAction action) {
 
         FilterRule {
             requireNonNull(ruleName);
             requireNonNull(checks);
+            requireNonNull(action);
         }
 
-        public Boolean disallowSpawn(SpawnRequest request) {
+        /**
+         * Return whether the requested spawn should be allowed, or null if we don't have any opinion (i.e., because
+         * the rule didn't match).
+         */
+        public Boolean isSpawnAllowed(SpawnRequest request) {
             for (final FilterCheck check : checks) {
                 if (!check.isMatch(request)) return null;
             }
-            return this.disallowSpawnWhenMatched;
+            return this.action == ALLOW_SPAWN;
         }
     }
 
+    /**
+     * Encapsualtes the parameters in a minecraft call to 'canSpawn'.
+     */
     record SpawnRequest(ServerWorld serverWorld,
                         SpawnGroup spawnGroup,
                         StructureAccessor structureAccessor,
@@ -74,10 +92,40 @@ abstract class MFRules {
                         double squaredDistance,
                         Logger logger) {
 
+        /**
+         * Return the entity id of the mob that is going to spawn.
+         */
         public String getEntityId() {
            return String.valueOf(Registry.ENTITY_TYPE.getId(this.spawnEntry.type)); // FIXME is this right?
         }
 
+        /**
+         * Return the name of the world that the spawn is happening in.
+         */
+        public String getWorldName() {
+            final ServerWorldProperties swp;
+            try {
+                swp = (ServerWorldProperties) this.serverWorld.getLevelProperties();
+            } catch (ClassCastException cce) {
+                LOGGER.warn("[MobFilter] serverWorld.getLevelProperties() is unexpected class: " +
+                        this.serverWorld.getLevelProperties().getClass().getName());
+                return null;
+            }
+            return swp.getLevelName();
+        }
+
+        /**
+         * Return the id of the dimension that the spawn is happening in.
+         */
+        public String getDimensionId() {
+            // FIXME how do you get the Identifier for a DimensionType?  Don't understand action 'effects' is
+            // but it seems to work.  May break custom dimensions.
+            return this.serverWorld.getDimension().getEffects().toString();
+        }
+
+        /**
+         * Return the id of the biome that the spawn is happening in.
+         */
         public String getBiomeId() {
             final Biome biome = this.serverWorld().getBiome(this.blockPos());
             return String.valueOf(BuiltinRegistries.BIOME.getId(biome)); // FIXME is this right?
@@ -92,35 +140,26 @@ abstract class MFRules {
         }
     }
 
+    /**
+     * Encapsulates a single condition check of a rule.
+     */
     interface FilterCheck {
         boolean isMatch(SpawnRequest spawn);
     }
 
-    record DimensionCheck(StringSet dimensionNames) implements FilterCheck {
+    record DimensionCheck(StringSet dimensionIds) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            // FIXME how do you get the Identifier for a DimensionType?  Don't understand what 'effects' is
-            // but it seems to work.  May break custom dimensions.
-            final String dimensionName = req.serverWorld.getDimension().getEffects().toString();
-            req.logger().trace(()->"[MobFilter]     DimensionCheck: "+dimensionName+ " in "+dimensionNames);
-            return this.dimensionNames.contains(dimensionName);
+            req.logger().trace(()->"[MobFilter]     DimensionCheck "+req.getDimensionId()+" in "+dimensionIds);
+            return this.dimensionIds.contains(req.getBiomeId());
         }
     }
 
     record WorldNameCheck(StringSet worldNames) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            final ServerWorldProperties swp;
-            try {
-                swp = (ServerWorldProperties)req.serverWorld.getLevelProperties();
-            } catch(ClassCastException cce) {
-                LOGGER.warn("[MobFilter] serverWorld.getLevelProperties() is unexpected class: " +
-                        req.serverWorld.getLevelProperties().getClass().getName());
-                return false;
-            }
-            final String worldName = swp.getLevelName();
-            req.logger().trace(()->"[MobFilter]     WorldNameCheck: "+worldName+ " in "+worldNames);
-            return worldNames.contains(worldName);
+            req.logger().trace(()->"[MobFilter]     WorldNameCheck: "+req.getWorldName()+ " in "+worldNames);
+            return worldNames.contains(req.getWorldName());
         }
     }
 

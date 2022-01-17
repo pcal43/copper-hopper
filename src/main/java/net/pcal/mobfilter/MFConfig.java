@@ -7,6 +7,9 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.*;
 
+/**
+ * Object model for the config file.
+ */
 @SuppressWarnings("ALL")
 public class MFConfig {
 
@@ -20,14 +23,9 @@ public class MFConfig {
         public Rule[] rules;
     }
 
-    public static enum What {
-        ALLOW_SPAWN,
-        DISALLOW_SPAWN
-    }
-
     public static class Rule {
         public String name;
-        public What what;
+        public MFRules.FilterRuleAction what;
         public When when;
     }
 
