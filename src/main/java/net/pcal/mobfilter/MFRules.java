@@ -151,43 +151,56 @@ abstract class MFRules {
         boolean isMatch(SpawnRequest spawn);
     }
 
-    record DimensionCheck(StringSet dimensionIds) implements FilterCheck {
-        @Override
-        public boolean isMatch(SpawnRequest req) {
-            req.logger().trace(() -> "[MobFilter]     DimensionCheck " + req.getDimensionId() + " in " + dimensionIds);
-            return this.dimensionIds.contains(req.getBiomeId());
-        }
-    }
-
     record WorldNameCheck(StringSet worldNames) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            req.logger().trace(() -> "[MobFilter]     WorldNameCheck: " + req.getWorldName() + " in " + worldNames);
-            return worldNames.contains(req.getWorldName());
+            boolean isMatch = worldNames.contains(req.getWorldName());
+            req.logger().trace(() -> "[MobFilter]     WorldNameCheck: " + req.getWorldName() + " in " + worldNames + " " + isMatch);
+            return isMatch;
         }
     }
 
-    record SpawnGroupCheck(EnumSet<SpawnGroup> groups) implements FilterCheck {
+    record DimensionCheck(StringSet dimensionIds) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            req.logger().trace(() -> "[MobFilter]     SpawnGroupCheck: " + this.groups + " " + req.spawnGroup + " " + this.groups.contains(req.spawnGroup));
-            return this.groups.contains(req.spawnGroup);
+            boolean isMatch = this.dimensionIds.contains(req.getDimensionId());
+            req.logger().trace(() -> "[MobFilter]     DimensionCheck " + req.getDimensionId() + " in " + dimensionIds + " " + isMatch);
+            return isMatch;
         }
     }
 
     record BiomeCheck(StringSet biomeIds) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            req.logger().trace(() -> "[MobFilter]     BiomeCheck " + req.getBiomeId() + " in " + biomeIds);
-            return this.biomeIds.contains(req.getBiomeId());
+            boolean isMatch = this.biomeIds.contains(req.getBiomeId());
+            req.logger().trace(() -> "[MobFilter]     BiomeCheck " + req.getBiomeId() + " in " + biomeIds+" "+isMatch);
+            return isMatch;
+        }
+    }
+    record SpawnGroupCheck(EnumSet<SpawnGroup> groups) implements FilterCheck {
+        @Override
+        public boolean isMatch(SpawnRequest req) {
+            boolean isMatch = this.groups.contains(req.spawnGroup);
+            req.logger().trace(() -> "[MobFilter]     SpawnGroupCheck: " + this.groups + " " + req.spawnGroup + " " + this.groups.contains(req.spawnGroup) + " " + isMatch);
+            return isMatch;
         }
     }
 
     record EntityIdCheck(StringSet entityIds) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
-            req.logger().trace(() -> "[MobFilter]     EntityNameCheck " + req.getEntityId() + " in " + entityIds);
-            return this.entityIds.contains(req.getEntityId());
+            boolean isMatch = this.entityIds.contains(req.getEntityId());
+            req.logger().trace(() -> "[MobFilter]     EntityNameCheck " + req.getEntityId() + " in " + entityIds+" "+isMatch);
+            return isMatch;
+        }
+    }
+
+    record BlockIdCheck(StringSet blockIds) implements FilterCheck {
+        @Override
+        public boolean isMatch(SpawnRequest req) {
+            boolean isMatch = this.blockIds.contains(req.getBlockId());
+            req.logger().trace(() -> "[MobFilter]     BlockIdCheck " + req.getEntityId() + " in " + blockIds+" "+isMatch);
+            return isMatch;
         }
     }
 
@@ -195,25 +208,21 @@ abstract class MFRules {
         @Override
         public boolean isMatch(SpawnRequest req) {
             int val = req.blockPos.getComponentAlongAxis(this.axis);
-            req.logger().trace(() -> "[MobFilter]     BlockPosCheck " + axis + " " + min + " <= " + val + " <= " + max);
-            return min <= val && val <= max;
+            boolean isMatch = min <= val && val <= max;
+            req.logger().trace(() -> "[MobFilter]     BlockPosCheck " + axis + " " + min + " <= " + val + " <= " + max+ " "+isMatch);
+            return isMatch;
         }
     }
 
-    record BlockIdCheck(StringSet blockIds) implements FilterCheck {
-        @Override
-        public boolean isMatch(SpawnRequest req) {
-            req.logger().trace(() -> "[MobFilter]     BlockIdCheck " + req.getEntityId() + " in " + blockIds);
-            return this.blockIds.contains(req.getBlockId());
-        }
-    }
 
     record LightLevelCheck(int min, int max) implements FilterCheck {
         @Override
         public boolean isMatch(SpawnRequest req) {
             int val = req.serverWorld().getLightLevel(req.blockPos);
-            req.logger().trace(() -> "[MobFilter]     LightLevelCheck " + min + " <= " + val + " <= " + max);
-            return min <= val && val <= max;
+            boolean isMatch = min <= val && val <= max;
+            req.logger().trace(() -> "[MobFilter]     LightLevelCheck " + min + " <= " + val + " <= " + max+ " " +isMatch);
+            return isMatch;
+
         }
     }
 
@@ -221,8 +230,9 @@ abstract class MFRules {
         @Override
         public boolean isMatch(SpawnRequest req) {
             long val = req.serverWorld.getTimeOfDay();
-            req.logger().trace(() -> "[MobFilter]     TimeOfDayCheck " + min + " <= " + val + " <= " + max);
-            return min <= val && val <= max;
+            boolean isMatch = min <= val && val <= max;
+            req.logger().trace(() -> "[MobFilter]     TimeOfDayCheck " + min + " <= " + val + " <= " + max+" "+isMatch);
+            return isMatch;
         }
     }
 
