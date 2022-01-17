@@ -24,10 +24,9 @@ import java.util.EnumSet;
 
 
 /**
- *
+ * Singleton service that orchestrates the filtering logic.
  */
 public class MFService {
-
 
     private static final class SingletonHolder {
         private static final MFService INSTANCE;
@@ -64,11 +63,18 @@ public class MFService {
         return disallowSpawn;
     }
 
-    public void loadConfig() throws IOException {
+    /**
+     * Re/loads mobfilter.yaml and initializes a new FiluterRuleList.
+     */
+    public void loadConfig() {
         final File configFile = Paths.get(".", "config", "mobfilter.yaml").toFile();
         final ConfigurationFile config;
         try (final InputStream in = new FileInputStream(configFile)) {
             config = MFConfig.load(in);
+        } catch(IOException ioe) {
+            logger.catching(Level.ERROR, ioe);
+            logger.error("[MobFilter] failed to loadConfig");
+            return;
         }
         this.ruleList = buildRules(config);
         final Level logLevel;
@@ -102,6 +108,7 @@ public class MFService {
             if (when.worldName != null) checks.add(new WorldNameCheck(StringSet.of(when.worldName)));
             if (when.dimensionId != null) checks.add(new DimensionCheck(StringSet.of(when.dimensionId)));
             if (when.biomeId != null) checks.add(new BiomeCheck(StringSet.of(when.biomeId)));
+            if (when.blockId != null) checks.add(new BlockIdCheck(StringSet.of(when.blockId)));
 
             if (when.blockX != null) {
                 int[] range =  parseRange(when.blockX);
@@ -115,11 +122,6 @@ public class MFService {
                 int[] range =  parseRange(when.blockZ);
                 checks.add(new BlockPosCheck(Direction.Axis.Z, range[0], range[1]));
             }
-            if (when.blockZ != null) {
-                int[] range =  parseRange(when.blockZ);
-                checks.add(new BlockPosCheck(Direction.Axis.Z, range[0], range[1]));
-            }
-
             if (when.timeOfDay != null) {
                 int[] range =  parseRange(when.timeOfDay);
                 checks.add(new TimeOfDayCheck(range[0], range[1]));
@@ -145,5 +147,3 @@ public class MFService {
         return out;
     }
 
-
-}
