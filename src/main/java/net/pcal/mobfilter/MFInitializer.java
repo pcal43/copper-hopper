@@ -5,9 +5,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class MobFilterInitializer implements ModInitializer {
-
-    private static final Logger LOGGER = LogManager.getLogger(MobFilterInitializer.class);
+public class MFInitializer implements ModInitializer {
 
 	/**
     private static final Map<EntityType<?>, FabricEntityObj> entities = new WeakHashMap<>();
@@ -29,8 +27,7 @@ public class MobFilterInitializer implements ModInitializer {
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTING.register(server -> {
-            MobFilterService.getInstance().loadConfig();
-	    //            registerCommands(server);
+            MFService.getInstance().loadConfig();
         });
 	/**
         ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, serverResourceManager, success) -> {

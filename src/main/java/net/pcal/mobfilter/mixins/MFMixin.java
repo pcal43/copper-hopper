@@ -7,7 +7,7 @@ import net.minecraft.world.SpawnHelper;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.pcal.mobfilter.MobFilterService;
+import net.pcal.mobfilter.MFService;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,19 +15,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @SuppressWarnings("ALL")
 @Mixin(SpawnHelper.class)
-public abstract class MobFilterMixin {
+public abstract class MFMixin {
 
     @Inject(method = "canSpawn(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/SpawnGroup;Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/gen/chunk/ChunkGenerator;Lnet/minecraft/world/biome/SpawnSettings$SpawnEntry;Lnet/minecraft/util/math/BlockPos$Mutable;D)Z", at = @At("RETURN"), cancellable = true)
-    private static void onCanSpawn_nBXjeY(ServerWorld sw,
-                                          SpawnGroup sg,
-                                          StructureAccessor sa,
-                                          ChunkGenerator cg,
-                                          SpawnSettings.SpawnEntry se,
-                                          BlockPos.Mutable pos,
-                                          double sd,
-                                          CallbackInfoReturnable<Boolean> returnable) {
+    private static void canSpawn_inject(ServerWorld sw,
+                                        SpawnGroup sg,
+                                        StructureAccessor sa,
+                                        ChunkGenerator cg,
+                                        SpawnSettings.SpawnEntry se,
+                                        BlockPos.Mutable pos,
+                                        double sd,
+                                        CallbackInfoReturnable<Boolean> returnable) {
         if (returnable.getReturnValue()) {
-            final boolean disallowSpawn = MobFilterService.getInstance().disallowSpawn(sw, sg, sa, cg, se, pos, sd);
+            final boolean disallowSpawn = MFService.getInstance().disallowSpawn(sw, sg, sa, cg, se, pos, sd);
             returnable.setReturnValue(!disallowSpawn);
         }
     }

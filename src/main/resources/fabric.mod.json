@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.pcal.mobfilter.MobFilterInitializer"
+      "net.pcal.mobfilter.MFInitializer"
     ]
   },
   "mixins": [

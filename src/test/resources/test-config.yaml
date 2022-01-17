@@ -1,0 +1,21 @@
+debugEnabled: true
+
+rules:
+  - name: 'Nether Default'
+    spawn: ALLOW
+    when:
+      dimension: ['minecraft:the_nether']
+
+  - name: 'Maeve Safe Zone'
+    spawn: DISALLOW
+    when:
+      spawnGroup: [MONSTER]
+      world: ['New World']
+      dimension: ['minecraft:overworld']
+      entityId: ['minecraft:sheep']
+      biome: ['minecraft:plains']
+      time: [0, 1000]
+      blockY: [63, MAX]
+      chunkX: [2,3]
+#      - light: [4, 10]
+#       - weather: []
