@@ -12,7 +12,7 @@
     "sources": "https://github.com/pcal43/mobfilter"
   },
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "mobfilter-icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
