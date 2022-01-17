@@ -7,32 +7,16 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.*;
 
-import static java.util.Objects.requireNonNull;
-
 @SuppressWarnings("ALL")
 public class MFConfig {
 
-    @FunctionalInterface
-    public static interface InputStreamSupplier {
-        InputStream get() throws IOException;
-    }
-
-    private final InputStreamSupplier inputStreamSupplier;
-
-    MFConfig(InputStreamSupplier supplier) {
-        this.inputStreamSupplier = requireNonNull(supplier);
-    }
-
-    public ConfigurationFile reload() throws IOException {
+    static ConfigurationFile load(final InputStream inputStream) {
         Yaml yaml = new Yaml(new Constructor(ConfigurationFile.class));
-        try(InputStream inputStream = this.inputStreamSupplier.get()) {
-            ConfigurationFile config = yaml.load(inputStream);
-            return config;
-        }
+        return yaml.load(inputStream);
     }
 
     public static class ConfigurationFile {
-        public boolean debugEnabled;
+        public String logLevel;
         public Rule[] rules;
     }
 

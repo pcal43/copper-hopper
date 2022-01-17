@@ -1,4 +1,4 @@
-debugEnabled: true
+logLevel: 'TRACE'
 
 rules:
   - name: 'Nether Default'

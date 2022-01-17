@@ -34,11 +34,15 @@ abstract class MFRules {
             this.rules = requireNonNull(rules);
         }
 
-        public boolean disallowSpawn(SpawnRequest request) {
+        public boolean isSpawnDisallowed(SpawnRequest request) {
             for (FilterRule rule : rules) {
                 Boolean disallowSpawn = rule.disallowSpawn(request);
-                if (disallowSpawn != null) return disallowSpawn;
+                if (disallowSpawn != null) {
+                    request.logger().trace(()->"[MobFilter] "+rule.ruleName+" matched");
+                    return disallowSpawn;
+                }
             }
+            request.logger().trace(()->"[MobFilter] no rules matched");
             return false;
         }
     }
@@ -67,7 +71,8 @@ abstract class MFRules {
                         ChunkGenerator chunkGenerator,
                         SpawnSettings.SpawnEntry spawnEntry,
                         BlockPos blockPos,
-                        double squaredDistance) {
+                        double squaredDistance,
+                        Logger logger) {
     }
 
     interface FilterCheck {
@@ -127,8 +132,9 @@ abstract class MFRules {
 
     record SpawnGroupCheck(EnumSet<SpawnGroup> groups) implements FilterCheck {
         @Override
-        public boolean isMatch(SpawnRequest spawn) {
-            return this.groups.contains(spawn.spawnGroup);
+        public boolean isMatch(SpawnRequest req) {
+            req.logger().trace(()->"[MobFilter] SpawnGroupCheck: "+this.groups+ " "+req.spawnGroup+" "+this.groups.contains(req.spawnGroup));
+            return this.groups.contains(req.spawnGroup);
         }
     }
 
