@@ -37,12 +37,11 @@ public class MFConfig {
         public String[] entityId;
         public String[] biome;
         public SpawnGroup[] spawnGroup;
-        public int[] time;
         public String[] blockX;
         public String[] blockY;
         public String[] blockZ;
-        public String[] chunkX;
-        public String[] chunkY;
+        public String[] timeOfDay;
+        public String[] lightLevel;
     }
 }
 

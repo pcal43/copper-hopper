@@ -14,10 +14,7 @@ import net.minecraft.world.level.ServerWorldProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 import static java.util.Objects.requireNonNull;
@@ -53,7 +50,6 @@ abstract class MFRules {
 
         FilterRule {
             requireNonNull(ruleName);
-            requireNonNull(disallowSpawnWhenMatched);
             requireNonNull(checks);
         }
 
@@ -79,23 +75,14 @@ abstract class MFRules {
         boolean isMatch(SpawnRequest spawn);
     }
 
-
-    record CoordinateCheck(Direction.Axis axis, int value) implements FilterCheck {
-        CoordinateCheck { requireNonNull(axis); }
-        @Override
-        public boolean isMatch(SpawnRequest spawn) {
-
-
-            return false;
-        }
-    }
-
     record DimensionCheck(StringSet dimensionNames) implements FilterCheck {
         @Override
-        public boolean isMatch(SpawnRequest spawn) {
+        public boolean isMatch(SpawnRequest req) {
             // FIXME how do you get the Identifier for a DimensionType?  Don't understand what 'effects' is
             // but it seems to work.  May break custom dimensions.
-            return this.dimensionNames.contains(spawn.serverWorld.getDimension().getEffects().toString());
+            final String dimensionName = req.serverWorld.getDimension().getEffects().toString();
+            req.logger().trace(()->"[MobFilter] DimensionCheck: "+dimensionName+ " in "+dimensionNames);
+            return this.dimensionNames.contains(dimensionName);
         }
     }
 
@@ -110,23 +97,9 @@ abstract class MFRules {
                         req.serverWorld.getLevelProperties().getClass().getName());
                 return false;
             }
-            return worldNames.contains(swp.getLevelName());
-        }
-    }
-
-    record BiomeCheck(StringSet biomeIds) implements FilterCheck {
-        @Override
-        public boolean isMatch(SpawnRequest req) {
-            final Biome biome = req.serverWorld().getBiome(req.blockPos());
-            String biomeId = String.valueOf(BuiltinRegistries.BIOME.getId(biome)); // FIXME?
-            return this.biomeIds.contains(biomeId);
-        }
-    }
-    record EntityNameCheck(StringSet entityIds) implements FilterCheck {
-        @Override
-        public boolean isMatch(SpawnRequest req) {
-            String entityId = String.valueOf(Registry.ENTITY_TYPE.getId(req.spawnEntry.type)); // FIXME?
-            return this.entityIds.contains(entityId);
+            final String worldName = swp.getLevelName();
+            req.logger().trace(()->"[MobFilter] WorldNameCheck: "+worldName+ " in "+worldNames);
+            return worldNames.contains(worldName);
         }
     }
 
@@ -138,6 +111,55 @@ abstract class MFRules {
         }
     }
 
+    record BiomeCheck(StringSet biomeIds) implements FilterCheck {
+        @Override
+        public boolean isMatch(SpawnRequest req) {
+            final Biome biome = req.serverWorld().getBiome(req.blockPos());
+            String biomeId = String.valueOf(BuiltinRegistries.BIOME.getId(biome)); // FIXME?
+            req.logger().trace(()->"[MobFilter] BiomeCheck "+biomeId+" in "+biomeIds);
+            return this.biomeIds.contains(biomeId);
+        }
+    }
+    record EntityIdCheck(StringSet entityIds) implements FilterCheck {
+        @Override
+        public boolean isMatch(SpawnRequest req) {
+            String entityId = String.valueOf(Registry.ENTITY_TYPE.getId(req.spawnEntry.type)); // FIXME?
+            req.logger().trace(()->"[MobFilter] EntityNameCheck "+entityId+" in "+entityIds);
+            return this.entityIds.contains(entityId);
+        }
+    }
+
+    record BlockPosCheck(Direction.Axis axis, int min, int max) implements FilterCheck {
+        @Override
+        public boolean isMatch(SpawnRequest req) {
+            int val = req.blockPos.getComponentAlongAxis(this.axis);
+            req.logger().trace(()->"[MobFilter] BlockPosCheck "+axis+" "+min+" <= "+val+" <= "+max);
+            return min <= val && val <= max;
+        }
+    }
+
+    record LightLevelCheck(int min, int max) implements FilterCheck {
+        @Override
+        public boolean isMatch(SpawnRequest req) {
+            int val = req.serverWorld().getLightLevel(req.blockPos);
+            req.logger().trace(()->"[MobFilter] LightLevelCheck "+min+" <= "+val+" <= "+max);
+            return min <= val && val <= max;
+        }
+    }
+
+    record TimeOfDayCheck(long min, long max) implements FilterCheck {
+        @Override
+        public boolean isMatch(SpawnRequest req) {
+            long val = req.serverWorld.getTimeOfDay();
+            req.logger().trace(()->"[MobFilter] TimeOfDayCheck "+min+" <= "+val+" <= "+max);
+            return min <= val && val <= max;
+        }
+    }
+
+    /**
+     * An immutable set of strings with membership testing.  This gets used a lot and may be
+     * in need of optimization.
+     */
     @SuppressWarnings("ClassCanBeRecord")
     public static class StringSet {
         private final String[] strings;
@@ -153,6 +175,10 @@ abstract class MFRules {
         public boolean contains(String value) {
             for (String a : this.strings) if (Objects.equals(a, value)) return true;
             return false;
+        }
+
+        public String toString() {
+            return Arrays.toString(this.strings);
         }
     }
 }

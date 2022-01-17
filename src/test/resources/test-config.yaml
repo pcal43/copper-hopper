@@ -14,7 +14,7 @@ rules:
       dimension: ['minecraft:overworld']
       entityId: ['minecraft:sheep']
       biome: ['minecraft:plains']
-      time: [0, 1000]
+      timeOfDay: [0, 1000]
       blockY: [63, MAX]
       chunkX: [2,3]
 #      - light: [4, 10]
