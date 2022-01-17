@@ -24,7 +24,7 @@ Rules can test for several conditions, including:
 * Time of Day
 * Light Level
 
-The [default mobfilter configuration file](https://github.com/pcal43/mob-filter/blob/1.18/src/main/resources/default-mobfilter.yaml) 
+The [default mobfilter configuration file](https://github.com/pcal43/mob-filter/blob/main/src/main/resources/default-mobfilter.yaml) 
 provides more detail on setting up rules.
 
 
