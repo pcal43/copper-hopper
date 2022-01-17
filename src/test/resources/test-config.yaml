@@ -19,4 +19,3 @@ rules:
       blockX: [-128, 234]
       blockY: [33, MAX]
       blockZ: [63, 512]
-

@@ -128,7 +128,7 @@ public class MFService {
             if (config.logLevel != null) {
                 Level configuredLevel = Level.getLevel(config.logLevel);
                 if (configuredLevel == null) {
-                    logger.error("[MobFilter] Invalid logLevel " + config.logLevel + " in mobfilter.yaml, using INFO");
+                    logger.warn("[MobFilter] Invalid logLevel " + config.logLevel + " in mobfilter.yaml, using INFO");
                 } else {
                     setLogLevel(configuredLevel);
                 }
@@ -143,6 +143,9 @@ public class MFService {
     // ===================================================================================
     // Private
 
+    /**
+     * Manually adjust our logger's level.  Because changing the log4j config is a PITA.
+     */
     private void setLogLevel(Level logLevel) {
         Configurator.setLevel(MFService.class.getName(), logLevel);
     }

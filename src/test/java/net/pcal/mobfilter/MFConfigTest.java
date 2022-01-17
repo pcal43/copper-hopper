@@ -6,7 +6,6 @@ import java.io.InputStream;
 
 import static net.minecraft.entity.SpawnGroup.MONSTER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MFConfigTest {
 
