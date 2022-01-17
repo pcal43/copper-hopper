@@ -28,9 +28,9 @@ public abstract class MFMixin {
                                         CallbackInfoReturnable<Boolean> returnable) {
         if (returnable.getReturnValue() == true) { // if minecraft code decided it canSpawn...
             // ...call our service to decide if we want to veto the spawn
-            final boolean disallowSpawn = MFService.getInstance().isSpawnAllowed(sw, sg, sa, cg, se, pos, sd);
-            // and set the value if so
-            returnable.setReturnValue(!disallowSpawn);
+            final boolean isSpawnAllowed = MFService.getInstance().isSpawnAllowed(sw, sg, sa, cg, se, pos, sd);
+            // and change the return value if so
+            if (!isSpawnAllowed) returnable.setReturnValue(false);
         }
     }
 
