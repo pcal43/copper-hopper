@@ -1,68 +1,59 @@
-<h1>MobFilter</h1>
 
-MobFilter is Minecraft mod that allows you to limit spawning of mobs in your world.  You can use it to
+<p>
+    <b>MobFilter</b> is Minecraft mod that allows you to limit spawning of mobs in your world.  You can use it to
+</p>
 <ul>
-    <li>Create safe zones in your world where mobs aren't allowed to spawn.</li>
-    <li>Completely prevent particular mobs from ever spawning</li>
-    <li>Limit mob spawning to specific biomes, times, or light levels</li>
+    <li>Create a safe zone around your base where hostile mobs don't spawn.</li>
+    <li>Completely prevent certain mobs from ever spawning</li>
+    <li>Prevent mobs from spawning in certain biomes.</li>
+    <li>...and more.</li>
 </ul>
-and more
+<p>
+    MobFilter uses a flexible, rules-based filtering system.  When Minecraft wants to spawn a new mob, MobFilter
+    checks the rules you have configured to see if the spawn should be 'vetoed.'
+</p>
 
-<p>MobFilter uses a flexible, rule-based filtering system that you configure.  When Minecraft wants to spawn
-a new mob, MobFilter checks the rules you provide to see if the spawn should be 'vetoed.'</p>
+<p>
+    MobFilter uses the Fabric modloader and runs only on the server.
+</p>
 
-<p>MobFilter uses the Fabric modloader and runs only on the server.</p>
+<p></p>
 
 <h2>Usage</h2>
 
-The first time you run Minecraft with the mobfilter jar installed, an empty configuration file will be
-created in `config/mobfilter.yml`.  Just edit this file to set up your rules.  The rules will take effect the
-next time you start a world.
+<p>
+    The first time you run Minecraft with the mobfilter jar installed, an empty configuration file will be
+    created in `config/mobfilter.yml`.  Just edit this file to set up your rules.  The rules will take effect the
+    next time you start a world.</p>
 
-Rules can test for several conditions, including:
-* Block Position
-* Location (Biome, World, Dimension, BlockId)
-* Mob Type (EntiyId or SpawnGroup)
-* Time of Day
-* Light Level
+<p>
+    Rules can test for several conditions, including:
+</p>
+<ul>
+    <li>Block Position</li>
+    <li>Location (Biome, World, Dimension, BlockId)</li>
+    <li>Mob Type (EntiyId or SpawnGroup)</li>
+    <li>Time of Day</li>
+    <li>Light Level</li>
+</ul>
 
-The [default mobfilter configuration file](https://github.com/pcal43/mob-filter/blob/1.18/src/main/resources/default-mobfilter.yaml)
-provides more detail on setting up rules.
+<p>
+    See the <a href='https://github.com/pcal43/mob-filter/blob/main/src/main/resources/default-mobfilter.yaml'>default configuration file</a>
+    for examples and more detail on setting up rules.
+</p>
+<p></p>
 
+<h2>Why This Mod?</h2>
 
-## Examples
+<p>
+    I wrote this mod because I wanted to be able to be able to play survival minecraft with my daughter, and
+    that meant I needed a mob-free area for her around our base.  There are numerous other mods out there that
+    prevent mob spawning but none of them did quite what I needed them to do.
+</p>
 
-#### Prevent hostile mobs from spawning above sea level in a specific part of the world
+<p></p>
+<h2>Legal</h2>
 
-```
-rules:
-- name: Safe Zone
-what: DISALLOW_SPAWN
-when:
-spawnGroup : [MONSTER]
-blockX     : [-128, 234]
-blockY     : [63, MAX]
-blockZ     : [-321, 512]
-```
+<p>This mod is published under the Apache 2.0 License.</p>
 
-#### Prevent creepers from ever spawning and also prevent squid from spawning in rivers
-```
-rules:
-- name: No Creepers Ever
-what: DISALLOW_SPAWN
-when:
-entityId : [minecraft:creeper]
-
-- name: No Freshwater Squid
-what: DISALLOW_SPAWN
-when:
-entityId  : [minecraft:squid]
-biomeId   : [minecraft:river, minecraft:frozen_river]
-```
-
-
-## Legal
-
-This mod is published under the [MIT License](LICENSE).
-
-You're free to include this mod in your modpack provided you attribute it to pcal.net.
+<p>Feel free to include this mod in your modpack provided you attribute it to <b>pcal.net</b>.</p>
