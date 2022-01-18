@@ -3,15 +3,15 @@
   "id": "mobfilter",
   "version": "${version}",
   "name": "Mob Filter",
-  "description": "Filter which mobs can spawn.",
+  "description": "Rules-based filtering of mob spawns.",
   "authors": [
     "Me!"
   ],
   "contact": {
     "homepage": "https://github.com/pcal43/",
-    "sources": "https://github.com/pcal43/mobfilter"
+    "sources": "https://github.com/pcal43/mob-filter"
   },
-  "license": "CC0-1.0",
+  "license": "Apache-2.0",
   "icon": "mobfilter-icon.png",
   "environment": "*",
   "entrypoints": {
