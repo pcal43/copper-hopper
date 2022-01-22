@@ -1,26 +1,26 @@
 {
   "schemaVersion": 1,
-  "id": "hopperfilter",
+  "id": "simpler-sorters",
   "version": "${version}",
-  "name": "Hopper Filter",
+  "name": "Simple Sorters",
   "description": "Easy and vanilla-friendly Item Filters.",
   "authors": [
-    "Me!"
+    "www.pcal.net"
   ],
   "contact": {
     "homepage": "https://github.com/pcal43/",
-    "sources": "https://github.com/pcal43/hopper-filter"
+    "sources": "https://github.com/pcal43/simple-sorters"
   },
   "license": "Apache-2.0",
   "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.pcal.hopperfilter.HFInitializer"
+      "net.pcal.simple_sorters.SisoInitializer"
     ]
   },
   "mixins": [
-    "hopperfilter.mixins.json"
+    "simple-sorters.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.11.3",
