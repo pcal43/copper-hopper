@@ -130,6 +130,7 @@ public class SisoService {
      * item from the given stack.
      */
     public boolean shouldVetoPush(Inventory pushingInventory, ItemStack stackToPush) {
+        this.logger.trace(() -> (LOG_PREFIX + " shouldVetoPush "+pushingInventory+" "+stackToPush));
         // If we're pushing into an Item Sorter, make sure we don't push a block of a type that isn't already there
         return isItemSorter(pushingInventory) && containsLessThan(pushingInventory, stackToPush.getItem(), 2);
     }
@@ -139,18 +140,19 @@ public class SisoService {
      * item from the given slot of the sourceInventory.
      */
     public boolean shouldVetoPull(Hopper pullingHopper, Inventory sourceInventory, int slot, Direction side) {
+        this.logger.trace(() -> (LOG_PREFIX + " shouldVetoPull "+pullingHopper+" "+sourceInventory+" "+slot));
         final ItemStack pulledStack = sourceInventory.getStack(slot);
         if (isItemSorter(sourceInventory) && isSortableStack(pulledStack)) {
             // If we're pulling from an Item Sorter, make sure we don't pull the last block of its type
             if (containsLessThan(sourceInventory, pulledStack.getItem(), 2)) {
-                this.logger.trace(() -> LOG_PREFIX + " vetoing pull of "+pulledStack+" from "+sourceInventory);
+                this.logger.trace(() -> (LOG_PREFIX + " vetoing pull of "+pulledStack+" from "+sourceInventory));
                 return true;
             }
         }
         if (isItemSorter(pullingHopper)) {
             // If we're pulling into an Item Sorter, make sure we don't pull a block of a type that isn't already there
             if (containsLessThan(pullingHopper, pulledStack.getItem(), 1)) {
-                this.logger.trace(() -> LOG_PREFIX + " extraction blocked because it doesn't match anything in the output");
+                this.logger.trace(() -> (LOG_PREFIX + " extraction blocked because it doesn't match anything in the output"));
                 return true;
             }
         }
