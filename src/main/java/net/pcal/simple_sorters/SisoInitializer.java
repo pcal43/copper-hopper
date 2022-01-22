@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static net.pcal.simple_sorters.SisoService.LOG_PREFIX;
+
 @SuppressWarnings("unused")
 public class SisoInitializer implements ModInitializer {
 
@@ -15,10 +17,9 @@ public class SisoInitializer implements ModInitializer {
             final Logger logger = LogManager.getLogger(SisoInitializer.class);
             try {
                 SisoService.getInstance().loadConfig();
-                logger.info("[HopperFilter] Initialized");
             } catch (Exception | NoClassDefFoundError e) {
                 logger.catching(Level.ERROR, e);
-                logger.error("[HopperFilter] failed to initialize");
+                logger.error(LOG_PREFIX + "Failed to initialize");
             }
         });
     }

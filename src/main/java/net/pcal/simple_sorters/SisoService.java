@@ -27,10 +27,10 @@ public class SisoService {
     // ===================================================================================
     // Constants
 
+    static final String LOG_PREFIX = "[SimpleSorters] ";
     private static final String CONFIG_FILENAME = "simple-sorters.properties";
     private static final String DEFAULT_CONFIG_FILENAME = "default-simple-sorters.properties";
-    private static final String LOG_PREFIX = "[SimplerSorters]";
-    private static final String DEFAULT_MAGIC_NAME = "Sorter";
+    private static final String DEFAULT_MAGIC_NAME = "Item Sorter";
     private static final boolean DEFAULT_SORT_STACKABLES = true;
     private static final boolean DEFAULT_SORT_UNSTACKABLES = false;
 
@@ -112,6 +112,7 @@ public class SisoService {
                     logger.warn(LOG_PREFIX + "Invalid logLevel " + configuredLevel + " in " + configFile.getAbsolutePath());
                 } else {
                     setLogLevel(logLevel);
+                    logger.info(LOG_PREFIX + "LogLevel set to " + logLevel);
                 }
             }
             logger.info(LOG_PREFIX + "configuration loaded: " + config);
@@ -124,50 +125,52 @@ public class SisoService {
     // ===================================================================================
     // Hopper behavior
 
-    public ItemStack getStack(Inventory inventory, int slot) {
-        final ItemStack original = inventory.getStack(slot);
-        if (isFilterHopper(inventory) && !containsMoreThan(inventory, original.getItem(), 1)) {
-            return ItemStack.EMPTY;
-        } else {
-            return original;
-        }
+    /**
+     * Returns true if we should prevent the pushingInventory from pushing (inserting) an
+     * item from the given stack.
+     */
+    public boolean shouldVetoPush(Inventory pushingInventory, ItemStack stackToPush) {
+        // If we're pushing into an Item Sorter, make sure we don't push a block of a type that isn't already there
+        return isItemSorter(pushingInventory) && containsLessThan(pushingInventory, stackToPush.getItem(), 2);
     }
 
-    public boolean isExtractingLastItem(Hopper pullingHopper, Inventory pulledInventory, int slot, Direction side) {
-        if (isFilterHopper(pulledInventory)) {
-            final HopperBlockEntity pulledHopper = (HopperBlockEntity) pulledInventory;
-            this.logger.trace(() -> LOG_PREFIX + "extracting from " + pulledHopper);
-            final Text nameText = pulledHopper.getCustomName();
-            if (nameText != null && "ItemFilter".equals(nameText.asString())) {
-                ItemStack itemStack = pulledInventory.getStack(slot);
-                if (itemStack.getCount() <= 1 && itemStack.isStackable()) {
-                    this.logger.trace(() -> LOG_PREFIX + " extraction blocked because it's the last one");
-                    return true;
-                }
+    /**
+     * Returns true if we should prevent the pullingInventory from pushing (extracting) an
+     * item from the given slot of the sourceInventory.
+     */
+    public boolean shouldVetoPull(Hopper pullingHopper, Inventory sourceInventory, int slot, Direction side) {
+        final ItemStack pulledStack = sourceInventory.getStack(slot);
+        if (isItemSorter(sourceInventory) && isSortableStack(pulledStack)) {
+            // If we're pulling from an Item Sorter, make sure we don't pull the last block of its type
+            if (containsLessThan(sourceInventory, pulledStack.getItem(), 2)) {
+                this.logger.trace(() -> LOG_PREFIX + " vetoing pull of "+pulledStack+" from "+sourceInventory);
+                return true;
             }
         }
-        if (isFilterHopper(pullingHopper)) {
-            ItemStack pulledStack = pulledInventory.getStack(slot);
-            for (int i = 0; i < pullingHopper.size(); ++i) {
-                if (containsMoreThan(pullingHopper, pulledStack.getItem(), 0)) return false;
-                //if (canMergeItems(pullingHopper.getStack(i), pulledStack)) return;
+        if (isItemSorter(pullingHopper)) {
+            // If we're pulling into an Item Sorter, make sure we don't pull a block of a type that isn't already there
+            if (containsLessThan(pullingHopper, pulledStack.getItem(), 1)) {
+                this.logger.trace(() -> LOG_PREFIX + " extraction blocked because it doesn't match anything in the output");
+                return true;
             }
-            this.logger.trace(() -> LOG_PREFIX + " extraction blocked because it doesn't match anything in the output");
         }
-        return true;
+        return false;
     }
 
     // ===================================================================================
     // Private
 
     /**
-     * Manually adjust our logger's level.  Because changing the log4j config is a PITA.
+     * Returns true if modified hopper behavior should apply to the given stack.
      */
-    private void setLogLevel(Level logLevel) {
-        Configurator.setLevel(SisoService.class.getName(), logLevel);
+    private boolean isSortableStack(ItemStack item) {
+        return item.isStackable() ? this.sortStackables : this.sortUnstackables;
     }
 
-    private boolean isFilterHopper(Inventory target) {
+    /**
+     * Returns true if the given inventory target is an Item Sorter hopper.
+     */
+    private boolean isItemSorter(Inventory target) {
         if (target instanceof final HopperBlockEntity hopperEntity) {
             final Text nameText = hopperEntity.getCustomName();
             return nameText != null && this.magicName.equals(nameText.asString());
@@ -175,15 +178,25 @@ public class SisoService {
         return false;
     }
 
-    private static boolean containsMoreThan(Inventory inventory, Item item, int moreThan) {
+    /**
+     * Returns true if the given inventory contains more than the given number of the given item (across all slots).
+     */
+    private static boolean containsLessThan(Inventory inventory, Item item, int lessThan) {
         int count = 0;
         for (int i = 0; i < inventory.size(); ++i) {
             ItemStack itemStack = inventory.getStack(i);
             if (itemStack.getItem().equals(item)) {
                 count += itemStack.getCount();
-                if (count > moreThan) return true;
+                if (count >= lessThan) return false;
             }
         }
-        return false;
+        return true;
+    }
+
+    /**
+     * Manually adjust our logger's level.  Because changing the log4j config is a PITA.
+     */
+    private void setLogLevel(Level logLevel) {
+        Configurator.setLevel(SisoService.class.getName(), logLevel);
     }
 }

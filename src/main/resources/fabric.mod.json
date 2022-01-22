@@ -4,9 +4,8 @@
   "version": "${version}",
   "name": "Simple Sorters",
   "description": "Easy and vanilla-friendly Item Filters.",
-  "authors": [
-    "www.pcal.net"
-  ],
+  "authors": ["pcal"],
+
   "contact": {
     "homepage": "https://github.com/pcal43/",
     "sources": "https://github.com/pcal43/simple-sorters"
