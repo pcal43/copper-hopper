@@ -6,6 +6,7 @@ import net.minecraft.block.entity.Hopper;
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -96,16 +97,27 @@ public abstract class HFHopperBlockEntityMixin {
         return ItemStack.areNbtEqual(first, second);
     }
 
+    private static boolean containsMoreThan(Inventory inventory, Item item, int moreThan) {
+        int count = 0;
+        for (int i = 0; i < inventory.size(); ++i) {
+            ItemStack itemStack = inventory.getStack(i);
+            if (itemStack.getItem().equals(item)) {
+                count += itemStack.getCount();
+                if (count > moreThan) return true;
+            }
+        }
+        return false;
+    }
 
-    @Redirect(method = "getStack",
-              at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/inventory/Inventory;getStack(I)Lnet/minecraft/item/ItemStack;"))
-    private static ItemStack __getStack(Inventory inventory, int slot) {
+    @Redirect(method = "insert",
+              at = @At(value = "INVOKE", ordinal=0, target = "Lnet/minecraft/inventory/Inventory;getStack(I)Lnet/minecraft/item/ItemStack;"))
+    private static ItemStack inject_getStack(Inventory inventory, int slot) {
         final ItemStack original = inventory.getStack(slot);
-        if (isFilterHopper(inventory) && original.getCount() == 1) {
-            LOGGER.info("[ItemFilter] EMPTY!!! ");
+        if (isFilterHopper(inventory) && !containsMoreThan(inventory, original.getItem(), 1)) {
+            //LOGGER.info("[ItemFilter] EMPTY!!! ");
             return ItemStack.EMPTY;
         } else {
-            LOGGER.info("[ItemFilter] not empty");
+            //LOGGER.info("[ItemFilter] not empty");
             return original;
         }
     }
@@ -141,12 +153,13 @@ public abstract class HFHopperBlockEntityMixin {
     private static void __extract(Hopper pullingHopper, Inventory pulledInventory, int slot, Direction side, CallbackInfoReturnable<Boolean> returnable) {
         if (isFilterHopper(pulledInventory)) {
             final HopperBlockEntity pulledHopper = (HopperBlockEntity) pulledInventory;
+
             //LOGGER.info("[ItemFilter] extracting from "+String.valueOf(((HopperBlockEntity)pullingHopper).getName()));
             final Text nameText = pulledHopper.getCustomName();
             if (nameText != null && "ItemFilter".equals(nameText.asString())) {
                 ItemStack itemStack = pulledInventory.getStack(slot);
                 if (itemStack.getCount() <= 1 && itemStack.isStackable()) {
-                    LOGGER.info("[ItemFilter] BLOCKED ON MIN1 RULE !!!!!!!!!!!!!!!11");
+                    //LOGGER.info("[ItemFilter] BLOCKED ON MIN1 RULE !!!!!!!!!!!!!!!11");
                     returnable.setReturnValue(Boolean.FALSE);
                     return;
                 }
@@ -155,9 +168,10 @@ public abstract class HFHopperBlockEntityMixin {
         if (isFilterHopper(pullingHopper)) {
             ItemStack pulledStack = pulledInventory.getStack(slot);
             for (int i = 0; i < pullingHopper.size(); ++i) {
-                if (canMergeItems(pullingHopper.getStack(i), pulledStack)) return;
+                if (containsMoreThan(pullingHopper, pulledStack.getItem(), 0)) return;
+                //if (canMergeItems(pullingHopper.getStack(i), pulledStack)) return;
             }
-            LOGGER.info("[ItemFilter] BLOCKED ON MATCH RULE !!!!!!!!!!!!!!!11");
+            //LOGGER.info("[ItemFilter] BLOCKED ON MATCH RULE !!!!!!!!!!!!!!!11");
             returnable.setReturnValue(Boolean.FALSE);
             return;
         }
