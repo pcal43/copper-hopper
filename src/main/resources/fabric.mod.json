@@ -1,26 +1,26 @@
 {
   "schemaVersion": 1,
-  "id": "mobfilter",
+  "id": "hopperfilter",
   "version": "${version}",
-  "name": "Mob Filter",
-  "description": "Rules-based filtering of mob spawns.",
+  "name": "Hopper Filter",
+  "description": "Easy and vanilla-friendly Item Filters.",
   "authors": [
     "Me!"
   ],
   "contact": {
     "homepage": "https://github.com/pcal43/",
-    "sources": "https://github.com/pcal43/mob-filter"
+    "sources": "https://github.com/pcal43/hopper-filter"
   },
   "license": "Apache-2.0",
-  "icon": "mobfilter-icon.png",
+  "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.pcal.mobfilter.MFInitializer"
+      "net.pcal.hopperfilter.HFInitializer"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "hopperfilter.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.11.3",
