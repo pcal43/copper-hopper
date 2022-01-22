@@ -1,4 +1,4 @@
-package net.pcal.simple_sorters;
+package net.pcal.simple_item_sorters;
 
 import java.io.File;
 import java.io.FileInputStream;

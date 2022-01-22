@@ -1,11 +1,11 @@
-package net.pcal.simple_sorters.mixins;
+package net.pcal.simple_item_sorters.mixins;
 
 import net.minecraft.block.entity.Hopper;
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Direction;
-import net.pcal.simple_sorters.SisoService;
+import net.pcal.simple_item_sorters.SisoService;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @SuppressWarnings("ALL")
 @Mixin(HopperBlockEntity.class)
-public abstract class SisoHopperBlockEntityMixin {
+public abstract class SisHopperBlockEntityMixin {
 
     @Redirect(method = "insert",
             at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/inventory/Inventory;getStack(I)Lnet/minecraft/item/ItemStack;"))

@@ -1,25 +1,25 @@
 {
   "schemaVersion": 1,
-  "id": "simpler-sorters",
+  "id": "simpler-item-sorters",
   "version": "${version}",
-  "name": "Simple Sorters",
-  "description": "Easy and vanilla-friendly Item Filters.",
+  "name": "Simple Item Sorters",
+  "description": "Easy and vanilla-friendly Item Sorting.",
   "authors": ["pcal"],
 
   "contact": {
     "homepage": "https://github.com/pcal43/",
-    "sources": "https://github.com/pcal43/simple-sorters"
+    "sources": "https://github.com/pcal43/simple-item-sorters"
   },
   "license": "Apache-2.0",
   "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.pcal.simple_sorters.SisoInitializer"
+      "net.pcal.simple_item_sorters.SisInitializer"
     ]
   },
   "mixins": [
-    "simple-sorters.mixins.json"
+    "simple-item-sorters.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.11.3",
