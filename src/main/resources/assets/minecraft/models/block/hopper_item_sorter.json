@@ -3,7 +3,7 @@
 	"textures": {
 		"particle": "block/hopper_outside",
 		"top": "block/copper_block",
-		"side": "block/hopper_top",
+		"side": "block/hopper_outside",
 		"inside": "block/hopper_inside"
 	}
 }
