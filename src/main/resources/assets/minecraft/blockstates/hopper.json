@@ -1,7 +1,7 @@
 {
   "multipart": [
     {   "when": { "sorter": true , "facing": "down" },
-      "apply": { "model": "block/hopper_item_sorter"}
+      "apply": { "model": "block/hopper_item_sorter" }
     },
     {   "when": { "sorter": false , "facing": "down" },
       "apply": { "model": "block/hopper"}
