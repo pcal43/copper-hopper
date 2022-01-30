@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "simpler-item-sorters",
+  "id": "simple-item-sorters",
   "version": "${version}",
   "name": "Simple Item Sorters",
   "description": "Easy and vanilla-friendly Item Sorting.",
