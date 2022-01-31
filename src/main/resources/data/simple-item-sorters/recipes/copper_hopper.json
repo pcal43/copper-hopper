@@ -1,24 +1,28 @@
 {
   "type": "pcal:item_sorter",
+  // copperhopper:copper_hopper
   "pattern": [
-    "CDC",
-    "CHC",
-    " C "
+    "ICI",
+    "IHI",
+    "RIR"
   ],
   "key": {
-    "C": {
+    "I": {
       "item": "minecraft:copper_ingot"
     },
-    "D": {
-      "item": "minecraft:diamond"
+    "R": {
+      "item": "minecraft:redstone"
     },
     "H": {
       "item": "minecraft:hopper"
+    },
+    "C": {
+      "item": "minecraft:comparator"
     }
   },
   "result": {
     "item": "minecraft:hopper",
-    "count": 1
   }
 }
+
 
