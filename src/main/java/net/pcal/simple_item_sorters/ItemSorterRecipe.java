@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
@@ -16,13 +15,14 @@ public class ItemSorterRecipe extends ShapedRecipe  {
 //    RecipeType<ItemSorterRecipe> TYPE = RecipeType.register("pcal:item_sorter");
 
     public ItemSorterRecipe(Identifier id, String group, int width, int height, DefaultedList<Ingredient> ingredients, ItemStack output) {
-        super(id, group, width, height, ingredients, SisoService.getInstance().transformHopper(output));
+        super(id, group, width, height, ingredients, SisoService.getInstance().setItemSorter(output));
     }
 
     @Override
     public boolean isIgnoredInRecipeBook() {
         return false;
     }
+
 
     /**
     @Override
@@ -78,7 +78,7 @@ public class ItemSorterRecipe extends ShapedRecipe  {
 //            return NbtCraftingUtil.getOutputStack(getOutput(), getPreviewInputs(), inv);
 //        }
         ItemStack i = this.getOutput().copy();
-        SisoService.getInstance().transformHopper(i);
+        SisoService.getInstance().setItemSorter(i);
         return i;
     }
 

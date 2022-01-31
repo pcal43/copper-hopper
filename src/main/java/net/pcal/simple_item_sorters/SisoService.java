@@ -7,7 +7,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.text.LiteralText;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -28,6 +30,9 @@ public class SisoService {
 
     // ===================================================================================
     // Constants
+
+    // BooleanProperty defauls to true, which is just weird an annoying.
+    public static final IntProperty SORTER = IntProperty.of("pcal_sorter", 0, 1);
 
     static final String LOG_PREFIX = "[SimpleSorters] ";
     private static final String CONFIG_FILENAME = "simple-sorters.properties";
@@ -124,12 +129,6 @@ public class SisoService {
         }
     }
 
-    public ItemStack transformHopper(ItemStack stack) {
-        logger.info("TRANSFORM!!!");
-        stack.setCustomName(new LiteralText(this.magicName));
-        stack.getNbt().putShort("pcal:item_sorter", (short)1);
-        return stack;
-    }
 
     // ===================================================================================
     // Hopper behavior
@@ -168,6 +167,33 @@ public class SisoService {
         return false;
     }
 
+    /**
+     * Returns true if the given inventory target is an Item Sorter hopper.
+     */
+    public boolean isItemSorter(Inventory target) {
+        if (target instanceof final HopperBlockEntity hopperEntity) {
+            if (hopperEntity.getWorld() == null) throw new IllegalStateException("null world");
+            final BlockState state = hopperEntity.getWorld().getBlockState(hopperEntity.getPos());
+            return state != null && state.get(SORTER) == 1;
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if the given ItemStack is an Item Sorter.
+     */
+    public boolean isItemSorter(ItemStack stack) {
+        return stack.getNbt() != null && stack.getNbt().getShort("pcal:item_sorter") == 1;
+    }
+
+    public ItemStack setItemSorter(ItemStack stack) {
+        logger.info("TRANSFORM!!!");
+        stack.setCustomName(new LiteralText(this.magicName));
+        if (stack.getNbt() == null) throw new IllegalStateException("null nbt");
+        stack.getNbt().putShort("pcal:item_sorter", (short) 1);
+        return stack;
+    }
+
     // ===================================================================================
     // Private
 
@@ -176,18 +202,6 @@ public class SisoService {
      */
     private boolean isSortableStack(ItemStack item) {
         return item.isStackable() ? this.sortStackables : this.sortUnstackables;
-    }
-
-    /**
-     * Returns true if the given inventory target is an Item Sorter hopper.
-     */
-    private boolean isItemSorter(Inventory target) {
-        if (target instanceof final HopperBlockEntity hopperEntity) {
-            HopperBlockEntity hbe = (HopperBlockEntity)target;
-            final Text nameText = hbe.getCustomName();
-            return nameText != null && this.magicName.equals(nameText.asString());
-        }
-        return false;
     }
 
     /**

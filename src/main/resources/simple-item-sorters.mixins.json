@@ -4,8 +4,8 @@
   "package": "net.pcal.simple_item_sorters.mixins",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "SisHopperBlockEntityMixin",
-    "SisHopperBlockMixin"
+    "SisHopperBlockMixin",
+    "SisHopperBlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
