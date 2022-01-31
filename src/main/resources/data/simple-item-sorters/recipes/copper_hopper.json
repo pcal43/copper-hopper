@@ -1,5 +1,5 @@
 {
-  "type": "simple-item-sorters:item_sorter",
+  "type": "pcal:item_sorter",
   "pattern": [
     "CDC",
     "CHC",
@@ -18,10 +18,7 @@
   },
   "result": {
     "item": "minecraft:hopper",
-    "count": 1,
-    "display": {
-      "Name": "{\"text\":\"Battle Axe\"}"
-    }
+    "count": 1
   }
 }
 

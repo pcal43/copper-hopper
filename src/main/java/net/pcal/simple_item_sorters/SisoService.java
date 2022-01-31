@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.text.LiteralText;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -122,6 +124,13 @@ public class SisoService {
         }
     }
 
+    public ItemStack transformHopper(ItemStack stack) {
+        logger.info("TRANSFORM!!!");
+        stack.setCustomName(new LiteralText(this.magicName));
+        stack.getNbt().putShort("pcal:item_sorter", (short)1);
+        return stack;
+    }
+
     // ===================================================================================
     // Hopper behavior
 
@@ -174,7 +183,8 @@ public class SisoService {
      */
     private boolean isItemSorter(Inventory target) {
         if (target instanceof final HopperBlockEntity hopperEntity) {
-            final Text nameText = hopperEntity.getCustomName();
+            HopperBlockEntity hbe = (HopperBlockEntity)target;
+            final Text nameText = hbe.getCustomName();
             return nameText != null && this.magicName.equals(nameText.asString());
         }
         return false;
