@@ -1,33 +1,33 @@
 {
   "multipart": [
-    {   "when": { "sorter": true , "facing": "down" },
+    {   "when": { "pcal_sorter": "1" , "facing": "down" },
       "apply": { "model": "block/hopper_item_sorter" }
     },
-    {   "when": { "sorter": false , "facing": "down" },
+    {   "when": { "pcal_sorter": "0" , "facing": "down" },
       "apply": { "model": "block/hopper"}
     },
-    {   "when": { "sorter": true , "facing": "north" },
+    {   "when": { "pcal_sorter": "1" , "facing": "north" },
       "apply": { "model": "block/hopper_side_item_sorter"}
     },
-    {   "when": { "sorter": false , "facing": "north" },
+    {   "when": { "pcal_sorter": 0 , "facing": "north" },
       "apply": { "model": "block/hopper_side"}
     },
-    {   "when": { "sorter": true , "facing": "south" },
+    {   "when": { "pcal_sorter": 1 , "facing": "south" },
       "apply": { "model": "block/hopper_side_item_sorter", "y": 180 }
     },
-    {   "when": { "sorter": false , "facing": "south" },
+    {   "when": { "pcal_sorter": 0 , "facing": "south" },
       "apply": { "model": "block/hopper_side", "y": 180 }
     },
-    {   "when": { "sorter": true , "facing": "west" },
+    {   "when": { "pcal_sorter": 1 , "facing": "west" },
       "apply": { "model": "block/hopper_side_item_sorter", "y": 270 }
     },
-    {   "when": { "sorter": false , "facing": "west" },
+    {   "when": { "pcal_sorter": 0 , "facing": "west" },
       "apply": { "model": "block/hopper_side", "y": 270 }
     },
-    {   "when": { "sorter": true , "facing": "east" },
+    {   "when": { "pcal_sorter": 1 , "facing": "east" },
       "apply": { "model": "block/hopper_side_item_sorter", "y": 90 }
     },
-    {   "when": { "sorter": false , "facing": "east" },
+    {   "when": { "pcal_sorter": 0 , "facing": "east" },
       "apply": { "model": "block/hopper_side", "y": 90 }
     }
   ]
