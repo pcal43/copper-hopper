@@ -18,12 +18,6 @@ public class ItemSorterRecipe extends ShapedRecipe  {
         super(id, group, width, height, ingredients, SisoService.getInstance().setItemSorter(output));
     }
 
-    @Override
-    public boolean isIgnoredInRecipeBook() {
-        return false;
-    }
-
-
     /**
     @Override
     public RecipeType<?> getType() {

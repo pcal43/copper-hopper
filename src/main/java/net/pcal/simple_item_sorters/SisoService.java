@@ -189,6 +189,7 @@ public class SisoService {
     public ItemStack setItemSorter(ItemStack stack) {
         logger.info("TRANSFORM!!!");
         stack.setCustomName(new LiteralText(this.magicName));
+        // TODO we can kill the italics by overriding ItemStack.hasCustomName()
         if (stack.getNbt() == null) throw new IllegalStateException("null nbt");
         stack.getNbt().putShort("pcal:item_sorter", (short) 1);
         return stack;
