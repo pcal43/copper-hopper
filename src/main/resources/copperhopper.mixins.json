@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.pcal.copperhopper.mixins",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "CohoHopperBlockEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

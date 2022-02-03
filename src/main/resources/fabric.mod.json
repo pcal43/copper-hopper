@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "copperhopper",
+  "version": "${version}",
+  "name": "Copper Hopper",
+  "description": "Vanilla-friendly item filtering.",
+  "authors": ["pcal"],
+
+  "contact": {
+    "homepage": "https://github.com/pcal43/",
+    "sources": "https://github.com/pcal43/copper-hopper"
+  },
+  "license": "Apache-2.0",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["net.pcal.copperhopper.CohoInitializer"],
+    "client": ["net.pcal.copperhopper.CohoInitializer"]
+  },
+  "mixins": [
+    "copperhopper.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
