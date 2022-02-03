@@ -3,7 +3,7 @@
   "pattern": [
     "ICI",
     "IHI",
-    "RIR"
+    " I "
   ],
   "key": {
     "C": {
@@ -14,9 +14,6 @@
     },
     "I": {
       "item": "minecraft:copper_ingot"
-    },
-    "R": {
-      "item": "minecraft:redstone"
     }
   },
   "result": {

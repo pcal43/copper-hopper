@@ -14,13 +14,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-// https://fabricmc.net/wiki/tutorial:mixin_injects
-// https://fabricmc.net/wiki/tutorial:mixin_redirectors_methods
-
 @SuppressWarnings("ALL")
 @Mixin(HopperBlockEntity.class)
 public abstract class CohoHopperBlockEntityMixin {
 
+    /**
+     * Somewhat invasive change to prevent the hopper from pushing out it's last item.  Basically make the stacks
+     * read as empty if they shouldn't be pushed out.
+     */
     @Redirect(method = "insert",
             at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/inventory/Inventory;getStack(I)Lnet/minecraft/item/ItemStack;"))
     private static ItemStack __getStack(Inventory pushingInventory, int slot, World world, BlockPos pos, BlockState state, Inventory ignored) {
@@ -31,16 +32,10 @@ public abstract class CohoHopperBlockEntityMixin {
         return original;
 
     }
-/**
-    //
-    @Inject(method = "extract(Lnet/minecraft/block/entity/Hopper;Lnet/minecraft/inventory/Inventory;ILnet/minecraft/util/math/Direction;)Z",
-            at = @At("HEAD"), cancellable = true)
-    private static void __extract_inventory(Hopper pullingHopper, Inventory pulledInventory, int slot, Direction side, CallbackInfoReturnable<Boolean> returnable) {
-        if (CohoService.getInstance().shouldVetoPull(pullingHopper, pulledInventory, slot, side)) {
-            returnable.setReturnValue(Boolean.FALSE);
-        }
-    }
-**/
+
+    /**
+     * Apply filtering behavior to free floating entities above the hopper.
+     */
     @Inject(method = "extract(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/entity/ItemEntity;)Z", at = @At("HEAD"), cancellable = true)
     private static void __extract_itemEntity(Inventory pullingInventory, ItemEntity pulledEntity, CallbackInfoReturnable<Boolean> returnable) {
         if (CohoService.getInstance().shouldVetoPullInto(pullingInventory, pulledEntity.getStack().getItem())) {

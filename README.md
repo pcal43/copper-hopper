@@ -1,66 +1,51 @@
-# MobFilter
+# Copper Hopper
 
-MobFilter is Minecraft mod that allows you to limit spawning of mobs in your world.  You can use it to 
-* Create safe zones in your world where mobs aren't allowed to spawn.
-* Completely prevent particular mobs from ever spawning
-* Limit mob spawning to specific biomes, times, or light levels
-* ...and more
+Copper Hopper adds a new kind of Hopper that filters the items to get pulled and pushed.  They 
+save you the tedium of building gigantic item sorters while retaining a Vanilla Minecraft spirit.
 
-MobFilter uses the Fabric modloader and runs only on the server.
+### Features
+* Filter up to 5 items per Copper Hopper
+* Filter both stackable and unstackable items
+* Uses the Fabric modloader
+* Can work without being installed in the client (thanks to the awesome [Polymer framework](https://polymer.pb4.eu)!)
+* Made of copper!
 
-## Usage
+Copper Hopper was inspired by Mr. Crayfish's excellent [Golden Hopper](https://www.curseforge.com/minecraft/mc-mods/golden-hopper) Forge mod.
 
-MobFilter uses a flexible, rule-based filtering system that you configure.  When Minecraft wants to spawn
-a new mob, MobFilter checks the rules you provide to see if the spawn should be 'vetoed.'
+## How do use it?
 
-The first time you run Minecraft with the mobfilter jar installed, an empty configuration file will be
-created in `config/mobfilter.yml`.  Just edit this file to set up your rules.  The rules will take effect the
-next time you start a world.
+Just put an item in one of the regular hopper slots to "set" a filter.  That item will never be pulled or
+pushed out of the hopper.  And the hopper will now only accept items of that type.
 
-Rules can test for several conditions, including:
-* Block Position
-* Location (Biome, World, Dimension, BlockId)
-* Mob Type (EntiyId or SpawnGroup)
-* Time of Day
-* Light Level
+You can do this up to five times (once per slot).
 
-The [default mobfilter configuration file](https://github.com/pcal43/mob-filter/blob/main/src/main/resources/default-mobfilter.yaml) 
-provides more detail on setting up rules.
+## How does it work exactly?
 
+A Copper Hopper works just like a regular hopper except:
 
-## Examples
+* They never accept an item of a type that is not already held in the hopper.
+* They always keep the last item of a type that is held in the hopper.
 
-#### Prevent hostile mobs from spawning above sea level in a specific part of the world
+## Does it work with unstackable items?
 
+Yes!  But if you filter on unstackable items, be sure to keep one of the hopper slots empty or
+the filtering won't work correctly.
+
+## Multiplayer Server Notes
+
+See the config file (copperhopper.json):
 ```
-rules:
-  - name: Safe Zone
-    what: DISALLOW_SPAWN
-    when:
-      spawnGroup : [MONSTER]
-      blockX     : [-128, 234]
-      blockY     : [63, MAX]
-      blockZ     : [-321, 512]
+# Uncomment this line if you want to run CopperHopper on a server that works with vanilla clients or clients
+# that don't have the mod installed.  CopperHoppers will appear as regular Hoppers on those clients but they
+# will function normally.
+#
+# In order for this to work, you need to also have the polymer mod installed: https://polymer.pb4.eu
+#
+# polymer-enabled = true
 ```
-
-#### Prevent creepers from ever spawning and also prevent squid from spawning in rivers
-```
-rules:
-  - name: No Creepers Ever
-    what: DISALLOW_SPAWN
-    when:
-      entityId : [minecraft:creeper]
-
-  - name: No Freshwater Squid
-    what: DISALLOW_SPAWN
-    when:
-      entityId  : [minecraft:squid]
-      biomeId   : [minecraft:river, minecraft:frozen_river]
-```
-
 
 ## Legal
 
-This mod is published under the [Apache 2.0 License](LICENSE).
+This mod is published under the [MIT License](LICENSE).
 
 You're free to include this mod in your modpack provided you attribute it to pcal.net.
