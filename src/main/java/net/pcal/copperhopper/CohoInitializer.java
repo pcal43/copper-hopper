@@ -14,31 +14,31 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Properties;
 
-import static net.pcal.copperhopper.CohoService.*;
+import static net.minecraft.util.registry.Registry.register;
+import static net.pcal.copperhopper.CohoService.COHO_BLOCK_ENTITY_TYPE_ID;
+import static net.pcal.copperhopper.CohoService.COHO_BLOCK_ID;
+import static net.pcal.copperhopper.CohoService.COHO_ITEM_ID;
+import static net.pcal.copperhopper.CohoService.COHO_SCREEN_ID;
+import static net.pcal.copperhopper.CohoService.LOGGER_NAME;
+import static net.pcal.copperhopper.CohoService.LOG_PREFIX;
 
 public class CohoInitializer implements ModInitializer, ClientModInitializer {
 
     @Override
     public void onInitialize() {
-        final Logger logger = LogManager.getLogger(LOGGER_NAME);
-        logger.info("INITIALIZE");
-        Initializer.class.getName();
+        new ExactlyOnceInitializer();
     }
 
     @Override
     public void onInitializeClient() {
-        final Logger logger = LogManager.getLogger(LOGGER_NAME);
-        logger.info("INITIALIZE CLIENT");
-        Initializer.class.getName();
+        new ExactlyOnceInitializer();
         ScreenRegistry.register(CohoService.getScreenHandlerType(), CohoScreen::new);
     }
 
 
-    private static class Initializer {
-
+    private static class ExactlyOnceInitializer {
         static {
             final Logger logger = LogManager.getLogger(LOGGER_NAME);
-            logger.info("Initializing");
             try {
                 final Properties config;
                 CohoService.getInstance().createDefaultConfig();
@@ -64,10 +64,10 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
             final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings());
             final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Settings().group(ItemGroup.REDSTONE));
             cohoItem.appendBlocks(Item.BLOCK_ITEMS, cohoItem); // wat
-            Registry.register(Registry.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
+            register(Registry.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
                     FabricBlockEntityTypeBuilder.create(CopperHopperBlockEntity::new, cohoBlock).build(null));
-            Registry.register(Registry.ITEM, COHO_ITEM_ID, cohoItem);
-            Registry.register(Registry.BLOCK, COHO_BLOCK_ID, cohoBlock);
+            register(Registry.ITEM, COHO_ITEM_ID, cohoItem);
+            register(Registry.BLOCK, COHO_BLOCK_ID, cohoBlock);
         }
     }
 }
