@@ -14,53 +14,60 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Properties;
 
-import static net.pcal.copperhopper.CohoService.*;
+import static net.minecraft.util.registry.Registry.register;
+import static net.pcal.copperhopper.CohoService.COHO_BLOCK_ENTITY_TYPE_ID;
+import static net.pcal.copperhopper.CohoService.COHO_BLOCK_ID;
+import static net.pcal.copperhopper.CohoService.COHO_ITEM_ID;
+import static net.pcal.copperhopper.CohoService.COHO_SCREEN_ID;
+import static net.pcal.copperhopper.CohoService.LOGGER_NAME;
+import static net.pcal.copperhopper.CohoService.LOG_PREFIX;
 
 public class CohoInitializer implements ModInitializer, ClientModInitializer {
 
     @Override
     public void onInitialize() {
-        final Logger logger = LogManager.getLogger(LOGGER_NAME);
-        try {
-            final Properties config;
-            CohoService.getInstance().createDefaultConfig();
-            config = CohoService.getInstance().loadConfig();
-            if ("true".equals(config.getProperty("polymer-enabled"))) {
-                logger.info("Initializing polymer.");
-                try {
-                    ((Runnable) Class.forName("net.pcal.copperhopper.polymer.PolymerRegistrar").getDeclaredConstructor().newInstance()).run();
-                } catch(Exception e) {
-                    logger.catching(Level.ERROR, e);
-                    logger.error("Failed to initialize. Be sure you have installed the polymer mod.");
-                    return;
-                }
-            } else {
-                doStandardRegistrations();
-            }
-        } catch (Exception e) {
-            logger.catching(Level.ERROR, e);
-            logger.error("Failed to initialize");
-            return;
-        }
-        logger.info("Initialized.");
+        new ExactlyOnceInitializer();
     }
 
     @Override
     public void onInitializeClient() {
+        new ExactlyOnceInitializer();
         ScreenRegistry.register(CohoService.getScreenHandlerType(), CohoScreen::new);
     }
 
-    /**
-     * Create and register all of our blocks and items for non-polymer mode.
-     */
-    private static void doStandardRegistrations() {
-        ScreenHandlerRegistry.registerSimple(COHO_SCREEN_ID, CohoScreenHandler::new);
-        final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings());
-        final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Settings().group(ItemGroup.REDSTONE));
-        cohoItem.appendBlocks(Item.BLOCK_ITEMS, cohoItem); // wat
-        Registry.register(Registry.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
-                FabricBlockEntityTypeBuilder.create(CopperHopperBlockEntity::new, cohoBlock).build(null));
-        Registry.register(Registry.ITEM, COHO_ITEM_ID, cohoItem);
-        Registry.register(Registry.BLOCK, COHO_BLOCK_ID, cohoBlock);
+
+    private static class ExactlyOnceInitializer {
+        static {
+            final Logger logger = LogManager.getLogger(LOGGER_NAME);
+            try {
+                final Properties config;
+                CohoService.getInstance().createDefaultConfig();
+                config = CohoService.getInstance().loadConfig();
+                if ("true".equals(config.getProperty("polymer-enabled"))) {
+                    logger.info("Initializing polymer.");
+                    ((Runnable) Class.forName("net.pcal.copperhopper.polymer.PolymerRegistrar").getDeclaredConstructor().newInstance()).run();
+                } else {
+                    doStandardRegistrations();
+                }
+                logger.info(LOG_PREFIX + "Initialized.");
+            } catch (Exception e) {
+                logger.catching(Level.ERROR, e);
+                logger.error(LOG_PREFIX + "Failed to initialize");
+            }
+        }
+
+        /**
+         * Create and register all of our blocks and items for non-polymer mode.
+         */
+        private static void doStandardRegistrations() {
+            ScreenHandlerRegistry.registerSimple(COHO_SCREEN_ID, CohoScreenHandler::new);
+            final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings());
+            final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Settings().group(ItemGroup.REDSTONE));
+            cohoItem.appendBlocks(Item.BLOCK_ITEMS, cohoItem); // wat
+            register(Registry.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
+                    FabricBlockEntityTypeBuilder.create(CopperHopperBlockEntity::new, cohoBlock).build(null));
+            register(Registry.ITEM, COHO_ITEM_ID, cohoItem);
+            register(Registry.BLOCK, COHO_BLOCK_ID, cohoBlock);
+        }
     }
 }

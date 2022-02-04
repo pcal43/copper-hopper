@@ -1,7 +1,6 @@
 package net.pcal.copperhopper;
 
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,7 +12,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -29,6 +31,7 @@ public class CohoService {
     // Constants
 
     public static final String LOGGER_NAME = "CopperHopper";
+    public static final String LOG_PREFIX = "[CopperHopper] ";
 
     public static final Identifier COHO_BLOCK_ID = new Identifier("copperhopper:copper_hopper");
     public static final Identifier COHO_ITEM_ID = new Identifier("copperhopper:copper_hopper");
@@ -96,13 +99,13 @@ public class CohoService {
         if (configuredLevel != null) {
             final Level logLevel = Level.getLevel(configuredLevel);
             if (logLevel == null) {
-                logger.warn("Invalid logLevel " + configuredLevel + " in " + configFile.getAbsolutePath());
+                logger.warn(LOG_PREFIX + "Invalid logLevel " + configuredLevel + " in " + configFile.getAbsolutePath());
             } else {
                 setLogLevel(logLevel);
-                logger.info("LogLevel set to " + logLevel);
+                logger.info(LOG_PREFIX + "LogLevel set to " + logLevel);
             }
         }
-        logger.info("Configuration loaded: " + config);
+        logger.info(LOG_PREFIX + "Configuration loaded: " + config);
         return config;
     }
 
@@ -120,7 +123,7 @@ public class CohoService {
                     throw new IllegalStateException("Unable to load " + DEFAULT_CONFIG_FILENAME);
                 }
                 java.nio.file.Files.copy(in, configFilePath);
-                logger.info("Wrote default " + CONFIG_FILENAME);
+                logger.info(LOG_PREFIX + "Wrote default " + CONFIG_FILENAME);
             }
         }
     }
