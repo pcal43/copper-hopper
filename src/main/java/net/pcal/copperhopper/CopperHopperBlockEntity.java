@@ -32,7 +32,7 @@ public class CopperHopperBlockEntity extends HopperBlockEntity implements SidedI
 
     @Override
     public Text getDisplayName() {
-        return new LiteralText(CohoService.getInstance().getCopperHopperName());
+        return new TranslatableText(getCachedState().getBlock().getTranslationKey());
     }
 
     @Override
