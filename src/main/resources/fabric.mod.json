@@ -4,14 +4,14 @@
   "version": "${version}",
   "name": "Copper Hopper",
   "description": "Vanilla-friendly item filtering.",
-  "authors": ["pcal"],
+  "authors": ["pcal.net"],
 
   "contact": {
-    "homepage": "https://github.com/pcal43/",
+    "homepage": "https://github.com/pcal43/copper-hopper",
     "sources": "https://github.com/pcal43/copper-hopper"
   },
-  "license": "Apache-2.0",
-  "icon": "icon.png",
+  "license": "MIT",
+  "icon": "assets/copperhopper/textures/item/copper_hopper.png",
   "environment": "*",
   "entrypoints": {
     "main": ["net.pcal.copperhopper.CohoInitializer"],
