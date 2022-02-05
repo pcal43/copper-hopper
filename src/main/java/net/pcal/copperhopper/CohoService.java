@@ -79,7 +79,7 @@ public class CohoService {
     // Mod lifecycle
 
     /**
-     * Re/loads mobfilter.yaml and initializes a new FiluterRuleList.
+     * Re/loads copperhopper.json.
      */
     public Properties loadConfig() throws IOException {
         final Properties config;
