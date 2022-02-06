@@ -61,7 +61,6 @@ public class CohoService {
     private final Logger logger = LogManager.getLogger(LOGGER_NAME);
     private final Path configFilePath = Paths.get("config", CONFIG_FILENAME);
     private final File configFile = configFilePath.toFile();
-    private String copperHopperName = "Item Filter"; // FIXME i18n
 
     public static ScreenHandlerType<CohoScreenHandler> getScreenHandlerType() {
         //noinspection unchecked
@@ -88,10 +87,6 @@ public class CohoService {
             Properties newProps = new Properties();
             newProps.load(in);
             config = newProps;
-        }
-
-        if (config.containsKey("copper-hopper-name")) {
-            this.copperHopperName = config.getProperty("copper-hopper-name");
         }
 
         // adjust logging to configured level
@@ -161,10 +156,6 @@ public class CohoService {
      */
     public boolean shouldVetoPushFrom(Inventory from, Item pushedItem) {
         return isCopperHopper(from) && !containsAtLeast(from, pushedItem, 2);
-    }
-
-    public String getCopperHopperName() {
-        return copperHopperName;
     }
 
     // ===================================================================================
