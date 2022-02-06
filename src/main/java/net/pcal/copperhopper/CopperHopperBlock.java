@@ -10,8 +10,6 @@ import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.MutableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -37,10 +35,5 @@ public class CopperHopperBlock extends HopperBlock {
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new CopperHopperBlockEntity(pos, state);
-    }
-
-    @Override
-    public MutableText getName() {
-        return new LiteralText(CohoService.getInstance().getCopperHopperName());
     }
 }

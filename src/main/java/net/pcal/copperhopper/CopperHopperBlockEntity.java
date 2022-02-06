@@ -7,8 +7,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -32,7 +32,7 @@ public class CopperHopperBlockEntity extends HopperBlockEntity implements SidedI
 
     @Override
     public Text getDisplayName() {
-        return new LiteralText(CohoService.getInstance().getCopperHopperName());
+        return new TranslatableText(getCachedState().getBlock().getTranslationKey());
     }
 
     @Override
