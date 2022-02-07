@@ -22,8 +22,7 @@ public class CopperHopperBlock extends HopperBlock {
      * Default block settings are shared used by both polymer and non-polymer registrations.
      */
     public static AbstractBlock.Settings getDefaultSettings() {
-        return AbstractBlock.Settings.of(Material.METAL, MapColor.BROWN).requiresTool().strength(3.0f, 4.8f).sounds(BlockSoundGroup.METAL).nonOpaque();
-        //return FabricBlockSettings.copyOf(Blocks.HOPPER).mapColor(MapColor.BROWN);
+        return FabricBlockSettings.copyOf(Blocks.HOPPER).mapColor(MapColor.BROWN);
     }
 
     public CopperHopperBlock(AbstractBlock.Settings settings) {
