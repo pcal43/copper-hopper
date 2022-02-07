@@ -1,7 +1,9 @@
 package net.pcal.copperhopper;
 
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.HopperBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.Material;
@@ -16,9 +18,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class CopperHopperBlock extends HopperBlock {
 
+    /**
+     * Default block settings are shared used by both polymer and non-polymer registrations.
+     */
     public static AbstractBlock.Settings getDefaultSettings() {
-        return AbstractBlock.Settings.of(Material.METAL, MapColor.BROWN).requiresTool().strength(3.0f, 4.8f).
-                sounds(BlockSoundGroup.METAL).nonOpaque();
+        return FabricBlockSettings.copyOf(Blocks.HOPPER).mapColor(MapColor.BROWN);
     }
 
     public CopperHopperBlock(AbstractBlock.Settings settings) {
