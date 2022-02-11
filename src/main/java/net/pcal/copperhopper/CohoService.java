@@ -1,6 +1,5 @@
 package net.pcal.copperhopper;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.Inventory;
@@ -135,7 +134,7 @@ public class CohoService {
      * Return true if we should prevent one of the given Item from being pushed into the given hopper.
      * CopperHoppers should never accept item types they don't already contain.
      */
-    public boolean shouldVetoPushInfo(CopperHopperBlockEntity into, Item pushedItem) {
+    public boolean shouldVetoPushInto(CopperHopperBlockEntity into, Item pushedItem) {
         return !containsAtLeast(into, pushedItem, 1);
     }
 
