@@ -1,5 +1,6 @@
 package net.pcal.copperhopper;
 
+import net.minecraft.block.HopperBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.Inventory;
@@ -163,15 +164,16 @@ public class CohoService {
         if (!containsAtLeast(from, pushedItem, 2)) {
             return true; // never push the last one
         }
+        // Check to see if the block below us is also a CopperHopper and if it's trying to filter on the
+        // item we're about to push sideways.  If it is, hang onto to instead so the CopperHopper below
+        // can pull it down instead.
+        if (((CopperHopperBlockEntity)from).getCachedState().get(HopperBlock.FACING) == Direction.DOWN) {
+            return false; // don't bother with the check if we're pointing down
+        }
         final BlockPos below = pos.mutableCopy().offset(Direction.Axis.Y, -1);
         final BlockEntity blockEntity = world.getBlockEntity(below);
         if (!isCopperHopper(blockEntity)) return false;
-        if (containsAtLeast((Inventory)blockEntity, pushedItem, 1)) {
-            // If the block below is a copper hopper and it's filtering on the block we're
-            // thinking about pushing, hang onto it so that the hopper can pull it down instead.
-            return true;
-        }
-        return false;
+        return containsAtLeast((Inventory) blockEntity, pushedItem, 1);
     }
 
     // ===================================================================================
