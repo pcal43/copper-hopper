@@ -26,7 +26,7 @@ public abstract class CohoHopperBlockEntityMixin {
             at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/inventory/Inventory;getStack(I)Lnet/minecraft/item/ItemStack;"))
     private static ItemStack __getStack(Inventory pushingInventory, int slot, World world, BlockPos pos, BlockState state, Inventory ignored) {
         final ItemStack original = pushingInventory.getStack(slot);
-        if (CohoService.getInstance().shouldVetoPushFrom(pushingInventory, original.getItem())) {
+        if (CohoService.getInstance().shouldVetoPushFrom(pushingInventory, original.getItem(), world, pos)) {
             return ItemStack.EMPTY;
         }
         return original;

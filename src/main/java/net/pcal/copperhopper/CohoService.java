@@ -1,12 +1,17 @@
 package net.pcal.copperhopper;
 
+import net.minecraft.block.HopperBlock;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -130,7 +135,7 @@ public class CohoService {
      * Return true if we should prevent one of the given Item from being pushed into the given hopper.
      * CopperHoppers should never accept item types they don't already contain.
      */
-    public boolean shouldVetoPushInfo(CopperHopperBlockEntity into, Item pushedItem) {
+    public boolean shouldVetoPushInto(CopperHopperBlockEntity into, Item pushedItem) {
         return !containsAtLeast(into, pushedItem, 1);
     }
 
@@ -154,19 +159,38 @@ public class CohoService {
      * Return true if we should prevent one of the given Item from being pulled from the given inventory.
      * CopperHoppers should never push their last item of a given type.
      */
-    public boolean shouldVetoPushFrom(Inventory from, Item pushedItem) {
-        return isCopperHopper(from) && !containsAtLeast(from, pushedItem, 2);
+    public boolean shouldVetoPushFrom(Inventory from, Item pushedItem, World world, BlockPos pos) {
+        if (!isCopperHopper(from)) return false;
+        if (!containsAtLeast(from, pushedItem, 2)) {
+            return true; // never push the last one
+        }
+        // Check to see if the block below us is also a CopperHopper and if it's trying to filter on the
+        // item we're about to push sideways.  If it is, hang onto to instead so the CopperHopper below
+        // can pull it down instead.
+        if (((CopperHopperBlockEntity)from).getCachedState().get(HopperBlock.FACING) == Direction.DOWN) {
+            return false; // don't bother with the check if we're pointing down
+        }
+        final BlockPos below = pos.mutableCopy().offset(Direction.Axis.Y, -1);
+        final BlockEntity blockEntity = world.getBlockEntity(below);
+        if (!isCopperHopper(blockEntity)) return false;
+        return containsAtLeast((Inventory) blockEntity, pushedItem, 1);
     }
 
     // ===================================================================================
     // Private
-
 
     /**
      * Returns true if the given inventory target is an Item Sorter hopper.
      */
     private static boolean isCopperHopper(Inventory target) {
         return target instanceof CopperHopperBlockEntity;
+    }
+
+    /**
+     * Returns true if the given blockEntity is an Item Sorter hopper.
+     */
+    private static boolean isCopperHopper(BlockEntity blockEntity) {
+        return blockEntity instanceof CopperHopperBlockEntity;
     }
 
     /**
