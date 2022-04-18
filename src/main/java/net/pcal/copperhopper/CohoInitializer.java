@@ -32,7 +32,7 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
     @Override
     public void onInitializeClient() {
         new ExactlyOnceInitializer();
-        ScreenRegistry.register(CohoService.getScreenHandlerType(), CohoScreen::new);
+        ScreenHandlerRegistry.registerSimple(COHO_SCREEN_ID, CohoScreen::register);
     }
 
 
