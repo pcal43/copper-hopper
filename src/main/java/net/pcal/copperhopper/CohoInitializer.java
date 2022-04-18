@@ -2,7 +2,6 @@ package net.pcal.copperhopper;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.item.Item;
@@ -32,7 +31,7 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
     @Override
     public void onInitializeClient() {
         new ExactlyOnceInitializer();
-        ScreenRegistry.register(CohoService.getScreenHandlerType(), CohoScreen::new);
+        ScreenHandlerRegistry.registerSimple(COHO_SCREEN_ID, CohoScreen::register);
     }
 
 
@@ -60,7 +59,6 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
          * Create and register all of our blocks and items for non-polymer mode.
          */
         private static void doStandardRegistrations() {
-            ScreenHandlerRegistry.registerSimple(COHO_SCREEN_ID, CohoScreenHandler::new);
             final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings());
             final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Settings().group(ItemGroup.REDSTONE));
             cohoItem.appendBlocks(Item.BLOCK_ITEMS, cohoItem); // wat

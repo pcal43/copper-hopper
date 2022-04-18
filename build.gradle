@@ -26,20 +26,20 @@ configurations {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:1.18.1"
-	mappings "net.fabricmc:yarn:1.18.1+build.18:v2"
-	modImplementation "net.fabricmc:fabric-loader:0.12.12"
+	// Fabric & Minecraft
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
-	// https://maven.nucleoid.xyz/eu/pb4/polymer/
-	modCompileOnly "eu.pb4:polymer:0.2.0-beta.21+1.18.1"
-	//modImplementation include("eu.pb4:polymer:0.2.0-beta.21+1.18.1")
+	// Polymer
+	modCompileOnly "eu.pb4:polymer:${project.polymer_version}"
 
-	//Fabric api
-	modImplementation "net.fabricmc.fabric-api:fabric-api:0.46.0+1.18"
-
+	// JUnit
 	testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.2"
 	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.8.2"
 }
+
 
 test {
 	useJUnitPlatform()
