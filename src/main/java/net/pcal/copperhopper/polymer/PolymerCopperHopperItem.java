@@ -8,6 +8,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.pcal.copperhopper.CohoService;
 import net.pcal.copperhopper.CopperHopperItem;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,4 +25,8 @@ public class PolymerCopperHopperItem extends CopperHopperItem implements Polymer
         return Items.HOPPER;
     }
 
+    @Override
+    public Text getName() {
+        return new LiteralText(CohoService.getInstance().getPolymerName());
+    }
 }

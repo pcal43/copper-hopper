@@ -6,6 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HopperBlock;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
+import net.minecraft.util.math.BlockPos;
+import net.pcal.copperhopper.CohoService;
 import net.pcal.copperhopper.CopperHopperBlock;
 
 public class PolymerCopperHopperBlock extends CopperHopperBlock implements PolymerBlock, PolymerKeepModel {//, PolymerClientDecoded {
@@ -25,5 +30,16 @@ public class PolymerCopperHopperBlock extends CopperHopperBlock implements Polym
                 .with(HopperBlock.FACING, state.get(HopperBlock.FACING))
                 .with(HopperBlock.ENABLED, state.get(HopperBlock.ENABLED));
     }
+
+    @Override
+    public MutableText getName() {
+        return new LiteralText(CohoService.getInstance().getPolymerName());
+    }
+
+    @Override
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new PolymerCopperHopperBlockEntity(pos, state);
+    }
+
 
 }

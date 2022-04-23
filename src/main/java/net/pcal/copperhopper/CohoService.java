@@ -122,6 +122,7 @@ public class CohoService {
                 if (in == null) {
                     throw new IllegalStateException("Unable to load " + DEFAULT_CONFIG_FILENAME);
                 }
+                configFilePath.getParent().toFile().mkdirs();
                 java.nio.file.Files.copy(in, configFilePath);
                 logger.info(LOG_PREFIX + "Wrote default " + CONFIG_FILENAME);
             }
@@ -130,6 +131,13 @@ public class CohoService {
 
     // ===================================================================================
     // Hopper behavior
+
+    /**
+     * Name to use in polymer mode.  FIXME i18n?
+     */
+    public String getPolymerName() {
+        return "Item Filter";
+    }
 
     /**
      * Return true if we should prevent one of the given Item from being pushed into the given hopper.
