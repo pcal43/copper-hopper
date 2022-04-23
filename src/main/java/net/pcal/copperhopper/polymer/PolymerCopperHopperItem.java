@@ -14,7 +14,9 @@ import net.pcal.copperhopper.CohoService;
 import net.pcal.copperhopper.CopperHopperItem;
 import org.jetbrains.annotations.Nullable;
 
-public class PolymerCopperHopperItem extends CopperHopperItem implements PolymerItem, PolymerKeepModel, PolymerClientDecoded {
+import java.util.List;
+
+public class PolymerCopperHopperItem extends CopperHopperItem implements PolymerItem {//}, PolymerKeepModel, PolymerClientDecoded {
 
     public PolymerCopperHopperItem(Block block, Settings settings) {
         super(block, settings);
@@ -28,5 +30,11 @@ public class PolymerCopperHopperItem extends CopperHopperItem implements Polymer
     @Override
     public Text getName() {
         return new LiteralText(CohoService.getInstance().getPolymerName());
+    }
+
+    @Override
+    public void modifyClientTooltip(List<Text> tooltip, ItemStack stack, ServerPlayerEntity player) {
+        tooltip.clear();
+        tooltip.add(getName());
     }
 }

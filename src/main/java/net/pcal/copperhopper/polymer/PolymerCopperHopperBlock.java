@@ -1,6 +1,7 @@
 package net.pcal.copperhopper.polymer;
 
 import eu.pb4.polymer.api.block.PolymerBlock;
+import eu.pb4.polymer.api.client.PolymerClientDecoded;
 import eu.pb4.polymer.api.client.PolymerKeepModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -13,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.pcal.copperhopper.CohoService;
 import net.pcal.copperhopper.CopperHopperBlock;
 
-public class PolymerCopperHopperBlock extends CopperHopperBlock implements PolymerBlock, PolymerKeepModel {//, PolymerClientDecoded {
+public class PolymerCopperHopperBlock extends CopperHopperBlock implements PolymerBlock { // PolymerClientDecoded { //, PolymerKeepModel {//, PolymerClientDecoded {
 
     public PolymerCopperHopperBlock(Settings settings) {
         super(settings);
@@ -26,7 +27,7 @@ public class PolymerCopperHopperBlock extends CopperHopperBlock implements Polym
 
     @Override
     public BlockState getPolymerBlockState(BlockState state) {
-        return this.getDefaultState()
+        return Blocks.HOPPER.getDefaultState()
                 .with(HopperBlock.FACING, state.get(HopperBlock.FACING))
                 .with(HopperBlock.ENABLED, state.get(HopperBlock.ENABLED));
     }
