@@ -33,7 +33,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	// Polymer
-	modCompileOnly "eu.pb4:polymer:${project.polymer_version}"
+	modImplementation "eu.pb4:polymer:${project.polymer_version}"
 
 	// JUnit
 	testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.2"
