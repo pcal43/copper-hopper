@@ -27,7 +27,6 @@ public class PolymerRegistrar implements Runnable {
         final BlockEntityType<HopperBlockEntity> cohoEntityType = Registry.register(Registry.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
                 FabricBlockEntityTypeBuilder.create(HopperBlockEntity::new, cohoBlock).build(null));
         final PolymerCopperHopperItem cohoItem = new PolymerCopperHopperItem(cohoBlock, new Item.Settings().group(ItemGroup.REDSTONE));
-        //final PolymerBlockItem cohoItem = new PolymerBlockItem(cohoBlock, new FabricItemSettings().group(ItemGroup.REDSTONE), Items.HOPPER);
         cohoItem.appendBlocks(Item.BLOCK_ITEMS, cohoItem); // wat
         Registry.register(Registry.ITEM, COHO_ITEM_ID, cohoItem);
         Registry.register(Registry.BLOCK, COHO_BLOCK_ID, cohoBlock);
