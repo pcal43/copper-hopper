@@ -2,6 +2,7 @@ package net.pcal.copperhopper;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.item.Item;
@@ -32,6 +33,7 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
     public void onInitializeClient() {
         new ExactlyOnceInitializer();
         ScreenHandlerRegistry.registerSimple(COHO_SCREEN_ID, CohoScreen::register);
+        ScreenRegistry.register(CohoService.getScreenHandlerType(), CohoScreen::new);
     }
 
 
