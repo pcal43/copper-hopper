@@ -33,8 +33,7 @@ public class PolymerCopperHopperItem extends CopperHopperItem implements Polymer
     }
 
     @Override
-    public void modifyClientTooltip(List<Text> tooltip, ItemStack stack, ServerPlayerEntity player) {
-        tooltip.clear();
-        tooltip.add(getName());
+    public Text getName(ItemStack stack) {
+        return new LiteralText(CohoService.getInstance().getPolymerName());
     }
 }
