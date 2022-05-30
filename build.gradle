@@ -34,7 +34,7 @@ dependencies {
 
 	// Polymer
 	modCompileOnly "eu.pb4:polymer:${project.polymer_version}"
-	//compilem "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	//modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	// JUnit
 	testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.2"
