@@ -32,7 +32,6 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
     @Override
     public void onInitializeClient() {
         new ExactlyOnceInitializer();
-        ScreenHandlerRegistry.registerSimple(COHO_SCREEN_ID, CohoScreen::register);
         ScreenRegistry.register(CohoService.getScreenHandlerType(), CohoScreen::new);
     }
 
@@ -68,6 +67,7 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
                     FabricBlockEntityTypeBuilder.create(CopperHopperBlockEntity::new, cohoBlock).build(null));
             register(Registry.ITEM, COHO_ITEM_ID, cohoItem);
             register(Registry.BLOCK, COHO_BLOCK_ID, cohoBlock);
+            ScreenHandlerRegistry.registerSimple(COHO_SCREEN_ID, CohoScreenHandler::new);
         }
     }
 }
