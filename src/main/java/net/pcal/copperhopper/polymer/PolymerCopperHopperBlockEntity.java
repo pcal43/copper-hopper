@@ -4,7 +4,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.HopperScreenHandler;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.pcal.copperhopper.CohoService;
@@ -23,16 +22,16 @@ public class PolymerCopperHopperBlockEntity extends CopperHopperBlockEntity  {
 
     @Override
     public Text getName() {
-        return new LiteralText(CohoService.getInstance().getPolymerName());
+        return Text.literal(CohoService.getInstance().getPolymerName());
     }
 
     @Override
     public Text getDisplayName() {
-        return new LiteralText(CohoService.getInstance().getPolymerName());
+        return Text.literal(CohoService.getInstance().getPolymerName());
     }
 
     @Override
     public Text getCustomName() {
-        return new LiteralText(CohoService.getInstance().getPolymerName());
+        return Text.literal(CohoService.getInstance().getPolymerName());
     }
 }
