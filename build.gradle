@@ -30,11 +30,11 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// Polymer
 	modCompileOnly "eu.pb4:polymer:${project.polymer_version}"
-	//modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	//modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// JUnit
 	testImplementation "org.junit.jupiter:junit-jupiter-api:5.8.2"
