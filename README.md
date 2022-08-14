@@ -7,7 +7,6 @@ save you the tedium of building gigantic item sorters while retaining a Vanilla 
 * Filter up to 5 items per Copper Hopper
 * Filter both stackable and unstackable items
 * Uses the Fabric modloader
-* Can work without being installed in the client (thanks to the awesome [Polymer framework](https://polymer.pb4.eu)!)
 * Made of copper!
 
 Copper Hopper was inspired by Mr. Crayfish's excellent [Golden Hopper](https://www.curseforge.com/minecraft/mc-mods/golden-hopper) Forge mod.
@@ -32,18 +31,6 @@ A Copper Hopper works just like a regular hopper except:
 Yes!  But if you filter on unstackable items, be sure to keep one of the hopper slots empty or
 the filtering won't work correctly.
 
-## Multiplayer Server Notes
-
-See the config file (copperhopper.json):
-```
-# Uncomment this line if you want to run CopperHopper on a server that works with vanilla clients or clients
-# that don't have the mod installed.  CopperHoppers will appear as regular Hoppers on those clients but they
-# will function normally.
-#
-# In order for this to work, you need to also have the polymer mod installed: https://polymer.pb4.eu
-#
-# polymer-enabled = true
-```
 
 ## Legal
 
