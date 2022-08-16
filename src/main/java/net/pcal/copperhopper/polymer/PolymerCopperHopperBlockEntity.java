@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.pcal.copperhopper.CohoService;
 import net.pcal.copperhopper.CopperHopperBlockEntity;
 
-public class PolymerCopperHopperBlockEntity extends CopperHopperBlockEntity  {
+public class PolymerCopperHopperBlockEntity extends CopperHopperBlockEntity {
 
     public PolymerCopperHopperBlockEntity(BlockPos pos, BlockState state) {
         super(pos, state);
