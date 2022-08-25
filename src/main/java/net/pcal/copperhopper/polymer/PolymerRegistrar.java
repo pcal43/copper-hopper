@@ -1,16 +1,23 @@
 package net.pcal.copperhopper.polymer;
 
 import eu.pb4.polymer.api.block.PolymerBlockUtils;
+import eu.pb4.polymer.api.item.PolymerBlockItem;
 import eu.pb4.polymer.api.resourcepack.PolymerRPUtils;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Items;
 import net.minecraft.util.registry.Registry;
 import net.pcal.copperhopper.CopperHopperBlock;
 
-import static net.pcal.copperhopper.CohoService.*;
+import static net.pcal.copperhopper.CohoService.COHO_BLOCK_ENTITY_TYPE_ID;
+import static net.pcal.copperhopper.CohoService.COHO_BLOCK_ID;
+import static net.pcal.copperhopper.CohoService.COHO_ITEM_ID;
 
+@SuppressWarnings("unused")
 public class PolymerRegistrar implements Runnable {
 
     @Override
