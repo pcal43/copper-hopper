@@ -92,7 +92,7 @@ modrinth {
 	versionNumber = project.mod_version
 	versionType = "release"
 	uploadFile = remapJar
-	changelog = "<p><a href='https://github.com/pcal43/fastback/releases/tag/${project.mod_version}'>https://github.com/pcal43/fastback/releases/tag/${project.mod_version}</a></p>"
+	changelog = "<p><a href='https://github.com/pcal43/copper-hopper/releases/tag/${project.mod_version}'>https://github.com/pcal43/copper-hopper/releases/tag/${project.mod_version}</a></p>"
 	gameVersions = ["1.19.2"]
 	loaders = ["fabric"]
 	dependencies {
@@ -107,7 +107,7 @@ curseforge {
 	project {
 		id = "575851"
 		releaseType = "release"
-		changelog = "https://github.com/pcal43/fastback/releases/tag/${project.mod_version}"
+		changelog = "https://github.com/pcal43/copper-hopper/releases/tag/${project.mod_version}"
 		changelogType = "markdown"
 		mod_version = project.mod_version
 		releaseType = "release"
