@@ -24,7 +24,8 @@ A Copper Hopper works just like a regular hopper except:
 
 * They never accept an item of a type that is not already held in the hopper.
 * They always keep the last item of a type that is held in the hopper.
-* If one Copper Hopper is below another, it will always pull matching items before the upper hopper pushes them.  *This allows you to create hopper columns filter items into vertically-stacked chests.*
+* If one Copper Hopper is below another, it will always pull matching items before the upper hopper pushes them.  
+  * This allows you to create hopper columns that filter items into vertically-stacked chests.
 
 ## Does it work with unstackable items?
 
