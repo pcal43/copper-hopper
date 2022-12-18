@@ -38,3 +38,7 @@ the filtering won't work correctly.
 This mod is published under the [MIT License](LICENSE).
 
 You're free to include this mod in your modpack provided you attribute it to pcal.net.
+
+## Discord
+
+https://discord.gg/jUP5nSPrjx
