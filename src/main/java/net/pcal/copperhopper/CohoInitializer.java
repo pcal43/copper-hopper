@@ -3,18 +3,19 @@ package net.pcal.copperhopper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.item.ItemGroups;
+import net.minecraft.registry.Registries;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Properties;
 
-import static net.minecraft.util.registry.Registry.register;
+import static net.minecraft.registry.Registry.register;
 import static net.pcal.copperhopper.CohoService.COHO_BLOCK_ENTITY_TYPE_ID;
 import static net.pcal.copperhopper.CohoService.COHO_BLOCK_ID;
 import static net.pcal.copperhopper.CohoService.COHO_ITEM_ID;
@@ -61,12 +62,15 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
          */
         private static void doStandardRegistrations() {
             final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings());
-            final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Settings().group(ItemGroup.REDSTONE));
+
+            final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Settings());
+            ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> entries.add(cohoItem));
+
             cohoItem.appendBlocks(Item.BLOCK_ITEMS, cohoItem); // wat
-            register(Registry.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
+            register(Registries.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
                     FabricBlockEntityTypeBuilder.create(CopperHopperBlockEntity::new, cohoBlock).build(null));
-            register(Registry.ITEM, COHO_ITEM_ID, cohoItem);
-            register(Registry.BLOCK, COHO_BLOCK_ID, cohoBlock);
+            register(Registries.ITEM, COHO_ITEM_ID, cohoItem);
+            register(Registries.BLOCK, COHO_BLOCK_ID, cohoBlock);
             ScreenHandlerRegistry.registerSimple(COHO_SCREEN_ID, CohoScreenHandler::new);
         }
     }
