@@ -16,7 +16,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
-import static net.minecraft.registry.Registry.register;
 
 import java.io.File;
 import java.io.FileInputStream;
