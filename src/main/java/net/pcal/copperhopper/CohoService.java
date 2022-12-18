@@ -6,16 +6,17 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
+import static net.minecraft.registry.Registry.register;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -70,13 +71,13 @@ public class CohoService {
     public static ScreenHandlerType<CohoScreenHandler> getScreenHandlerType() {
         //noinspection unchecked
         return requireNonNull((ScreenHandlerType<CohoScreenHandler>)
-                Registry.SCREEN_HANDLER.get(COHO_SCREEN_ID));
+                Registries.SCREEN_HANDLER.get(COHO_SCREEN_ID));
     }
 
     public static  BlockEntityType<CopperHopperBlockEntity> getBlockEntityType() {
         //noinspection unchecked
         return (BlockEntityType<CopperHopperBlockEntity>)
-                requireNonNull(Registry.BLOCK_ENTITY_TYPE.get(COHO_BLOCK_ENTITY_TYPE_ID));
+                requireNonNull(Registries.BLOCK_ENTITY_TYPE.get(COHO_BLOCK_ENTITY_TYPE_ID));
     }
 
     // ===================================================================================
