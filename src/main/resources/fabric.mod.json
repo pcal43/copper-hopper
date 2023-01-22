@@ -27,6 +27,6 @@
     "java": ">=17"
   },
   "conflicts": {
-    "lithium": "*"
+    "lithium": "<0.10.2"
   }
 }
