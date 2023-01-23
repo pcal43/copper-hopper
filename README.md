@@ -11,15 +11,15 @@ save you the tedium of building gigantic item sorters while retaining a Vanilla 
 
 ## Recipe
 
-<img src='https://github.com/pcal43/copper-hopper/blob/main/etc/copper-hopper-crafting.png?raw=true'></img>
+![Recipe](https://github.com/pcal43/copper-hopper/blob/main/etc/copper-hopper-crafting.png?raw=true)
 
 ## Setting Filters
 
-<img src='https://github.com/pcal43/copper-hopper/blob/main/etc/dialog.png?raw=true' width='420'></img>
+![Filters](https://github.com/pcal43/copper-hopper/blob/main/etc/dialog.png?raw=true)
 
 ## Make sorting systems like this!
 
-<img src='https://github.com/pcal43/copper-hopper/blob/main/etc/sorted_storage.png' width='420'></img>
+![System](https://github.com/pcal43/copper-hopper/blob/main/etc/sorted_storage.png?raw=true)
 
 
 ## How do use it?
