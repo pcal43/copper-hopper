@@ -9,7 +9,18 @@ save you the tedium of building gigantic item sorters while retaining a Vanilla 
 * Uses the Fabric modloader
 * Made of copper!
 
-Copper Hopper was inspired by Mr. Crayfish's excellent [Golden Hopper](https://www.curseforge.com/minecraft/mc-mods/golden-hopper) Forge mod.
+## Recipe
+
+<img src='https://github.com/pcal43/copper-hopper/blob/main/etc/copper-hopper-crafting.png?raw=true'></img>
+
+## Setting Filters
+
+<img src='https://github.com/pcal43/copper-hopper/blob/main/etc/dialog.png?raw=true' width='420'></img>
+
+## Make sorting systems like this!
+
+<img src='https://github.com/pcal43/copper-hopper/blob/main/etc/sorted_storage.png' width='420'></img>
+
 
 ## How do use it?
 
@@ -32,6 +43,12 @@ A Copper Hopper works just like a regular hopper except:
 Yes!  But if you filter on unstackable items, be sure to keep one of the hopper slots empty or
 the filtering won't work correctly.
 
+## Notes
+
+* The item texture for Copper Hopper was contributed by [Pablo Henrique](https://github.com/ppblitto). (Thanks!)
+* Copper Hopper was inspired by Mr. Crayfish's excellent [Golden Hopper](https://www.curseforge.com/minecraft/mc-mods/golden-hopper) forge mod.
+* I will not be doing a Forge port of Copper Hopper. (sorry)
+ 
 
 ## Legal
 
