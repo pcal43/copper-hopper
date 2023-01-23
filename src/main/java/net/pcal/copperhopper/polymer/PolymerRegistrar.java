@@ -1,7 +1,7 @@
 package net.pcal.copperhopper.polymer;
 
-import eu.pb4.polymer.api.block.PolymerBlockUtils;
-import eu.pb4.polymer.api.resourcepack.PolymerRPUtils;
+import eu.pb4.polymer.core.api.block.PolymerBlockUtils;
+import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntityType;
@@ -20,7 +20,7 @@ public class PolymerRegistrar implements Runnable {
 
     @Override
     public void run() {
-        PolymerRPUtils.addAssetSource("copperhopper");
+        PolymerResourcePackUtils.addModAssets("copperhopper");
         final PolymerCopperHopperBlock cohoBlock = new PolymerCopperHopperBlock(CopperHopperBlock.getDefaultSettings());
         final BlockEntityType<PolymerCopperHopperBlockEntity> cohoEntityType = Registry.register(Registries.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
                 FabricBlockEntityTypeBuilder.create(PolymerCopperHopperBlockEntity::new, cohoBlock).build());
