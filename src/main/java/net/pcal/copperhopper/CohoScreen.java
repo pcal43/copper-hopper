@@ -5,17 +5,12 @@ import net.minecraft.client.gui.screen.ingame.HopperScreen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.HopperScreenHandler;
-import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class CohoScreen extends HopperScreen {
 
     private static final Identifier TEXTURE = new Identifier("copperhopper:textures/gui/container/copper_hopper.png");
-
-    static ScreenHandler register(int syncId, PlayerInventory playerInventory) {
-        return new CohoScreenHandler(syncId, playerInventory);
-    }
 
     public CohoScreen(HopperScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -28,6 +23,6 @@ public class CohoScreen extends HopperScreen {
         RenderSystem.setShaderTexture(0, TEXTURE);
         int i = (this.width - this.backgroundWidth) / 2;
         int j = (this.height - this.backgroundHeight) / 2;
-        this.drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
+        drawTexture(matrices, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);
     }
 }
