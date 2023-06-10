@@ -2,13 +2,14 @@ package net.pcal.copperhopper;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
+import net.minecraft.screen.ScreenHandlerType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,7 +34,7 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
     @Override
     public void onInitializeClient() {
         new ExactlyOnceInitializer();
-        ScreenRegistry.register(CohoService.getScreenHandlerType(), CohoScreen::new);
+        HandledScreens.register(CohoService.getScreenHandlerType(), CohoScreen::new);
     }
 
 
@@ -71,7 +72,7 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
                     FabricBlockEntityTypeBuilder.create(CopperHopperBlockEntity::new, cohoBlock).build(null));
             register(Registries.ITEM, COHO_ITEM_ID, cohoItem);
             register(Registries.BLOCK, COHO_BLOCK_ID, cohoBlock);
-            ScreenHandlerRegistry.registerSimple(COHO_SCREEN_ID, CohoScreenHandler::new);
+            register(Registries.SCREEN_HANDLER, COHO_SCREEN_ID, new ScreenHandlerType(CohoScreenHandler::new, FeatureFlags.VANILLA_FEATURES));
         }
     }
 }
