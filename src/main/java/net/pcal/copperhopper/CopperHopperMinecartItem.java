@@ -22,35 +22,5 @@ public class CopperHopperMinecartItem extends MinecartItem {
         super(Type.HOPPER, settings);
     }
 
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        World world = context.getWorld();
-        BlockPos blockPos = context.getBlockPos();
-        BlockState blockState = world.getBlockState(blockPos);
-        if (!blockState.isIn(BlockTags.RAILS)) {
-            return ActionResult.FAIL;
-        } else {
-            ItemStack itemStack = context.getStack();
-            if (!world.isClient) {
-                RailShape railShape = blockState.getBlock() instanceof AbstractRailBlock ? (RailShape)blockState.get(((AbstractRailBlock)blockState.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
-                double d = 0.0;
-                if (railShape.isAscending()) {
-                    d = 0.5;
-                }
 
-                //FIXME find a better way to inject this
-                final AbstractMinecartEntity abstractMinecartEntity = new CopperHopperMinecartEntity(world,
-                       (double)blockPos.getX() + 0.5, (double)blockPos.getY() + 0.0625 + d, (double)blockPos.getZ() + 0.5);
-
-                if (itemStack.hasCustomName()) {
-                    abstractMinecartEntity.setCustomName(itemStack.getName());
-                }
-
-                world.spawnEntity(abstractMinecartEntity);
-                world.emitGameEvent(GameEvent.ENTITY_PLACE, blockPos, Emitter.of(context.getPlayer(), world.getBlockState(blockPos.down())));
-            }
-
-            itemStack.decrement(1);
-            return ActionResult.success(world.isClient);
-        }
-    }
 }
