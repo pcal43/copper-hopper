@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.vehicle.HopperMinecartEntity;
 import net.minecraft.inventory.SidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
@@ -58,6 +59,10 @@ public class CopperHopperMinecartEntity extends HopperMinecartEntity implements 
         return CohoService.getBlock().getDefaultState();
     }
 
+    @Override
+    protected Item getItem() {
+        return CohoService.getMinecartItem();
+    }
 
     @Override
     public boolean canInsert(int slot, ItemStack stack, Direction dir) {
@@ -68,5 +73,7 @@ public class CopperHopperMinecartEntity extends HopperMinecartEntity implements 
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
         return !CohoService.getInstance().shouldVetoPullFrom(this, stack.getItem());
     }
+
+
 }
 

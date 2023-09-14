@@ -33,7 +33,12 @@ import static net.pcal.copperhopper.CohoService.COHO_MINECART_ITEM_ID;
 import static net.pcal.copperhopper.CohoService.COHO_SCREEN_ID;
 import static net.pcal.copperhopper.CohoService.LOGGER_NAME;
 import static net.pcal.copperhopper.CohoService.LOG_PREFIX;
+import static net.pcal.copperhopper.CohoService.getInstance;
 
+/**
+ * @author pcal
+ * @since 0.0.1
+ */
 public class CohoInitializer implements ModInitializer, ClientModInitializer {
 
     @Override
@@ -53,8 +58,8 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
             final Logger logger = LogManager.getLogger(LOGGER_NAME);
             try {
                 final Properties config;
-                CohoService.getInstance().createDefaultConfig();
-                config = CohoService.getInstance().loadConfig();
+                getInstance().createDefaultConfig();
+                config = getInstance().loadConfig();
                 if ("true".equals(config.getProperty("polymer-enabled"))) {
                     logger.info("Initializing polymer.");
                     ((Runnable) Class.forName("net.pcal.copperhopper.polymer.PolymerRegistrar").getDeclaredConstructor().newInstance()).run();
@@ -87,7 +92,7 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
 
             final EntityType<CopperHopperMinecartEntity> minecartType = FabricEntityTypeBuilder.<CopperHopperMinecartEntity>create(SpawnGroup.MISC, CopperHopperMinecartEntity::new).
                     dimensions(EntityDimensions.fixed(0.98f, 0.7f)).build();
-            final CopperHopperMinecartItem cohoMinecartItem = new CopperHopperMinecartItem(new Item.Settings());
+            final CopperHopperMinecartItem cohoMinecartItem = new CopperHopperMinecartItem(new Item.Settings().maxCount(1));
             register(Registries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID, minecartType);
             register(Registries.ITEM, COHO_MINECART_ITEM_ID, cohoMinecartItem);
             ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> entries.addAfter(Items.HOPPER_MINECART, cohoMinecartItem));

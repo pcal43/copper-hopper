@@ -28,10 +28,12 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 import static java.util.Objects.requireNonNull;
-import static net.minecraft.registry.Registry.register;
 
 /**
  * Central singleton service.
+ *
+ * @author pcal
+ * @since 0.0.1
  */
 public class CohoService {
 
@@ -44,7 +46,7 @@ public class CohoService {
     public static final Identifier COHO_BLOCK_ID = new Identifier("copperhopper:copper_hopper");
     public static final Identifier COHO_ITEM_ID = new Identifier("copperhopper:copper_hopper");
     public static final Identifier COHO_SCREEN_ID = new Identifier("copperhopper:copper_hopper");
-    public static final Identifier COHO_BLOCK_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper_entity");
+    public static final Identifier COHO_BLOCK_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper");
 
     public static final Identifier COHO_MINECART_ITEM_ID = new Identifier("copperhopper:copper_hopper_minecart");
     public static final Identifier COHO_MINECART_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper_minecart");
@@ -69,6 +71,29 @@ public class CohoService {
     }
 
     // ===================================================================================
+    // Mod-wide values
+
+    public static Block getBlock() {
+        return Registries.BLOCK.get(COHO_BLOCK_ID);
+    }
+
+    public static  Item getMinecartItem() {
+        return Registries.ITEM.get(COHO_MINECART_ITEM_ID);
+    }
+
+    public static BlockEntityType<CopperHopperBlockEntity> getBlockEntityType() {
+        //noinspection unchecked
+        return (BlockEntityType<CopperHopperBlockEntity>)
+                requireNonNull(Registries.BLOCK_ENTITY_TYPE.get(COHO_BLOCK_ENTITY_TYPE_ID));
+    }
+
+    public static  EntityType<CopperHopperMinecartEntity> getMinecartEntityType() {
+        //noinspection unchecked
+        return (EntityType<CopperHopperMinecartEntity>)
+                requireNonNull(Registries.ENTITY_TYPE.get(COHO_MINECART_ENTITY_TYPE_ID));
+    }
+
+    // ===================================================================================
     // Fields
 
     private final Logger logger = LogManager.getLogger(LOGGER_NAME);
@@ -79,27 +104,6 @@ public class CohoService {
         //noinspection unchecked
         return requireNonNull((ScreenHandlerType<CohoScreenHandler>)
                 Registries.SCREEN_HANDLER.get(COHO_SCREEN_ID));
-    }
-
-    public static Item getItem() {
-        return Registries.ITEM.get(COHO_ITEM_ID);
-    }
-
-    public static Block getBlock() {
-        return Registries.BLOCK.get(COHO_BLOCK_ID);
-    }
-
-
-    public static  BlockEntityType<CopperHopperBlockEntity> getBlockEntityType() {
-        //noinspection unchecked
-        return (BlockEntityType<CopperHopperBlockEntity>)
-                requireNonNull(Registries.BLOCK_ENTITY_TYPE.get(COHO_BLOCK_ENTITY_TYPE_ID));
-    }
-
-    public static  EntityType<CopperHopperMinecartEntity> getMinecartEntityType() {
-        //noinspection unchecked
-        return (EntityType<CopperHopperMinecartEntity>)
-                requireNonNull(Registries.ENTITY_TYPE.get(COHO_MINECART_ENTITY_TYPE_ID));
     }
 
     // ===================================================================================
