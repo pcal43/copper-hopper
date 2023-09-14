@@ -2,12 +2,9 @@ package net.minecraft.entity.vehicle;
 
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.Hopper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
@@ -15,10 +12,13 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.pcal.copperhopper.CohoScreenHandler;
 import net.pcal.copperhopper.CohoService;
+import net.pcal.copperhopper.CopperInventory;
 
-import java.lang.reflect.Field;
-
-public class CopperHopperMinecartEntity extends HopperMinecartEntity implements SidedInventory {
+/**
+ * @author pcal
+ * @since 0.5.0
+ */
+public class CopperHopperMinecartEntity extends HopperMinecartEntity implements SidedInventory, CopperInventory {
 
     private static final int[] SLOTS = new int[]{0, 1, 2, 3, 4};
 
@@ -63,14 +63,12 @@ public class CopperHopperMinecartEntity extends HopperMinecartEntity implements 
 
     @Override
     public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-        return true;
-        //return !CohoService.getInstance().shouldVetoPushInto(this, stack.getItem());
+        return !CohoService.getInstance().shouldVetoPushInto(this, stack.getItem());
     }
 
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-        return true;
-        //return !CohoService.getInstance().shouldVetoPullFrom(this, stack.getItem());
+        return !CohoService.getInstance().shouldVetoPullFrom(this, stack.getItem());
     }
 
     /**

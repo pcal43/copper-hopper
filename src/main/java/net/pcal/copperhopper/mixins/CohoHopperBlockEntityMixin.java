@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class CohoHopperBlockEntityMixin {
 
     /**
-     * Somewhat invasive change to prevent the hopper from pushing out it's last item.  Basically make the stacks
+     * Somewhat invasive change to prevent the hopper from pushing out its last item.  Basically make the stacks
      * read as empty if they shouldn't be pushed out.
      */
     @Redirect(method = "insert",

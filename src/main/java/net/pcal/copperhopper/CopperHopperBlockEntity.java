@@ -11,7 +11,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class CopperHopperBlockEntity extends HopperBlockEntity implements SidedInventory {
+public class CopperHopperBlockEntity extends HopperBlockEntity implements SidedInventory, CopperInventory {
 
     private static final int[] SLOTS = new int[]{0, 1, 2, 3, 4};
 
