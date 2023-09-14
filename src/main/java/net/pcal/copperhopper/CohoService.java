@@ -3,6 +3,9 @@ package net.pcal.copperhopper;
 import net.minecraft.block.HopperBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.vehicle.HopperMinecartEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -43,6 +46,10 @@ public class CohoService {
     public static final Identifier COHO_SCREEN_ID = new Identifier("copperhopper:copper_hopper");
     public static final Identifier COHO_BLOCK_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper_entity");
 
+    public static final Identifier COHO_MINECART_ITEM_ID = new Identifier("copperhopper:copper_hopper_minecart");
+    public static final Identifier COHO_MINECART_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper_minecart");
+
+
     private static final String CONFIG_FILENAME = "copperhopper.properties";
     private static final String DEFAULT_CONFIG_FILENAME = "default-copperhopper.properties";
 
@@ -77,6 +84,12 @@ public class CohoService {
         //noinspection unchecked
         return (BlockEntityType<CopperHopperBlockEntity>)
                 requireNonNull(Registries.BLOCK_ENTITY_TYPE.get(COHO_BLOCK_ENTITY_TYPE_ID));
+    }
+
+    public static  EntityType<CopperHopperMinecartEntity> getMinecartEntityType() {
+        //noinspection unchecked
+        return (EntityType<CopperHopperMinecartEntity>)
+                requireNonNull(Registries.ENTITY_TYPE.get(COHO_MINECART_ENTITY_TYPE_ID));
     }
 
     // ===================================================================================
