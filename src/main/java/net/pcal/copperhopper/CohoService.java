@@ -46,7 +46,9 @@ public class CohoService {
     public static final Identifier COHO_BLOCK_ID = new Identifier("copperhopper:copper_hopper");
     public static final Identifier COHO_ITEM_ID = new Identifier("copperhopper:copper_hopper");
     public static final Identifier COHO_SCREEN_ID = new Identifier("copperhopper:copper_hopper");
-    public static final Identifier COHO_BLOCK_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper");
+
+    // I guess I shouldn't have added the '_entity' suffix here.  But it's out in the wild now, so too late to change.  *shrug*
+    public static final Identifier COHO_BLOCK_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper_entity");
 
     public static final Identifier COHO_MINECART_ITEM_ID = new Identifier("copperhopper:copper_hopper_minecart");
     public static final Identifier COHO_MINECART_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper_minecart");
