@@ -18,15 +18,9 @@ import net.pcal.copperhopper.CohoService;
 
 import java.lang.reflect.Field;
 
-public class CopperHopperMinecartEntity extends StorageMinecartEntity implements Hopper, SidedInventory {
+public class CopperHopperMinecartEntity extends HopperMinecartEntity implements SidedInventory {
 
     private static final int[] SLOTS = new int[]{0, 1, 2, 3, 4};
-
-
-    @Override
-    Item getItem() {
-        return CohoService.getItem();
-    }
 
 
     public CopperHopperMinecartEntity(EntityType<? extends CopperHopperMinecartEntity> entityType, World world) {
@@ -34,15 +28,11 @@ public class CopperHopperMinecartEntity extends StorageMinecartEntity implements
     }
 
     public CopperHopperMinecartEntity(World world, double x, double y, double z) {
-        super(CohoService.getMinecartEntityType(), x, y, z, world);
-        Field value = null;
-        try {
-            value = Entity.class.getDeclaredField("type");
-            value.setAccessible(true);
-            value.set(this, CohoService.getMinecartEntityType());
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        super(CohoService.getMinecartEntityType(), world);
+        super.prevX = x;
+        super.prevY = y;
+        super.prevZ = z;
+        super.setPosition(x, y, z);
     }
 
     @Override
@@ -83,6 +73,7 @@ public class CopperHopperMinecartEntity extends StorageMinecartEntity implements
         //return !CohoService.getInstance().shouldVetoPullFrom(this, stack.getItem());
     }
 
+    /**
     public Type getMinecartType() {
         return Type.HOPPER;
     }
@@ -105,5 +96,5 @@ public class CopperHopperMinecartEntity extends StorageMinecartEntity implements
     @Override
     public double getHopperZ() {
         return this.getZ();
-    }
+    }**/
 }
