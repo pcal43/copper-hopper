@@ -223,4 +223,18 @@ public class CohoService {
     private void setLogLevel(Level logLevel) {
         Configurator.setLevel(CohoService.class.getName(), logLevel);
     }
+
+    private static boolean areNbtEqual(ItemStack left, ItemStack right) {
+        if (left.isEmpty() && right.isEmpty()) {
+            return true;
+        } else if (!left.isEmpty() && !right.isEmpty()) {
+            if (left.getNbt() == null && right.getNbt() != null) {
+                return false;
+            } else {
+                return left.getNbt() == null || left.getNbt().equals(right.getNbt());
+            }
+        } else {
+            return false;
+        }
+    }
 }
