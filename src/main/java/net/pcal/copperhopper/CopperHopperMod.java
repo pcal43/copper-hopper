@@ -4,11 +4,18 @@ import net.minecraft.block.Block;
 import net.minecraft.block.HopperBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.render.entity.MinecartEntityRenderer;
+import net.minecraft.client.render.entity.model.EntityModelLayers;
+import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -18,7 +25,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
-
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,6 +38,7 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 import static java.util.Objects.requireNonNull;
+import static net.minecraft.registry.Registry.register;
 
 /**
  * Central singleton service.
@@ -35,7 +46,7 @@ import static java.util.Objects.requireNonNull;
  * @author pcal
  * @since 0.0.1
  */
-public class CohoService {
+public class CopperHopperMod {
 
     // ===================================================================================
     // Constants
@@ -46,7 +57,9 @@ public class CohoService {
     public static final Identifier COHO_BLOCK_ID = new Identifier("copperhopper:copper_hopper");
     public static final Identifier COHO_ITEM_ID = new Identifier("copperhopper:copper_hopper");
     public static final Identifier COHO_SCREEN_ID = new Identifier("copperhopper:copper_hopper");
-    public static final Identifier COHO_BLOCK_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper");
+
+    // I guess I shouldn't have added the '_entity' suffix here.  But it's out in the wild now, so too late to change.  *shrug*
+    public static final Identifier COHO_BLOCK_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper_entity");
 
     public static final Identifier COHO_MINECART_ITEM_ID = new Identifier("copperhopper:copper_hopper_minecart");
     public static final Identifier COHO_MINECART_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper_minecart");
@@ -60,13 +73,13 @@ public class CohoService {
     // Singleton
 
     private static final class SingletonHolder {
-        private static final CohoService INSTANCE;
+        private static final CopperHopperMod INSTANCE;
         static {
-            INSTANCE = new CohoService();
+            INSTANCE = new CopperHopperMod();
         }
     }
 
-    public static CohoService getInstance() {
+    public static CopperHopperMod mod() {
         return SingletonHolder.INSTANCE;
     }
 
@@ -93,6 +106,12 @@ public class CohoService {
                 requireNonNull(Registries.ENTITY_TYPE.get(COHO_MINECART_ENTITY_TYPE_ID));
     }
 
+    public ScreenHandlerType<CohoScreenHandler> getScreenHandlerType() {
+        //noinspection unchecked
+        return requireNonNull((ScreenHandlerType<CohoScreenHandler>)
+                Registries.SCREEN_HANDLER.get(COHO_SCREEN_ID));
+    }
+
     // ===================================================================================
     // Fields
 
@@ -100,11 +119,6 @@ public class CohoService {
     private final Path configFilePath = Paths.get("config", CONFIG_FILENAME);
     private final File configFile = configFilePath.toFile();
 
-    public static ScreenHandlerType<CohoScreenHandler> getScreenHandlerType() {
-        //noinspection unchecked
-        return requireNonNull((ScreenHandlerType<CohoScreenHandler>)
-                Registries.SCREEN_HANDLER.get(COHO_SCREEN_ID));
-    }
 
     // ===================================================================================
     // Mod lifecycle
@@ -112,7 +126,7 @@ public class CohoService {
     /**
      * Re/loads copperhopper.json.
      */
-    public Properties loadConfig() throws IOException {
+    Properties loadConfig() throws IOException {
         final Properties config;
         setLogLevel(Level.INFO);
         try (final InputStream in = new FileInputStream(configFile)) {
@@ -137,10 +151,9 @@ public class CohoService {
     }
 
     /**
-     *
      * Write a default configuration file if none exists.
      */
-    public void createDefaultConfig() throws IOException {
+    void createDefaultConfig() throws IOException {
         //
         // write out default config file if none exists
         //
@@ -248,6 +261,6 @@ public class CohoService {
      * Manually adjust our logger's level.  Because changing the log4j config is a PITA.
      */
     private void setLogLevel(Level logLevel) {
-        Configurator.setLevel(CohoService.class.getName(), logLevel);
+        Configurator.setLevel(CopperHopperMod.class.getName(), logLevel);
     }
 }

@@ -7,9 +7,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.pcal.copperhopper.CohoService;
+import net.pcal.copperhopper.CopperHopperMod;
 import net.pcal.copperhopper.CopperHopperItem;
 import org.jetbrains.annotations.Nullable;
+
+import static net.pcal.copperhopper.CopperHopperMod.mod;
 
 public class PolymerCopperHopperItem extends CopperHopperItem implements PolymerItem {//}, PolymerKeepModel, PolymerClientDecoded {
 
@@ -24,11 +26,11 @@ public class PolymerCopperHopperItem extends CopperHopperItem implements Polymer
 
     @Override
     public Text getName() {
-        return Text.literal(CohoService.getInstance().getPolymerName());
+        return Text.literal(mod().getPolymerName());
     }
 
     @Override
     public Text getName(ItemStack stack) {
-        return Text.literal(CohoService.getInstance().getPolymerName());
+        return Text.literal(mod().getPolymerName());
     }
 }

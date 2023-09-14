@@ -6,8 +6,10 @@ import net.minecraft.screen.HopperScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import net.pcal.copperhopper.CohoService;
+import net.pcal.copperhopper.CopperHopperMod;
 import net.pcal.copperhopper.CopperHopperBlockEntity;
+
+import static net.pcal.copperhopper.CopperHopperMod.mod;
 
 public class PolymerCopperHopperBlockEntity extends CopperHopperBlockEntity  {
 
@@ -22,16 +24,16 @@ public class PolymerCopperHopperBlockEntity extends CopperHopperBlockEntity  {
 
     @Override
     public Text getName() {
-        return Text.literal(CohoService.getInstance().getPolymerName());
+        return Text.literal(mod().getPolymerName());
     }
 
     @Override
     public Text getDisplayName() {
-        return Text.literal(CohoService.getInstance().getPolymerName());
+        return Text.literal(mod().getPolymerName());
     }
 
     @Override
     public Text getCustomName() {
-        return Text.literal(CohoService.getInstance().getPolymerName());
+        return Text.literal(mod().getPolymerName());
     }
 }

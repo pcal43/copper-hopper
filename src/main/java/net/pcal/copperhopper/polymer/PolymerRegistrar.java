@@ -11,9 +11,9 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.pcal.copperhopper.CopperHopperBlock;
 
-import static net.pcal.copperhopper.CohoService.COHO_BLOCK_ENTITY_TYPE_ID;
-import static net.pcal.copperhopper.CohoService.COHO_BLOCK_ID;
-import static net.pcal.copperhopper.CohoService.COHO_ITEM_ID;
+import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ENTITY_TYPE_ID;
+import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ID;
+import static net.pcal.copperhopper.CopperHopperMod.COHO_ITEM_ID;
 
 @SuppressWarnings("unused")
 public class PolymerRegistrar implements Runnable {

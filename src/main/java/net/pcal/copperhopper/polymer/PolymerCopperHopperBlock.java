@@ -9,8 +9,10 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import net.pcal.copperhopper.CohoService;
+import net.pcal.copperhopper.CopperHopperMod;
 import net.pcal.copperhopper.CopperHopperBlock;
+
+import static net.pcal.copperhopper.CopperHopperMod.mod;
 
 public class PolymerCopperHopperBlock extends CopperHopperBlock implements PolymerBlock { // PolymerClientDecoded { //, PolymerKeepModel {//, PolymerClientDecoded {
 
@@ -32,7 +34,7 @@ public class PolymerCopperHopperBlock extends CopperHopperBlock implements Polym
 
     @Override
     public MutableText getName() {
-        return Text.literal(CohoService.getInstance().getPolymerName());
+        return Text.literal(mod().getPolymerName());
     }
 
     @Override

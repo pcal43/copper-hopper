@@ -5,6 +5,8 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.HopperScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 
+import static net.pcal.copperhopper.CopperHopperMod.mod;
+
 public class CohoScreenHandler extends HopperScreenHandler {
 
     public CohoScreenHandler(int syncId, PlayerInventory playerInventory) {
@@ -17,7 +19,7 @@ public class CohoScreenHandler extends HopperScreenHandler {
 
     @Override
     public ScreenHandlerType<?> getType() {
-        return CohoService.getScreenHandlerType();
+        return mod().getScreenHandlerType();
     }
 
 }
