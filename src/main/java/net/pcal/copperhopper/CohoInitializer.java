@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.entity.MinecartEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
+import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.Item;
@@ -72,6 +73,8 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
         private static void doStandardRegistrations() {
             final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings());
             final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Settings());
+
+
             ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> entries.add(cohoItem));
 
             cohoItem.appendBlocks(Item.BLOCK_ITEMS, cohoItem); // wat
@@ -82,7 +85,8 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
             register(Registries.SCREEN_HANDLER, COHO_SCREEN_ID, new ScreenHandlerType(CohoScreenHandler::new, FeatureFlags.VANILLA_FEATURES));
 
 
-            final EntityType<CopperHopperMinecartEntity> minecartType = FabricEntityTypeBuilder.<CopperHopperMinecartEntity>create(SpawnGroup.MISC, CopperHopperMinecartEntity::new).build();
+            final EntityType<CopperHopperMinecartEntity> minecartType = FabricEntityTypeBuilder.<CopperHopperMinecartEntity>create(SpawnGroup.MISC, CopperHopperMinecartEntity::new).
+                    dimensions(EntityDimensions.fixed(0.98f, 0.7f)).build();
 
             final CopperHopperMinecartItem cohoMinecartItem = new CopperHopperMinecartItem(new Item.Settings());
 

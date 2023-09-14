@@ -1,5 +1,7 @@
 package net.pcal.copperhopper;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.HopperBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -29,6 +31,7 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 import static java.util.Objects.requireNonNull;
+import static net.minecraft.registry.Registry.register;
 
 /**
  * Central singleton service.
@@ -52,6 +55,7 @@ public class CohoService {
 
     private static final String CONFIG_FILENAME = "copperhopper.properties";
     private static final String DEFAULT_CONFIG_FILENAME = "default-copperhopper.properties";
+
 
     // ===================================================================================
     // Singleton
@@ -79,6 +83,15 @@ public class CohoService {
         return requireNonNull((ScreenHandlerType<CohoScreenHandler>)
                 Registries.SCREEN_HANDLER.get(COHO_SCREEN_ID));
     }
+
+    public static Item getItem() {
+        return Registries.ITEM.get(COHO_ITEM_ID);
+    }
+
+    public static Block getBlock() {
+        return Registries.BLOCK.get(COHO_BLOCK_ID);
+    }
+
 
     public static  BlockEntityType<CopperHopperBlockEntity> getBlockEntityType() {
         //noinspection unchecked
