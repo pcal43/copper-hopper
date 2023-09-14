@@ -3,6 +3,7 @@ package net.minecraft.entity.vehicle;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.Hopper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SidedInventory;
@@ -14,6 +15,8 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.pcal.copperhopper.CohoScreenHandler;
 import net.pcal.copperhopper.CohoService;
+
+import java.lang.reflect.Field;
 
 public class CopperHopperMinecartEntity extends StorageMinecartEntity implements Hopper, SidedInventory {
 
@@ -32,6 +35,14 @@ public class CopperHopperMinecartEntity extends StorageMinecartEntity implements
 
     public CopperHopperMinecartEntity(World world, double x, double y, double z) {
         super(CohoService.getMinecartEntityType(), x, y, z, world);
+        Field value = null;
+        try {
+            value = Entity.class.getDeclaredField("type");
+            value.setAccessible(true);
+            value.set(this, CohoService.getMinecartEntityType());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
