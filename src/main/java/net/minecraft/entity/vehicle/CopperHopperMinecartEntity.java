@@ -1,20 +1,29 @@
-package net.pcal.copperhopper;
+package net.minecraft.entity.vehicle;
 
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.Hopper;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.pcal.copperhopper.CohoScreenHandler;
+import net.pcal.copperhopper.CohoService;
 
-public class CopperHopperMinecartEntity extends AbstractMinecartEntity implements SidedInventory {
+public class CopperHopperMinecartEntity extends StorageMinecartEntity implements Hopper, SidedInventory {
 
     private static final int[] SLOTS = new int[]{0, 1, 2, 3, 4};
+
+
+    @Override
+    Item getItem() {
+        return CohoService.getItem();
+    }
 
 
     public CopperHopperMinecartEntity(EntityType<? extends CopperHopperMinecartEntity> entityType, World world) {
@@ -22,14 +31,13 @@ public class CopperHopperMinecartEntity extends AbstractMinecartEntity implement
     }
 
     public CopperHopperMinecartEntity(World world, double x, double y, double z) {
-        super(CohoService.getMinecartEntityType(), world, x, y, z);
+        super(CohoService.getMinecartEntityType(), x, y, z, world);
     }
 
-    /**
     @Override
     public ScreenHandler getScreenHandler(int syncId, PlayerInventory playerInventory) {
         return new CohoScreenHandler(syncId, playerInventory, this);
-    }**/
+    }
 
     @Override
     public Text getDisplayName() {
@@ -68,10 +76,23 @@ public class CopperHopperMinecartEntity extends AbstractMinecartEntity implement
         return Type.HOPPER;
     }
 
-    @Override
-     public Item getItem() {
-        return CohoService.getItem();
+
+    public int size() {
+        return 5;
     }
 
+    @Override
+    public double getHopperX() {
+        return this.getX();
+    }
 
+    @Override
+    public double getHopperY() {
+        return this.getY() + 0.5;
+    }
+
+    @Override
+    public double getHopperZ() {
+        return this.getZ();
+    }
 }
