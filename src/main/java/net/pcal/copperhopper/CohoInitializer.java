@@ -12,7 +12,6 @@ import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.vehicle.CopperHopperMinecartEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.Items;

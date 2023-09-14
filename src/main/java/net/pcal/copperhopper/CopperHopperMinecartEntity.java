@@ -1,18 +1,16 @@
-package net.minecraft.entity.vehicle;
+package net.pcal.copperhopper;
 
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.vehicle.HopperMinecartEntity;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import net.pcal.copperhopper.CohoScreenHandler;
-import net.pcal.copperhopper.CohoService;
-import net.pcal.copperhopper.CopperInventory;
 
 /**
  * @author pcal
