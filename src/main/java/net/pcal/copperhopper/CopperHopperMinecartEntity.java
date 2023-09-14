@@ -68,29 +68,5 @@ public class CopperHopperMinecartEntity extends HopperMinecartEntity implements 
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
         return !CohoService.getInstance().shouldVetoPullFrom(this, stack.getItem());
     }
-
-    /**
-    public Type getMinecartType() {
-        return Type.HOPPER;
-    }
-
-
-    public int size() {
-        return 5;
-    }
-
-    @Override
-    public double getHopperX() {
-        return this.getX();
-    }
-
-    @Override
-    public double getHopperY() {
-        return this.getY() + 0.5;
-    }
-
-    @Override
-    public double getHopperZ() {
-        return this.getZ();
-    }**/
 }
+
