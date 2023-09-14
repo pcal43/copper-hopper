@@ -1,18 +1,27 @@
 #!/bin/sh
 
 #
-# Release a new version.
+# release.sh
 #
-# Shell script ecause I refuse to twist myself into knots trying to get gradle to do
-# simple stuff like this.
+# Build a new release, push it to github, publish to modrinth and curseforge, then
+# commit and push a version bump.
 #
-
 set -eu
 
-if [ -n "$(git status --porcelain)" ]; then
-  echo "Working directory not clean, cannot release"
-  exit 1
-fi
+
+#
+# Always run this in the root of the repo
+#
+cd $(git rev-parse --show-toplevel)
+
+
+#
+# Preflight checks
+#
+
+git --version
+gh --version
+./gradlew --version
 
 if [ -z "${MODRINTH_TOKEN:-}" ]; then
     echo "Set MODRINTH_TOKEN"
@@ -24,6 +33,10 @@ if [ -z "${CURSEFORGE_TOKEN:-}" ]; then
     exit 1
 fi
 
+if [ -n "$(git status --porcelain)" ]; then
+  echo "Working directory not clean, cannot release"
+  exit 1
+fi
 
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 if [ "${CURRENT_BRANCH}" != 'main' ]; then
@@ -31,6 +44,12 @@ if [ "${CURRENT_BRANCH}" != 'main' ]; then
   exit 1
 fi
 
+
+#
+# Build release
+#
+
+FABRIC_LIBS_DIR='build/libs'
 
 CURRENT_VERSION=$(sed -rn 's/^mod_version.*=[ ]*([^\n]+)$/\1/p' gradle.properties)
 echo "Current version is '$CURRENT_VERSION'"
@@ -45,32 +64,42 @@ sed "s/^mod_version =.*/mod_version = $RELEASE_VERSION/" gradle.properties > gra
 rm gradle.properties
 mv gradle.properties.temp gradle.properties
 
-rm -rf build/libs
+rm -rf "${FABRIC_LIBS_DIR}"
+
 
 ./gradlew remapJar
 
-git commit -am "Release ${RELEASE_VERSION}"
+git commit -am "*** Release ${RELEASE_VERSION} ***"
 #git tag "${RELEASE_VERSION}"
 git push
 
 #
 # Do github release
 #
-gh release create --generate-notes --title "${RELEASE_VERSION}" --notes "release ${RELEASE_VERSION}" ${RELEASE_VERSION} build/libs/*
+set -x
+gh release create --generate-notes --title "${RELEASE_VERSION}" --notes "release ${RELEASE_VERSION}" ${RELEASE_VERSION}  "${FABRIC_LIBS_DIR}"/*
+set +x
+
 
 #
-# Do modrinth release
+# Publish to modrinth
 #
 ./gradlew modrinth
 
+
 #
-# Do curseforge release
+# Publish to curseforge
 #
 ./gradlew curseforge
+
 
 #
 # Bump version number and prepare for next release
 #
+
+RELEASE_VERSION=$(sed -rn 's/^mod_version.*=[ ]*([^\n]+)$/\1/p' gradle.properties)
+echo "Previous released version is 'RELEASE_VERSION'"
+
 BUILD_METADATA=$(echo ${RELEASE_VERSION} | awk '{split($NF,v,/[+]/); $NF=v[2]}1')
 BUILD_METADATA="${BUILD_METADATA}-prerelease"
 NEXT_MOD_VERSION=$(echo ${RELEASE_VERSION} | awk '{split($NF,v,/[.]/); $NF=v[1]"."v[2]"."++v[3]}1')
