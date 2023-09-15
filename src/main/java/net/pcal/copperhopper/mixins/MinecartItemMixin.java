@@ -19,8 +19,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(MinecartItem.class)
 public abstract class MinecartItemMixin {
 
-    //FIXME repeat for dispenseSilently
-
     @Redirect(method = "useOnBlock",
             at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;create(Lnet/minecraft/world/World;DDDLnet/minecraft/entity/vehicle/AbstractMinecartEntity$Type;)Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;"))
     private AbstractMinecartEntity coho__createMinecart(World world, double x, double y, double z, Type type) {
@@ -30,9 +28,4 @@ public abstract class MinecartItemMixin {
             return AbstractMinecartEntity.create(world, x, y, z, type);
         }
     }
-
 }
-
-
-
-
