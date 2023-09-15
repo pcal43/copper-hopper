@@ -30,5 +30,4 @@ public abstract class MinecartItemDispenserBehaviorMixin {
             return AbstractMinecartEntity.create(world, x, y, z, type);
         }
     }
-
 }
