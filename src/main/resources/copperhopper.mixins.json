@@ -4,7 +4,9 @@
   "package": "net.pcal.copperhopper.mixins",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "CohoHopperBlockEntityMixin"
+    "HopperBlockEntityMixin",
+    "MinecartItemMixin",
+    "MinecartItemDispenserBehaviorMixin"
   ],
   "injectors": {
     "defaultRequire": 1
