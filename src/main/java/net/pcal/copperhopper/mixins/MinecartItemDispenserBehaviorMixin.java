@@ -32,7 +32,3 @@ public abstract class MinecartItemDispenserBehaviorMixin {
     }
 
 }
-
-
-
-
