@@ -3,7 +3,7 @@
 Copper Hopper adds a new kind of Hopper that filters the items to get pulled and pushed.  They 
 save you the tedium of building gigantic item sorters while retaining a Vanilla Minecraft spirit.
 
-**UPDATE 09/14/2023 - By popular demand, Copper Hopper now includesCopper Hopper Minecarts!**
+**UPDATE 09/14/2023 - By popular demand, Copper Hopper now includes Copper Hopper Minecarts!**
 
 ### Features
 * Filter up to 5 items per Copper Hopper
