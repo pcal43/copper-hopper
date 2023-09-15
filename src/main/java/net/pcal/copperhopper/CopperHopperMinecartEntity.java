@@ -13,6 +13,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
+import static net.pcal.copperhopper.CopperHopperMod.mod;
+
 /**
  * @author pcal
  * @since 0.5.0
@@ -23,11 +25,11 @@ public class CopperHopperMinecartEntity extends HopperMinecartEntity implements 
 
 
     public CopperHopperMinecartEntity(EntityType<? extends CopperHopperMinecartEntity> entityType, World world) {
-        super(CohoService.getMinecartEntityType(), world);
+        super(mod().getMinecartEntityType(), world);
     }
 
     public CopperHopperMinecartEntity(World world, double x, double y, double z) {
-        super(CohoService.getMinecartEntityType(), world);
+        super(mod().getMinecartEntityType(), world);
         super.prevX = x;
         super.prevY = y;
         super.prevZ = z;
@@ -51,27 +53,27 @@ public class CopperHopperMinecartEntity extends HopperMinecartEntity implements 
 
     @Override
     public BlockState getDefaultContainedBlock() {
-        return CohoService.getBlock().getDefaultState();
+        return mod().getBlock().getDefaultState();
     }
 
     @Override
     public BlockState getContainedBlock() {
-        return CohoService.getBlock().getDefaultState();
+        return mod().getBlock().getDefaultState();
     }
 
     @Override
     protected Item getItem() {
-        return CohoService.getMinecartItem();
+        return mod().getMinecartItem();
     }
 
     @Override
     public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-        return !CohoService.getInstance().shouldVetoPushInto(this, stack.getItem());
+        return !mod().shouldVetoPushInto(this, stack.getItem());
     }
 
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-        return !CohoService.getInstance().shouldVetoPullFrom(this, stack.getItem());
+        return !mod().shouldVetoPullFrom(this, stack.getItem());
     }
 
 
