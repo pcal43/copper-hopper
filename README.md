@@ -7,11 +7,14 @@ save you the tedium of building gigantic item sorters while retaining a Vanilla 
 * Filter up to 5 items per Copper Hopper
 * Filter both stackable and unstackable items
 * Uses the Fabric modloader
+* NEW: make Copper Hopper Minecarts!
 * Made of copper!
 
-## Recipe
+## Recipes
 
 ![Recipe](https://github.com/pcal43/copper-hopper/blob/main/etc/copper-hopper-crafting.png?raw=true)
+
+![Recipe](https://github.com/pcal43/copper-hopper/blob/main/etc/copper-hopper-minecart-recipe.png?raw=true)
 
 ## Setting Filters
 
@@ -20,6 +23,8 @@ save you the tedium of building gigantic item sorters while retaining a Vanilla 
 ## Make sorting systems like this!
 
 ![System](https://github.com/pcal43/copper-hopper/blob/main/etc/sorted_storage.png?raw=true)
+
+![Minecart](https://github.com/pcal43/copper-hopper/blob/main/etc/copper-hopper-minecart-screenshot.png?raw=true)
 
 
 ## How do use it?

@@ -1,8 +1,10 @@
 package net.pcal.copperhopper;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.HopperBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,6 +31,9 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * Central singleton service.
+ *
+ * @author pcal
+ * @since 0.0.1
  */
 public class CohoService {
 
@@ -41,10 +46,17 @@ public class CohoService {
     public static final Identifier COHO_BLOCK_ID = new Identifier("copperhopper:copper_hopper");
     public static final Identifier COHO_ITEM_ID = new Identifier("copperhopper:copper_hopper");
     public static final Identifier COHO_SCREEN_ID = new Identifier("copperhopper:copper_hopper");
+
+    // I guess I shouldn't have added the '_entity' suffix here.  But it's out in the wild now, so too late to change.  *shrug*
     public static final Identifier COHO_BLOCK_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper_entity");
+
+    public static final Identifier COHO_MINECART_ITEM_ID = new Identifier("copperhopper:copper_hopper_minecart");
+    public static final Identifier COHO_MINECART_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper_minecart");
+
 
     private static final String CONFIG_FILENAME = "copperhopper.properties";
     private static final String DEFAULT_CONFIG_FILENAME = "default-copperhopper.properties";
+
 
     // ===================================================================================
     // Singleton
@@ -61,6 +73,29 @@ public class CohoService {
     }
 
     // ===================================================================================
+    // Mod-wide values
+
+    public static Block getBlock() {
+        return Registries.BLOCK.get(COHO_BLOCK_ID);
+    }
+
+    public static  Item getMinecartItem() {
+        return Registries.ITEM.get(COHO_MINECART_ITEM_ID);
+    }
+
+    public static BlockEntityType<CopperHopperBlockEntity> getBlockEntityType() {
+        //noinspection unchecked
+        return (BlockEntityType<CopperHopperBlockEntity>)
+                requireNonNull(Registries.BLOCK_ENTITY_TYPE.get(COHO_BLOCK_ENTITY_TYPE_ID));
+    }
+
+    public static  EntityType<CopperHopperMinecartEntity> getMinecartEntityType() {
+        //noinspection unchecked
+        return (EntityType<CopperHopperMinecartEntity>)
+                requireNonNull(Registries.ENTITY_TYPE.get(COHO_MINECART_ENTITY_TYPE_ID));
+    }
+
+    // ===================================================================================
     // Fields
 
     private final Logger logger = LogManager.getLogger(LOGGER_NAME);
@@ -71,12 +106,6 @@ public class CohoService {
         //noinspection unchecked
         return requireNonNull((ScreenHandlerType<CohoScreenHandler>)
                 Registries.SCREEN_HANDLER.get(COHO_SCREEN_ID));
-    }
-
-    public static  BlockEntityType<CopperHopperBlockEntity> getBlockEntityType() {
-        //noinspection unchecked
-        return (BlockEntityType<CopperHopperBlockEntity>)
-                requireNonNull(Registries.BLOCK_ENTITY_TYPE.get(COHO_BLOCK_ENTITY_TYPE_ID));
     }
 
     // ===================================================================================
@@ -140,10 +169,10 @@ public class CohoService {
     }
 
     /**
-     * Return true if we should prevent one of the given Item from being pushed into the given hopper.
-     * CopperHoppers should never accept item types they don't already contain.
+     * Return true if we should prevent one of the given Item from being pushed into the given copper hopper or
+     * ch minecart.  THese should never accept item types they don't already contain.
      */
-    public boolean shouldVetoPushInto(CopperHopperBlockEntity into, Item pushedItem) {
+    public boolean shouldVetoPushInto(CopperInventory into, Item pushedItem) {
         return !containsAtLeast(into, pushedItem, 1);
     }
 
@@ -159,7 +188,7 @@ public class CohoService {
      * Return true if we should prevent one of the given Item from being pulled from the given hopper.
      * CopperHoppers should never allow the last item of a given type to be pulled out.
      */
-    public boolean shouldVetoPullFrom(CopperHopperBlockEntity from, Item pulledItem) {
+    public boolean shouldVetoPullFrom(CopperInventory from, Item pulledItem) {
         return !containsAtLeast(from, pulledItem, 2);
     }
 
@@ -191,7 +220,7 @@ public class CohoService {
      * Returns true if the given inventory target is an Item Sorter hopper.
      */
     private static boolean isCopperHopper(Inventory target) {
-        return target instanceof CopperHopperBlockEntity;
+        return target instanceof CopperInventory;
     }
 
     /**

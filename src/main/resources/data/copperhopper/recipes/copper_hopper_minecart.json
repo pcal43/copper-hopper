@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CM ",
+    "   ",
+    "   "
+  ],
+  "key": {
+    "C": {
+      "item": "copperhopper:copper_hopper"
+    },
+    "M": {
+      "item": "minecraft:minecart"
+    }
+  },
+  "result": {
+    "item": "copperhopper:copper_hopper_minecart"
+  }
+}
