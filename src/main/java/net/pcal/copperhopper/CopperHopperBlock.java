@@ -14,6 +14,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import static net.pcal.copperhopper.CopperHopperMod.mod;
+
 public class CopperHopperBlock extends HopperBlock {
 
     /**
@@ -31,7 +33,7 @@ public class CopperHopperBlock extends HopperBlock {
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return world.isClient ? null :
-                CopperHopperBlock.checkType(type, CohoService.getBlockEntityType(), HopperBlockEntity::serverTick);
+                CopperHopperBlock.checkType(type, mod().getBlockEntityType(), HopperBlockEntity::serverTick);
     }
 
     @Override

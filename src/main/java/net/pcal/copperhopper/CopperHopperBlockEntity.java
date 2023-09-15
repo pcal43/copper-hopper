@@ -11,6 +11,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
+import static net.pcal.copperhopper.CopperHopperMod.mod;
+
 public class CopperHopperBlockEntity extends HopperBlockEntity implements SidedInventory, CopperInventory {
 
     private static final int[] SLOTS = new int[]{0, 1, 2, 3, 4};
@@ -21,7 +23,7 @@ public class CopperHopperBlockEntity extends HopperBlockEntity implements SidedI
 
     @Override
     public BlockEntityType<?> getType() {
-        return CohoService.getBlockEntityType();
+        return mod().getBlockEntityType();
     }
 
     @Override
@@ -41,11 +43,11 @@ public class CopperHopperBlockEntity extends HopperBlockEntity implements SidedI
 
     @Override
     public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-        return !CohoService.getInstance().shouldVetoPushInto(this, stack.getItem());
+        return !mod().shouldVetoPushInto(this, stack.getItem());
     }
 
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-        return !CohoService.getInstance().shouldVetoPullFrom(this, stack.getItem());
+        return !mod().shouldVetoPullFrom(this, stack.getItem());
     }
 }

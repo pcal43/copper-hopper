@@ -35,7 +35,7 @@ import static java.util.Objects.requireNonNull;
  * @author pcal
  * @since 0.0.1
  */
-public class CohoService {
+public class CopperHopperMod {
 
     // ===================================================================================
     // Constants
@@ -62,37 +62,43 @@ public class CohoService {
     // Singleton
 
     private static final class SingletonHolder {
-        private static final CohoService INSTANCE;
+        private static final CopperHopperMod INSTANCE;
         static {
-            INSTANCE = new CohoService();
+            INSTANCE = new CopperHopperMod();
         }
     }
 
-    public static CohoService getInstance() {
+    public static CopperHopperMod mod() {
         return SingletonHolder.INSTANCE;
     }
 
     // ===================================================================================
     // Mod-wide values
 
-    public static Block getBlock() {
+    public Block getBlock() {
         return Registries.BLOCK.get(COHO_BLOCK_ID);
     }
 
-    public static  Item getMinecartItem() {
+    public Item getMinecartItem() {
         return Registries.ITEM.get(COHO_MINECART_ITEM_ID);
     }
 
-    public static BlockEntityType<CopperHopperBlockEntity> getBlockEntityType() {
+    public BlockEntityType<CopperHopperBlockEntity> getBlockEntityType() {
         //noinspection unchecked
         return (BlockEntityType<CopperHopperBlockEntity>)
                 requireNonNull(Registries.BLOCK_ENTITY_TYPE.get(COHO_BLOCK_ENTITY_TYPE_ID));
     }
 
-    public static  EntityType<CopperHopperMinecartEntity> getMinecartEntityType() {
+    public EntityType<CopperHopperMinecartEntity> getMinecartEntityType() {
         //noinspection unchecked
         return (EntityType<CopperHopperMinecartEntity>)
                 requireNonNull(Registries.ENTITY_TYPE.get(COHO_MINECART_ENTITY_TYPE_ID));
+    }
+
+    public ScreenHandlerType<CohoScreenHandler> getScreenHandlerType() {
+        //noinspection unchecked
+        return requireNonNull((ScreenHandlerType<CohoScreenHandler>)
+                Registries.SCREEN_HANDLER.get(COHO_SCREEN_ID));
     }
 
     // ===================================================================================
@@ -101,12 +107,6 @@ public class CohoService {
     private final Logger logger = LogManager.getLogger(LOGGER_NAME);
     private final Path configFilePath = Paths.get("config", CONFIG_FILENAME);
     private final File configFile = configFilePath.toFile();
-
-    public static ScreenHandlerType<CohoScreenHandler> getScreenHandlerType() {
-        //noinspection unchecked
-        return requireNonNull((ScreenHandlerType<CohoScreenHandler>)
-                Registries.SCREEN_HANDLER.get(COHO_SCREEN_ID));
-    }
 
     // ===================================================================================
     // Mod lifecycle
@@ -250,6 +250,6 @@ public class CohoService {
      * Manually adjust our logger's level.  Because changing the log4j config is a PITA.
      */
     private void setLogLevel(Level logLevel) {
-        Configurator.setLevel(CohoService.class.getName(), logLevel);
+        Configurator.setLevel(CopperHopperMod.class.getName(), logLevel);
     }
 }

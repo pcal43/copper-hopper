@@ -25,15 +25,15 @@ import org.apache.logging.log4j.Logger;
 import java.util.Properties;
 
 import static net.minecraft.registry.Registry.register;
-import static net.pcal.copperhopper.CohoService.COHO_BLOCK_ENTITY_TYPE_ID;
-import static net.pcal.copperhopper.CohoService.COHO_BLOCK_ID;
-import static net.pcal.copperhopper.CohoService.COHO_ITEM_ID;
-import static net.pcal.copperhopper.CohoService.COHO_MINECART_ENTITY_TYPE_ID;
-import static net.pcal.copperhopper.CohoService.COHO_MINECART_ITEM_ID;
-import static net.pcal.copperhopper.CohoService.COHO_SCREEN_ID;
-import static net.pcal.copperhopper.CohoService.LOGGER_NAME;
-import static net.pcal.copperhopper.CohoService.LOG_PREFIX;
-import static net.pcal.copperhopper.CohoService.getInstance;
+import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ENTITY_TYPE_ID;
+import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ID;
+import static net.pcal.copperhopper.CopperHopperMod.COHO_ITEM_ID;
+import static net.pcal.copperhopper.CopperHopperMod.COHO_MINECART_ENTITY_TYPE_ID;
+import static net.pcal.copperhopper.CopperHopperMod.COHO_MINECART_ITEM_ID;
+import static net.pcal.copperhopper.CopperHopperMod.COHO_SCREEN_ID;
+import static net.pcal.copperhopper.CopperHopperMod.LOGGER_NAME;
+import static net.pcal.copperhopper.CopperHopperMod.LOG_PREFIX;
+import static net.pcal.copperhopper.CopperHopperMod.mod;
 
 /**
  * @author pcal
@@ -49,7 +49,7 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
     @Override
     public void onInitializeClient() {
         new ExactlyOnceInitializer();
-        HandledScreens.register(CohoService.getScreenHandlerType(), CohoScreen::new);
+        HandledScreens.register(mod().getScreenHandlerType(), CohoScreen::new);
     }
 
 
@@ -58,8 +58,8 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
             final Logger logger = LogManager.getLogger(LOGGER_NAME);
             try {
                 final Properties config;
-                getInstance().createDefaultConfig();
-                config = getInstance().loadConfig();
+                mod().createDefaultConfig();
+                config = mod().loadConfig();
                 if ("true".equals(config.getProperty("polymer-enabled"))) {
                     logger.info("Initializing polymer.");
                     ((Runnable) Class.forName("net.pcal.copperhopper.polymer.PolymerRegistrar").getDeclaredConstructor().newInstance()).run();
