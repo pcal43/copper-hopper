@@ -78,8 +78,14 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
          */
         private static void doStandardRegistrations() {
 
+            //
+            // Register the Screen
+            //
             register(Registries.SCREEN_HANDLER, COHO_SCREEN_ID, new ScreenHandlerType<>(CohoScreenHandler::new, FeatureFlags.VANILLA_FEATURES));
 
+            //
+            // Register the Block
+            //
             final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings());
             final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Settings());
             ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> entries.addAfter(Items.HOPPER, cohoItem));
@@ -90,18 +96,16 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
             register(Registries.ITEM, COHO_ITEM_ID, cohoItem);
             register(Registries.BLOCK, COHO_BLOCK_ID, cohoBlock);
 
+            //
+            // Register the Minecart
+            //
             final EntityType<CopperHopperMinecartEntity> minecartType = FabricEntityTypeBuilder.<CopperHopperMinecartEntity>create(SpawnGroup.MISC, CopperHopperMinecartEntity::new).
                     dimensions(EntityDimensions.fixed(0.98f, 0.7f)).build();
             final CopperHopperMinecartItem cohoMinecartItem = new CopperHopperMinecartItem(new Item.Settings().maxCount(1));
             register(Registries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID, minecartType);
             register(Registries.ITEM, COHO_MINECART_ITEM_ID, cohoMinecartItem);
             ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> entries.addAfter(Items.HOPPER_MINECART, cohoMinecartItem));
-
             EntityRendererRegistry.register(minecartType, ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.HOPPER_MINECART));
-
-            //HOPPER_MINECART = register("hopper_minecart",EntityType.Builder.create(HopperMinecartEntity::new, SpawnGroup.MISC).setDimensions(0.98F, 0.7F).maxTrackingRange(8));
-
-
         }
     }
 }
