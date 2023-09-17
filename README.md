@@ -1,6 +1,6 @@
 # Copper Hopper
 
-Copper Hopper adds a new kind of Hopper that filters the items to get pulled and pushed.  They 
+Copper Hopper adds a new kind of Hopper that filters the items to get pulled and pushed.  They
 save you the tedium of building gigantic item sorters while retaining a Vanilla Minecraft spirit.
 
 **UPDATE 09/14/2023 - By popular demand, Copper Hopper now includes Copper Hopper Minecarts!**
@@ -42,7 +42,7 @@ A Copper Hopper works just like a regular hopper except:
 
 * They never accept an item of a type that is not already held in the hopper.
 * They always keep the last item of a type that is held in the hopper.
-* If one Copper Hopper is below another, it will always pull matching items before the upper hopper pushes them.  
+* If one Copper Hopper is below another, it will always pull matching items before the upper hopper pushes them.
   * This allows you to create hopper columns that filter items into vertically-stacked chests.
 
 ## Does it work with unstackable items?
@@ -63,6 +63,10 @@ This mod is published under the [MIT License](LICENSE).
 
 You're free to include this mod in your modpack provided you attribute it to pcal.net.
 
-## Discord
+## Questions?
 
-https://discord.gg/jUP5nSPrjx
+If you have questions about this mod, please join the Discord server:
+
+[https://discord.pcal.net](https://discord.pcal.net)
+
+Comments have been disabled and I will **not** reply to private messages on Curseforge.
