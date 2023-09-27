@@ -24,15 +24,10 @@
 
 package net.pcal.copperhopper;
 
-import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.client.render.entity.MinecartEntityRenderer;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -63,19 +58,12 @@ import static net.pcal.copperhopper.CopperHopperMod.mod;
  * @author pcal
  * @since 0.0.1
  */
-public class CohoInitializer implements ModInitializer, ClientModInitializer {
+public class CohoInitializer implements ModInitializer {
 
     @Override
     public void onInitialize() {
         new ExactlyOnceInitializer();
     }
-
-    @Override
-    public void onInitializeClient() {
-        new ExactlyOnceInitializer();
-        HandledScreens.register(mod().getScreenHandlerType(), CohoScreen::new);
-    }
-
 
     private static class ExactlyOnceInitializer {
         static {
@@ -129,7 +117,6 @@ public class CohoInitializer implements ModInitializer, ClientModInitializer {
             register(Registries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID, minecartType);
             register(Registries.ITEM, COHO_MINECART_ITEM_ID, cohoMinecartItem);
             ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> entries.addAfter(Items.HOPPER_MINECART, cohoMinecartItem));
-            EntityRendererRegistry.register(minecartType, ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.HOPPER_MINECART));
         }
     }
 }
