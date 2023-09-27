@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "main": ["net.pcal.copperhopper.CohoInitializer"],
-    "client": ["net.pcal.copperhopper.CohoInitializer"]
+    "client": ["net.pcal.copperhopper.CohoClientInitializer"]
   },
   "mixins": [
     "copperhopper.mixins.json"
