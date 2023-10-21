@@ -33,6 +33,7 @@ import net.minecraft.block.MapColor;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.entity.Hopper;
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -66,8 +67,20 @@ public class CopperHopperBlock extends HopperBlock {
     }
 
     @Nullable
-    private static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> checkType(BlockEntityType<A> givenType, BlockEntityType<E> expectedType, BlockEntityTicker<? super E> ticker) {
-        return expectedType == givenType ? ticker : null;
+    private static <T extends BlockEntity, A extends BlockEntity> BlockEntityTicker<T> checkType(BlockEntityType<A> givenType, BlockEntityType<T> expectedType, BlockEntityTicker<? super T> ticker) {
+        return null; //return expectedType == givenType ? ticker : null;
+    }
+
+    public static void serverTick(World world, BlockPos pos, BlockState state, HopperBlockEntity blockEntity) {
+        --blockEntity.transferCooldown;
+        blockEntity.lastTickTime = world.getTime();
+        if (!blockEntity.needsCooldown()) {
+            blockEntity.setTransferCooldown(0);
+            insertAndExtract(world, pos, state, blockEntity, () -> {
+                return extract((World)world, (Hopper)blockEntity);
+            });
+        }
+
     }
 
 }
