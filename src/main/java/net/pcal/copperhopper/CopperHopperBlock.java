@@ -63,5 +63,4 @@ public class CopperHopperBlock extends HopperBlock {
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new CopperHopperBlockEntity(pos, state);
     }
-
 }
