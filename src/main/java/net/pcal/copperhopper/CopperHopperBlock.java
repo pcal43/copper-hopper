@@ -56,8 +56,7 @@ public class CopperHopperBlock extends HopperBlock {
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return world.isClient ? null :
-                CopperHopperBlock.checkType(type, mod().getBlockEntityType(), HopperBlockEntity::serverTick);
+        return world.isClient ? null : validateTicker(type,  mod().getBlockEntityType(), HopperBlockEntity::serverTick);
     }
 
     @Override
