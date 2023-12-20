@@ -43,10 +43,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(MinecartItem.class)
 public abstract class MinecartItemMixin {
 
-    @Redirect(method = "useOnBlock",
-            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;create(Lnet/minecraft/world/World;DDDLnet/minecraft/entity/vehicle/AbstractMinecartEntity$Type;)Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;"))
+    @Redirect(method = "useOn",
+            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;createMinecart(Lnet/minecraft/world/level/Level;DDDLnet/minecraft/world/entity/vehicle/AbstractMinecart$Type;)Lnet/minecraft/world/entity/vehicle/AbstractMinecart;"))
     private AbstractMinecart coho__createMinecart(Level world, double x, double y, double z, Type type) {
-        if (((Object)this) instanceof CopperHopperMinecartItem) {
+        if (((Object) this) instanceof CopperHopperMinecartItem) {
             return new CopperHopperMinecartEntity(world, x, y, z);
         } else {
             return AbstractMinecart.createMinecart(world, x, y, z, type);
