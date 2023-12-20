@@ -25,78 +25,78 @@
 package net.pcal.copperhopper;
 
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.vehicle.HopperMinecartEntity;
-import net.minecraft.inventory.SidedInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
-
 import static net.pcal.copperhopper.CopperHopperMod.mod;
+
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.vehicle.MinecartHopper;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * @author pcal
  * @since 0.5.0
  */
-public class CopperHopperMinecartEntity extends HopperMinecartEntity implements SidedInventory, CopperInventory {
+public class CopperHopperMinecartEntity extends MinecartHopper implements WorldlyContainer, CopperInventory {
 
     private static final int[] SLOTS = new int[]{0, 1, 2, 3, 4};
 
 
-    public CopperHopperMinecartEntity(EntityType<? extends CopperHopperMinecartEntity> entityType, World world) {
+    public CopperHopperMinecartEntity(EntityType<? extends CopperHopperMinecartEntity> entityType, Level world) {
         super(mod().getMinecartEntityType(), world);
     }
 
-    public CopperHopperMinecartEntity(World world, double x, double y, double z) {
+    public CopperHopperMinecartEntity(Level world, double x, double y, double z) {
         super(mod().getMinecartEntityType(), world);
-        super.prevX = x;
-        super.prevY = y;
-        super.prevZ = z;
-        super.setPosition(x, y, z);
+        super.xo = x;
+        super.yo = y;
+        super.zo = z;
+        super.setPos(x, y, z);
     }
 
     @Override
-    public ScreenHandler getScreenHandler(int syncId, PlayerInventory playerInventory) {
+    public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory) {
         return new CohoScreenHandler(syncId, playerInventory, this);
     }
 
     @Override
-    public Text getDisplayName() {
-        return Text.translatable("item.copperhopper.copper_hopper_minecart");
+    public Component getDisplayName() {
+        return Component.translatable("item.copperhopper.copper_hopper_minecart");
     }
 
     @Override
-    public int[] getAvailableSlots(Direction ignored) {
+    public int[] getSlotsForFace(Direction ignored) {
         return SLOTS;
     }
 
     @Override
-    public BlockState getDefaultContainedBlock() {
-        return mod().getBlock().getDefaultState();
+    public BlockState getDefaultDisplayBlockState() {
+        return mod().getBlock().defaultBlockState();
     }
 
     @Override
-    public BlockState getContainedBlock() {
-        return mod().getBlock().getDefaultState();
+    public BlockState getDisplayBlockState() {
+        return mod().getBlock().defaultBlockState();
     }
 
     @Override
-    protected Item getItem() {
+    protected Item getDropItem() {
         return mod().getMinecartItem();
     }
 
     @Override
-    public boolean canInsert(int slot, ItemStack stack, Direction dir) {
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction dir) {
         return !mod().shouldVetoPushInto(this, stack.getItem());
     }
 
     @Override
-    public boolean canExtract(int slot, ItemStack stack, Direction dir) {
+    public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction dir) {
         return !mod().shouldVetoPullFrom(this, stack.getItem());
     }
 

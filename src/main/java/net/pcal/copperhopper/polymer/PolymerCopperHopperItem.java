@@ -25,12 +25,12 @@
 package net.pcal.copperhopper.polymer;
 
 import eu.pb4.polymer.core.api.item.PolymerItem;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.pcal.copperhopper.CopperHopperItem;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,22 +38,22 @@ import static net.pcal.copperhopper.CopperHopperMod.mod;
 
 public class PolymerCopperHopperItem extends CopperHopperItem implements PolymerItem {//}, PolymerKeepModel, PolymerClientDecoded {
 
-    public PolymerCopperHopperItem(Block block, Settings settings) {
+    public PolymerCopperHopperItem(Block block, Properties settings) {
         super(block, settings);
     }
 
     @Override
-    public Item getPolymerItem(ItemStack itemStack, @Nullable ServerPlayerEntity player) {
+    public Item getPolymerItem(ItemStack itemStack, @Nullable ServerPlayer player) {
         return Items.HOPPER;
     }
 
     @Override
-    public Text getName() {
-        return Text.literal(mod().getPolymerName());
+    public Component getDescription() {
+        return Component.literal(mod().getPolymerName());
     }
 
     @Override
-    public Text getName(ItemStack stack) {
-        return Text.literal(mod().getPolymerName());
+    public Component getName(ItemStack stack) {
+        return Component.literal(mod().getPolymerName());
     }
 }

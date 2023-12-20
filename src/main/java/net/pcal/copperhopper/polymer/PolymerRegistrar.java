@@ -28,11 +28,11 @@ import eu.pb4.polymer.core.api.block.PolymerBlockUtils;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.pcal.copperhopper.CopperHopperBlock;
 
 import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ENTITY_TYPE_ID;
@@ -46,14 +46,14 @@ public class PolymerRegistrar implements Runnable {
     public void run() {
         PolymerResourcePackUtils.addModAssets("copperhopper");
         final PolymerCopperHopperBlock cohoBlock = new PolymerCopperHopperBlock(CopperHopperBlock.getDefaultSettings());
-        final BlockEntityType<PolymerCopperHopperBlockEntity> cohoEntityType = Registry.register(Registries.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
+        final BlockEntityType<PolymerCopperHopperBlockEntity> cohoEntityType = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
                 FabricBlockEntityTypeBuilder.create(PolymerCopperHopperBlockEntity::new, cohoBlock).build());
-        final PolymerCopperHopperItem cohoItem = new PolymerCopperHopperItem(cohoBlock, new Item.Settings());
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> entries.add(cohoItem));
+        final PolymerCopperHopperItem cohoItem = new PolymerCopperHopperItem(cohoBlock, new Item.Properties());
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.accept(cohoItem));
 
-        cohoItem.appendBlocks(Item.BLOCK_ITEMS, cohoItem); // wat
-        Registry.register(Registries.ITEM, COHO_ITEM_ID, cohoItem);
-        Registry.register(Registries.BLOCK, COHO_BLOCK_ID, cohoBlock);
+        cohoItem.registerBlocks(Item.BY_BLOCK, cohoItem); // wat
+        Registry.register(BuiltInRegistries.ITEM, COHO_ITEM_ID, cohoItem);
+        Registry.register(BuiltInRegistries.BLOCK, COHO_BLOCK_ID, cohoBlock);
         PolymerBlockUtils.registerBlockEntity(cohoEntityType);
     }
 }

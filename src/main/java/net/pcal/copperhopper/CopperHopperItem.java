@@ -24,13 +24,13 @@
 
 package net.pcal.copperhopper;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 public class CopperHopperItem extends BlockItem {
 
-    public CopperHopperItem(Block block, Item.Settings settings) {
+    public CopperHopperItem(Block block, Item.Properties settings) {
         super(block, settings);
     }
 }

@@ -24,10 +24,10 @@
 
 package net.pcal.copperhopper.mixins;
 
-import net.minecraft.entity.vehicle.AbstractMinecartEntity;
-import net.minecraft.entity.vehicle.AbstractMinecartEntity.Type;
-import net.minecraft.item.MinecartItem;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.AbstractMinecart.Type;
+import net.minecraft.world.item.MinecartItem;
+import net.minecraft.world.level.Level;
 import net.pcal.copperhopper.CopperHopperMinecartEntity;
 import net.pcal.copperhopper.CopperHopperMinecartItem;
 import org.spongepowered.asm.mixin.Mixin;
@@ -45,11 +45,11 @@ public abstract class MinecartItemMixin {
 
     @Redirect(method = "useOnBlock",
             at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;create(Lnet/minecraft/world/World;DDDLnet/minecraft/entity/vehicle/AbstractMinecartEntity$Type;)Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;"))
-    private AbstractMinecartEntity coho__createMinecart(World world, double x, double y, double z, Type type) {
+    private AbstractMinecart coho__createMinecart(Level world, double x, double y, double z, Type type) {
         if (((Object)this) instanceof CopperHopperMinecartItem) {
             return new CopperHopperMinecartEntity(world, x, y, z);
         } else {
-            return AbstractMinecartEntity.create(world, x, y, z, type);
+            return AbstractMinecart.createMinecart(world, x, y, z, type);
         }
     }
 }

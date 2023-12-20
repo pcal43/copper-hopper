@@ -24,25 +24,25 @@
 
 package net.pcal.copperhopper;
 
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.screen.HopperScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
-
 import static net.pcal.copperhopper.CopperHopperMod.mod;
 
-public class CohoScreenHandler extends HopperScreenHandler {
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.HopperMenu;
+import net.minecraft.world.inventory.MenuType;
 
-    public CohoScreenHandler(int syncId, PlayerInventory playerInventory) {
+public class CohoScreenHandler extends HopperMenu {
+
+    public CohoScreenHandler(int syncId, Inventory playerInventory) {
         super(syncId, playerInventory);
     }
 
-    public CohoScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
+    public CohoScreenHandler(int syncId, Inventory playerInventory, Container inventory) {
         super(syncId, playerInventory, inventory);
     }
 
     @Override
-    public ScreenHandlerType<?> getType() {
+    public MenuType<?> getType() {
         return mod().getScreenHandlerType();
     }
 
