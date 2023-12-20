@@ -41,11 +41,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  * @author pcal
  * @since 0.5.0
  */
-@Mixin(targets = "net/minecraft/item/MinecartItem$1")
+@Mixin(targets = "net/minecraft/world/item/MinecartItem$1") //
 public abstract class MinecartItemDispenserBehaviorMixin {
-
     @Redirect(method = "execute(Lnet/minecraft/core/dispenser/BlockSource;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/ItemStack;",
-            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;create(Lnet/minecraft/world/World;DDDLnet/minecraft/entity/vehicle/AbstractMinecartEntity$Type;)Lnet/minecraft/entity/vehicle/AbstractMinecartEntity;"))
+            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;createMinecart(Lnet/minecraft/world/level/Level;DDDLnet/minecraft/world/entity/vehicle/AbstractMinecart$Type;)Lnet/minecraft/world/entity/vehicle/AbstractMinecart;"))
     private AbstractMinecart coho__createMinecart(Level world, double x, double y, double z, Type type, BlockSource pointer, ItemStack stack) {
         if (stack.getItem() instanceof CopperHopperMinecartItem) {
             return new CopperHopperMinecartEntity(world, x, y, z);
