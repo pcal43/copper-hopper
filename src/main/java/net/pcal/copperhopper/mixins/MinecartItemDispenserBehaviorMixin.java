@@ -25,6 +25,8 @@
 package net.pcal.copperhopper.mixins;
 
 import net.minecraft.core.dispenser.BlockSource;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.AbstractMinecart.Type;
 import net.minecraft.world.item.ItemStack;
@@ -44,12 +46,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(targets = "net/minecraft/world/item/MinecartItem$1") //
 public abstract class MinecartItemDispenserBehaviorMixin {
     @Redirect(method = "execute(Lnet/minecraft/core/dispenser/BlockSource;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/ItemStack;",
-            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;createMinecart(Lnet/minecraft/world/level/Level;DDDLnet/minecraft/world/entity/vehicle/AbstractMinecart$Type;)Lnet/minecraft/world/entity/vehicle/AbstractMinecart;"))
-    private AbstractMinecart coho__createMinecart(Level world, double x, double y, double z, Type type, BlockSource pointer, ItemStack stack) {
+            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;createMinecart(Lnet/minecraft/world/level/ServerLevel;DDDLnet/minecraft/world/entity/vehicle/AbstractMinecart$Type;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/entity/vehicle/AbstractMinecart;"))
+    private AbstractMinecart coho__createMinecart(ServerLevel world, double x, double y, double z, Type type, ItemStack stack0, Player player, BlockSource pointer, ItemStack stack) {
         if (stack.getItem() instanceof CopperHopperMinecartItem) {
             return new CopperHopperMinecartEntity(world, x, y, z);
         } else {
-            return AbstractMinecart.createMinecart(world, x, y, z, type);
+            return AbstractMinecart.createMinecart(world, x, y, z, type, stack0, player);
         }
     }
 }
