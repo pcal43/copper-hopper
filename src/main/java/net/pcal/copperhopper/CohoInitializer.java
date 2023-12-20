@@ -28,22 +28,22 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
-import net.minecraft.resource.featuretoggle.FeatureFlags;
-import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Properties;
 
-import static net.minecraft.registry.Registry.register;
+import static net.minecraft.core.Registry.register;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ENTITY_TYPE_ID;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ID;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_ITEM_ID;
@@ -93,30 +93,30 @@ public class CohoInitializer implements ModInitializer {
             //
             // Register the Screen
             //
-            register(Registries.SCREEN_HANDLER, COHO_SCREEN_ID, new ScreenHandlerType<>(CohoScreenHandler::new, FeatureFlags.VANILLA_FEATURES));
+            register(BuiltInRegistries.MENU, COHO_SCREEN_ID, new MenuType<>(CohoScreenHandler::new, FeatureFlags.VANILLA_SET));
 
             //
             // Register the Block
             //
             final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings());
-            final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Settings());
-            ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> entries.addAfter(Items.HOPPER, cohoItem));
+            final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Properties());
+            ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER, cohoItem));
 
-            cohoItem.appendBlocks(Item.BLOCK_ITEMS, cohoItem); // wat
-            register(Registries.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
+            cohoItem.registerBlocks(Item.BY_BLOCK, cohoItem); // wat
+            register(BuiltInRegistries.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
                     FabricBlockEntityTypeBuilder.create(CopperHopperBlockEntity::new, cohoBlock).build(null));
-            register(Registries.ITEM, COHO_ITEM_ID, cohoItem);
-            register(Registries.BLOCK, COHO_BLOCK_ID, cohoBlock);
+            register(BuiltInRegistries.ITEM, COHO_ITEM_ID, cohoItem);
+            register(BuiltInRegistries.BLOCK, COHO_BLOCK_ID, cohoBlock);
 
             //
             // Register the Minecart
             //
-            final EntityType<CopperHopperMinecartEntity> minecartType = FabricEntityTypeBuilder.<CopperHopperMinecartEntity>create(SpawnGroup.MISC, CopperHopperMinecartEntity::new).
+            final EntityType<CopperHopperMinecartEntity> minecartType = FabricEntityTypeBuilder.<CopperHopperMinecartEntity>create(MobCategory.MISC, CopperHopperMinecartEntity::new).
                     dimensions(EntityDimensions.fixed(0.98f, 0.7f)).build();
-            final CopperHopperMinecartItem cohoMinecartItem = new CopperHopperMinecartItem(new Item.Settings().maxCount(1));
-            register(Registries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID, minecartType);
-            register(Registries.ITEM, COHO_MINECART_ITEM_ID, cohoMinecartItem);
-            ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> entries.addAfter(Items.HOPPER_MINECART, cohoMinecartItem));
+            final CopperHopperMinecartItem cohoMinecartItem = new CopperHopperMinecartItem(new Item.Properties().stacksTo(1));
+            register(BuiltInRegistries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID, minecartType);
+            register(BuiltInRegistries.ITEM, COHO_MINECART_ITEM_ID, cohoMinecartItem);
+            ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER_MINECART, cohoMinecartItem));
         }
     }
 }

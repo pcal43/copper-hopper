@@ -24,7 +24,7 @@
 
 package net.pcal.copperhopper;
 
-import net.minecraft.inventory.Inventory;
+import net.minecraft.world.Container;
 
 /**
  * Marker interface for our two inventory-bearing entities.
@@ -32,5 +32,5 @@ import net.minecraft.inventory.Inventory;
  * @author pcal
  * @since 0.5.0
  */
-public interface CopperInventory extends Inventory {
+public interface CopperInventory extends Container {
 }

@@ -26,9 +26,9 @@ package net.pcal.copperhopper;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.client.render.entity.MinecartEntityRenderer;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.entity.MinecartRenderer;
 
 import static net.pcal.copperhopper.CopperHopperMod.mod;
 
@@ -40,8 +40,8 @@ public class CohoClientInitializer implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        HandledScreens.register(mod().getScreenHandlerType(), CohoScreen::new);
+        MenuScreens.register(mod().getScreenHandlerType(), CohoScreen::new);
         EntityRendererRegistry.register(mod().getMinecartEntityType(),
-                ctx -> new MinecartEntityRenderer<>(ctx, EntityModelLayers.HOPPER_MINECART));
+                ctx -> new MinecartRenderer<>(ctx, ModelLayers.HOPPER_MINECART));
     }
 }

@@ -25,17 +25,17 @@
 package net.pcal.copperhopper;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.HopperBlock;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.HopperBlockEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HopperBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.HopperBlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 
 import static net.pcal.copperhopper.CopperHopperMod.mod;
@@ -45,22 +45,22 @@ public class CopperHopperBlock extends HopperBlock {
     /**
      * Default block settings are shared used by both polymer and non-polymer registrations.
      */
-    public static AbstractBlock.Settings getDefaultSettings() {
-        return FabricBlockSettings.copyOf(Blocks.HOPPER).mapColor(MapColor.BROWN);
+    public static BlockBehaviour.Properties getDefaultSettings() {
+        return FabricBlockSettings.copyOf(Blocks.HOPPER).mapColor(MapColor.COLOR_BROWN);
     }
 
-    public CopperHopperBlock(AbstractBlock.Settings settings) {
+    public CopperHopperBlock(BlockBehaviour.Properties settings) {
         super(settings);
     }
 
     @Override
     @Nullable
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return world.isClient ? null : validateTicker(type,  mod().getBlockEntityType(), HopperBlockEntity::serverTick);
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
+        return world.isClientSide ? null : createTickerHelper(type,  mod().getBlockEntityType(), HopperBlockEntity::pushItemsTick);
     }
 
     @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new CopperHopperBlockEntity(pos, state);
     }
 }

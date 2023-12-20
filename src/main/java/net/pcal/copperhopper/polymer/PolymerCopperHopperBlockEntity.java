@@ -24,15 +24,16 @@
 
 package net.pcal.copperhopper.polymer;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.HopperScreenHandler;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
 import net.pcal.copperhopper.CopperHopperBlockEntity;
 
 import static net.pcal.copperhopper.CopperHopperMod.mod;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.HopperMenu;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class PolymerCopperHopperBlockEntity extends CopperHopperBlockEntity  {
 
@@ -41,22 +42,22 @@ public class PolymerCopperHopperBlockEntity extends CopperHopperBlockEntity  {
     }
 
     @Override
-    protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-        return new HopperScreenHandler(syncId, playerInventory, this);
+    protected AbstractContainerMenu createMenu(int syncId, Inventory playerInventory) {
+        return new HopperMenu(syncId, playerInventory, this);
     }
 
     @Override
-    public Text getName() {
-        return Text.literal(mod().getPolymerName());
+    public Component getName() {
+        return Component.literal(mod().getPolymerName());
     }
 
     @Override
-    public Text getDisplayName() {
-        return Text.literal(mod().getPolymerName());
+    public Component getDisplayName() {
+        return Component.literal(mod().getPolymerName());
     }
 
     @Override
-    public Text getCustomName() {
-        return Text.literal(mod().getPolymerName());
+    public Component getCustomName() {
+        return Component.literal(mod().getPolymerName());
     }
 }

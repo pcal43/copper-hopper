@@ -24,20 +24,6 @@
 
 package net.pcal.copperhopper;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.HopperBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.EntityType;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,6 +36,19 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HopperBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import static java.util.Objects.requireNonNull;
 
@@ -67,15 +66,15 @@ public class CopperHopperMod {
     public static final String LOGGER_NAME = "CopperHopper";
     public static final String LOG_PREFIX = "[CopperHopper] ";
 
-    public static final Identifier COHO_BLOCK_ID = new Identifier("copperhopper:copper_hopper");
-    public static final Identifier COHO_ITEM_ID = new Identifier("copperhopper:copper_hopper");
-    public static final Identifier COHO_SCREEN_ID = new Identifier("copperhopper:copper_hopper");
+    public static final ResourceLocation COHO_BLOCK_ID = new ResourceLocation("copperhopper:copper_hopper");
+    public static final ResourceLocation COHO_ITEM_ID = new ResourceLocation("copperhopper:copper_hopper");
+    public static final ResourceLocation COHO_SCREEN_ID = new ResourceLocation("copperhopper:copper_hopper");
 
     // I guess I shouldn't have added the '_entity' suffix here.  But it's out in the wild now, so too late to change.  *shrug*
-    public static final Identifier COHO_BLOCK_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper_entity");
+    public static final ResourceLocation COHO_BLOCK_ENTITY_TYPE_ID = new ResourceLocation("copperhopper:copper_hopper_entity");
 
-    public static final Identifier COHO_MINECART_ITEM_ID = new Identifier("copperhopper:copper_hopper_minecart");
-    public static final Identifier COHO_MINECART_ENTITY_TYPE_ID = new Identifier("copperhopper:copper_hopper_minecart");
+    public static final ResourceLocation COHO_MINECART_ITEM_ID = new ResourceLocation("copperhopper:copper_hopper_minecart");
+    public static final ResourceLocation COHO_MINECART_ENTITY_TYPE_ID = new ResourceLocation("copperhopper:copper_hopper_minecart");
 
 
     private static final String CONFIG_FILENAME = "copperhopper.properties";
@@ -100,29 +99,29 @@ public class CopperHopperMod {
     // Mod-wide values
 
     public Block getBlock() {
-        return Registries.BLOCK.get(COHO_BLOCK_ID);
+        return BuiltInRegistries.BLOCK.get(COHO_BLOCK_ID);
     }
 
     public Item getMinecartItem() {
-        return Registries.ITEM.get(COHO_MINECART_ITEM_ID);
+        return BuiltInRegistries.ITEM.get(COHO_MINECART_ITEM_ID);
     }
 
     public BlockEntityType<CopperHopperBlockEntity> getBlockEntityType() {
         //noinspection unchecked
         return (BlockEntityType<CopperHopperBlockEntity>)
-                requireNonNull(Registries.BLOCK_ENTITY_TYPE.get(COHO_BLOCK_ENTITY_TYPE_ID));
+                requireNonNull(BuiltInRegistries.BLOCK_ENTITY_TYPE.get(COHO_BLOCK_ENTITY_TYPE_ID));
     }
 
     public EntityType<CopperHopperMinecartEntity> getMinecartEntityType() {
         //noinspection unchecked
         return (EntityType<CopperHopperMinecartEntity>)
-                requireNonNull(Registries.ENTITY_TYPE.get(COHO_MINECART_ENTITY_TYPE_ID));
+                requireNonNull(BuiltInRegistries.ENTITY_TYPE.get(COHO_MINECART_ENTITY_TYPE_ID));
     }
 
-    public ScreenHandlerType<CohoScreenHandler> getScreenHandlerType() {
+    public MenuType<CohoScreenHandler> getScreenHandlerType() {
         //noinspection unchecked
-        return requireNonNull((ScreenHandlerType<CohoScreenHandler>)
-                Registries.SCREEN_HANDLER.get(COHO_SCREEN_ID));
+        return requireNonNull((MenuType<CohoScreenHandler>)
+                BuiltInRegistries.MENU.get(COHO_SCREEN_ID));
     }
 
     // ===================================================================================
@@ -204,7 +203,7 @@ public class CopperHopperMod {
      * Return true if we should prevent one of the given Item from being pulled into the given inventory.
      * CopperHoppers should never pull item types they don't already contain.
      */
-    public boolean shouldVetoPullInto(Inventory into, Item pulledItem) {
+    public boolean shouldVetoPullInto(Container into, Item pulledItem) {
         return isCopperHopper(into) && !containsAtLeast(into, pulledItem, 1);
     }
 
@@ -220,7 +219,7 @@ public class CopperHopperMod {
      * Return true if we should prevent one of the given Item from being pulled from the given inventory.
      * CopperHoppers should never push their last item of a given type.
      */
-    public boolean shouldVetoPushFrom(Inventory from, Item pushedItem, World world, BlockPos pos) {
+    public boolean shouldVetoPushFrom(Container from, Item pushedItem, net.minecraft.world.level.Level world, BlockPos pos) {
         if (!isCopperHopper(from)) return false;
         if (!containsAtLeast(from, pushedItem, 2)) {
             return true; // never push the last one
@@ -228,13 +227,13 @@ public class CopperHopperMod {
         // Check to see if the block below us is also a CopperHopper and if it's trying to filter on the
         // item we're about to push sideways.  If it is, hang onto to instead so the CopperHopper below
         // can pull it down instead.
-        if (((CopperHopperBlockEntity)from).getCachedState().get(HopperBlock.FACING) == Direction.DOWN) {
+        if (((CopperHopperBlockEntity)from).getBlockState().getValue(HopperBlock.FACING) == Direction.DOWN) {
             return false; // don't bother with the check if we're pointing down
         }
-        final BlockPos below = pos.mutableCopy().offset(Direction.Axis.Y, -1);
+        final BlockPos below = pos.mutable().relative(Direction.Axis.Y, -1);
         final BlockEntity blockEntity = world.getBlockEntity(below);
         if (!isCopperHopper(blockEntity)) return false;
-        return containsAtLeast((Inventory) blockEntity, pushedItem, 1);
+        return containsAtLeast((Container) blockEntity, pushedItem, 1);
     }
 
     // ===================================================================================
@@ -243,7 +242,7 @@ public class CopperHopperMod {
     /**
      * Returns true if the given inventory target is an Item Sorter hopper.
      */
-    private static boolean isCopperHopper(Inventory target) {
+    private static boolean isCopperHopper(Container target) {
         return target instanceof CopperInventory;
     }
 
@@ -258,10 +257,10 @@ public class CopperHopperMod {
      * Returns true if the given inventory contains at least the given number of the given item (across all slots).
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private static boolean containsAtLeast(Inventory inventory, Item item, int atLeast) {
+    private static boolean containsAtLeast(Container inventory, Item item, int atLeast) {
         int count = 0;
-        for (int i = 0; i < inventory.size(); ++i) {
-            ItemStack itemStack = inventory.getStack(i);
+        for (int i = 0; i < inventory.getContainerSize(); ++i) {
+            ItemStack itemStack = inventory.getItem(i);
             if (itemStack.getItem().equals(item)) {
                 count += itemStack.getCount();
                 if (count >= atLeast) return true; // don't bother counting the rest

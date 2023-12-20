@@ -24,13 +24,6 @@
 
 package net.pcal.copperhopper.mixins;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.HopperBlockEntity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -38,6 +31,14 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static net.pcal.copperhopper.CopperHopperMod.mod;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.HopperBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 @SuppressWarnings("ALL")
 @Mixin(HopperBlockEntity.class)
@@ -47,23 +48,22 @@ public abstract class HopperBlockEntityMixin {
      * Somewhat invasive change to prevent the hopper from pushing out its last item.  Basically make the stacks
      * read as empty if they shouldn't be pushed out.
      */
-    @Redirect(method = "insert",
-            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/inventory/Inventory;getStack(I)Lnet/minecraft/item/ItemStack;"))
-    private static ItemStack __getStack(Inventory pushingInventory, int slot, World world, BlockPos pos, BlockState state, Inventory ignored) {
-        final ItemStack original = pushingInventory.getStack(slot);
+    @Redirect(method = "ejectItems",
+            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/Container;getItem(I)Lnet/minecraft/world/item/ItemStack;"))
+    private static ItemStack __getStack(Container pushingInventory, int slot, Level world, BlockPos pos, BlockState state, Container ignored) {
+        final ItemStack original = pushingInventory.getItem(slot);
         if (mod().shouldVetoPushFrom(pushingInventory, original.getItem(), world, pos)) {
             return ItemStack.EMPTY;
         }
         return original;
-
     }
 
     /**
      * Apply filtering behavior to free floating entities above the hopper.
      */
-    @Inject(method = "extract(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/entity/ItemEntity;)Z", at = @At("HEAD"), cancellable = true)
-    private static void __extract_itemEntity(Inventory pullingInventory, ItemEntity pulledEntity, CallbackInfoReturnable<Boolean> returnable) {
-        if (mod().shouldVetoPullInto(pullingInventory, pulledEntity.getStack().getItem())) {
+    @Inject(method = "addItem(Lnet/minecraft/world/Container;Lnet/minecraft/world/entity/item/ItemEntity;)Z", at = @At("HEAD"), cancellable = true)
+    private static void __extract_itemEntity(Container pullingInventory, ItemEntity pulledEntity, CallbackInfoReturnable<Boolean> returnable) {
+        if (mod().shouldVetoPullInto(pullingInventory, pulledEntity.getItem().getItem())) {
             returnable.setReturnValue(Boolean.FALSE);
         }
     }

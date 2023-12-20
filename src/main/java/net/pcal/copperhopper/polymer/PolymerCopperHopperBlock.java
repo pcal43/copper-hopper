@@ -25,21 +25,21 @@
 package net.pcal.copperhopper.polymer;
 
 import eu.pb4.polymer.core.api.block.PolymerBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.HopperBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HopperBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.pcal.copperhopper.CopperHopperBlock;
 
 import static net.pcal.copperhopper.CopperHopperMod.mod;
 
 public class PolymerCopperHopperBlock extends CopperHopperBlock implements PolymerBlock { // PolymerClientDecoded { //, PolymerKeepModel {//, PolymerClientDecoded {
 
-    public PolymerCopperHopperBlock(Settings settings) {
+    public PolymerCopperHopperBlock(Properties settings) {
         super(settings);
     }
 
@@ -50,18 +50,18 @@ public class PolymerCopperHopperBlock extends CopperHopperBlock implements Polym
 
     @Override
     public BlockState getPolymerBlockState(BlockState state) {
-        return Blocks.HOPPER.getDefaultState()
-                .with(HopperBlock.FACING, state.get(HopperBlock.FACING))
-                .with(HopperBlock.ENABLED, state.get(HopperBlock.ENABLED));
+        return Blocks.HOPPER.defaultBlockState()
+                .setValue(HopperBlock.FACING, state.getValue(HopperBlock.FACING))
+                .setValue(HopperBlock.ENABLED, state.getValue(HopperBlock.ENABLED));
     }
 
     @Override
-    public MutableText getName() {
-        return Text.literal(mod().getPolymerName());
+    public MutableComponent getName() {
+        return Component.literal(mod().getPolymerName());
     }
 
     @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new PolymerCopperHopperBlockEntity(pos, state);
     }
 
