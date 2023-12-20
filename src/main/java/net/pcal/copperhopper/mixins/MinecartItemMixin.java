@@ -24,12 +24,15 @@
 
 package net.pcal.copperhopper.mixins;
 
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.AbstractMinecart.Type;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MinecartItem;
-import net.minecraft.world.level.Level;
 import net.pcal.copperhopper.CopperHopperMinecartEntity;
 import net.pcal.copperhopper.CopperHopperMinecartItem;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -44,12 +47,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MinecartItemMixin {
 
     @Redirect(method = "useOn",
-            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;createMinecart(Lnet/minecraft/world/level/Level;DDDLnet/minecraft/world/entity/vehicle/AbstractMinecart$Type;)Lnet/minecraft/world/entity/vehicle/AbstractMinecart;"))
-    private AbstractMinecart coho__createMinecart(Level world, double x, double y, double z, Type type) {
+            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;createMinecart(Lnet/minecraft/server/level/ServerLevel;DDDLnet/minecraft/world/entity/vehicle/AbstractMinecart$Type;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/entity/vehicle/AbstractMinecart;"))
+    private AbstractMinecart coho__createMinecart(ServerLevel world, double x, double y, double z, Type type, ItemStack itemStack, @Nullable Player player) {
         if (((Object) this) instanceof CopperHopperMinecartItem) {
             return new CopperHopperMinecartEntity(world, x, y, z);
         } else {
-            return AbstractMinecart.createMinecart(world, x, y, z, type);
+            return AbstractMinecart.createMinecart(world, x, y, z, type, itemStack, player);
         }
     }
 }
