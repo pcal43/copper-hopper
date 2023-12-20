@@ -48,7 +48,7 @@ public abstract class HopperBlockEntityMixin {
      * Somewhat invasive change to prevent the hopper from pushing out its last item.  Basically make the stacks
      * read as empty if they shouldn't be pushed out.
      */
-    @Redirect(method = "insert",
+    @Redirect(method = "ejectItems",
             at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/Container;getItem(I)Lnet/minecraft/item/ItemStack;"))
     private static ItemStack __getStack(Container pushingInventory, int slot, Level world, BlockPos pos, BlockState state, Container ignored) {
         final ItemStack original = pushingInventory.getItem(slot);
