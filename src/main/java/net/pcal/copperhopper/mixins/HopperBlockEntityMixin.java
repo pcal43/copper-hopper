@@ -49,7 +49,7 @@ public abstract class HopperBlockEntityMixin {
      * read as empty if they shouldn't be pushed out.
      */
     @Redirect(method = "ejectItems",
-            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/Container;getItem(I)Lnet/minecraft/item/ItemStack;"))
+            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/Container;getItem(I)Lnet/minecraft/world/item/ItemStack;"))
     private static ItemStack __getStack(Container pushingInventory, int slot, Level world, BlockPos pos, BlockState state, Container ignored) {
         final ItemStack original = pushingInventory.getItem(slot);
         if (mod().shouldVetoPushFrom(pushingInventory, original.getItem(), world, pos)) {
