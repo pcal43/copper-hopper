@@ -28,6 +28,7 @@ import eu.pb4.polymer.core.api.block.PolymerBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HopperBlock;
@@ -44,7 +45,7 @@ public class PolymerCopperHopperBlock extends CopperHopperBlock implements Polym
     }
 
     @Override
-    public Block getPolymerBlock(BlockState state) {
+    public Block getPolymerReplacement(ServerPlayer sp) { //FIXME? this changed in 1.20.5, not sure if this is correct
         return Blocks.HOPPER;
     }
 

@@ -38,7 +38,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 
 @SuppressWarnings("ALL")
 @Mixin(HopperBlockEntity.class)
@@ -48,11 +47,13 @@ public abstract class HopperBlockEntityMixin {
      * Somewhat invasive change to prevent the hopper from pushing out its last item.  Basically make the stacks
      * read as empty if they shouldn't be pushed out.
      */
-    @Redirect(method = "ejectItems",
-            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/Container;getItem(I)Lnet/minecraft/world/item/ItemStack;"))
-    private static ItemStack __getStack(Container pushingInventory, int slot, Level world, BlockPos pos, BlockState state, Container ignored) {
+    @Redirect(method = "ejectItems(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/HopperBlockEntity;)Z",
+            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/level/block/entity/HopperBlockEntity;getItem(I)Lnet/minecraft/world/item/ItemStack;"))
+    private static ItemStack __getStack(HopperBlockEntity pushingInventory, int slot,
+                                        // params from enclosing scope:
+                                        Level level, BlockPos blockPos, HopperBlockEntity ignored) {
         final ItemStack original = pushingInventory.getItem(slot);
-        if (mod().shouldVetoPushFrom(pushingInventory, original.getItem(), world, pos)) {
+        if (mod().shouldVetoPushFrom(pushingInventory, original.getItem(), level, blockPos)) {
             return ItemStack.EMPTY;
         }
         return original;
