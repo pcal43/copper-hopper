@@ -33,7 +33,7 @@ import net.minecraft.world.inventory.HopperMenu;
 
 public class CohoScreen extends HopperScreen {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("copperhopper:textures/gui/container/copper_hopper.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.parse("copperhopper:textures/gui/container/copper_hopper.png");
 
     public CohoScreen(HopperMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
