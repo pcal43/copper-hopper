@@ -27,6 +27,7 @@ package net.pcal.copperhopper;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -154,7 +155,11 @@ public class CopperHopperMod {
         final String nbtMatchEnabledIds = config.getProperty("nbtMatchEnabledIds");
         if (nbtMatchEnabledIds != null) {
             final ImmutableSet.Builder<ResourceLocation> builder = ImmutableSet.builder();
-            for(String id : nbtMatchEnabledIds.trim().split("\\s+")) builder.add(new ResourceLocation(id));
+            for (String id : nbtMatchEnabledIds.trim().split("\\s+")) {
+                final ResourceLocation r = new ResourceLocation(id);
+                logger.debug(() -> "nbtMatchEnabled for " + r);
+                builder.add(r);
+            }
             this.nbtMatchEnabledIds = builder.build();
         }
 
@@ -282,6 +287,8 @@ public class CopperHopperMod {
     }
 
     private static boolean isMatch(ItemStack first, ItemStack second, Collection<ResourceLocation> nbtMatchEnabledIds) {
+        if (second.isEmpty() || first.isEmpty()) return false;
+        if (first == second) return true;
         return first.is(second.getItem()) &&
                 (!nbtMatchEnabledIds.contains(BuiltInRegistries.ITEM.getKey(first.getItem())) ||
                         areNbtEqual(first, second));
@@ -291,13 +298,9 @@ public class CopperHopperMod {
         if (left.isEmpty() && right.isEmpty()) {
             return true;
         } else if (!left.isEmpty() && !right.isEmpty()) {
-            final TagKey<Item> leftTag = left.getTags().findFirst().orElse(null);
-            final TagKey<Item> rightTag = right.getTags().findFirst().orElse(null);
-            if (leftTag == null && rightTag != null) {
-                return false;
-            } else {
-                return leftTag == null || leftTag.equals(rightTag);
-            }
+            final DataComponentPatch leftData = left.getComponentsPatch();
+            final DataComponentPatch rightData = right.getComponentsPatch();
+            return leftData != null && leftData.equals(rightData);
         } else {
             return false;
         }
