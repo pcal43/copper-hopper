@@ -53,7 +53,7 @@ public abstract class HopperBlockEntityMixin {
                                         // params from enclosing scope:
                                         Level level, BlockPos blockPos, HopperBlockEntity ignored) {
         final ItemStack original = pushingInventory.getItem(slot);
-        if (mod().shouldVetoPushFrom(pushingInventory, original.getItem(), level, blockPos)) {
+        if (mod().shouldVetoPushFrom(pushingInventory, original, level, blockPos)) {
             return ItemStack.EMPTY;
         }
         return original;
@@ -64,7 +64,7 @@ public abstract class HopperBlockEntityMixin {
      */
     @Inject(method = "addItem(Lnet/minecraft/world/Container;Lnet/minecraft/world/entity/item/ItemEntity;)Z", at = @At("HEAD"), cancellable = true)
     private static void __extract_itemEntity(Container pullingInventory, ItemEntity pulledEntity, CallbackInfoReturnable<Boolean> returnable) {
-        if (mod().shouldVetoPullInto(pullingInventory, pulledEntity.getItem().getItem())) {
+        if (mod().shouldVetoPullInto(pullingInventory, pulledEntity.getItem())) {
             returnable.setReturnValue(Boolean.FALSE);
         }
     }

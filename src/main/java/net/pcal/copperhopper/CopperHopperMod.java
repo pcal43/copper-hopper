@@ -24,6 +24,21 @@
 
 package net.pcal.copperhopper;
 
+import com.google.common.collect.ImmutableSet;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HopperBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,20 +50,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Properties;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.HopperBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import static java.util.Objects.requireNonNull;
 
@@ -130,6 +134,7 @@ public class CopperHopperMod {
     private final Logger logger = LogManager.getLogger(LOGGER_NAME);
     private final Path configFilePath = Paths.get("config", CONFIG_FILENAME);
     private final File configFile = configFilePath.toFile();
+    private Collection<ResourceLocation> nbtMatchEnabledIds = Collections.emptySet();
 
     // ===================================================================================
     // Mod lifecycle
@@ -144,6 +149,13 @@ public class CopperHopperMod {
             Properties newProps = new Properties();
             newProps.load(in);
             config = newProps;
+        }
+
+        final String nbtMatchEnabledIds = config.getProperty("nbtMatchEnabledIds");
+        if (nbtMatchEnabledIds != null) {
+            final ImmutableSet.Builder<ResourceLocation> builder = ImmutableSet.builder();
+            for(String id : nbtMatchEnabledIds.trim().split("\\s+")) builder.add(new ResourceLocation(id));
+            this.nbtMatchEnabledIds = builder.build();
         }
 
         // adjust logging to configured level
@@ -195,33 +207,33 @@ public class CopperHopperMod {
      * Return true if we should prevent one of the given Item from being pushed into the given copper hopper or
      * ch minecart.  THese should never accept item types they don't already contain.
      */
-    public boolean shouldVetoPushInto(CopperInventory into, Item pushedItem) {
-        return !containsAtLeast(into, pushedItem, 1);
+    public boolean shouldVetoPushInto(CopperInventory into, ItemStack pushedItem) {
+        return !containsAtLeast(into, pushedItem, 1, this.nbtMatchEnabledIds);
     }
 
     /**
      * Return true if we should prevent one of the given Item from being pulled into the given inventory.
      * CopperHoppers should never pull item types they don't already contain.
      */
-    public boolean shouldVetoPullInto(Container into, Item pulledItem) {
-        return isCopperHopper(into) && !containsAtLeast(into, pulledItem, 1);
+    public boolean shouldVetoPullInto(Container into, ItemStack pulledItem) {
+        return isCopperHopper(into) && !containsAtLeast(into, pulledItem, 1, this.nbtMatchEnabledIds);
     }
 
     /**
      * Return true if we should prevent one of the given Item from being pulled from the given hopper.
      * CopperHoppers should never allow the last item of a given type to be pulled out.
      */
-    public boolean shouldVetoPullFrom(CopperInventory from, Item pulledItem) {
-        return !containsAtLeast(from, pulledItem, 2);
+    public boolean shouldVetoPullFrom(CopperInventory from, ItemStack pulledItem) {
+        return !containsAtLeast(from, pulledItem, 2, this.nbtMatchEnabledIds);
     }
 
     /**
      * Return true if we should prevent one of the given Item from being pulled from the given inventory.
      * CopperHoppers should never push their last item of a given type.
      */
-    public boolean shouldVetoPushFrom(Container from, Item pushedItem, net.minecraft.world.level.Level world, BlockPos pos) {
+    public boolean shouldVetoPushFrom(Container from, ItemStack pushedItem, net.minecraft.world.level.Level world, BlockPos pos) {
         if (!isCopperHopper(from)) return false;
-        if (!containsAtLeast(from, pushedItem, 2)) {
+        if (!containsAtLeast(from, pushedItem, 2, this.nbtMatchEnabledIds)) {
             return true; // never push the last one
         }
         // Check to see if the block below us is also a CopperHopper and if it's trying to filter on the
@@ -233,7 +245,7 @@ public class CopperHopperMod {
         final BlockPos below = pos.mutable().relative(Direction.Axis.Y, -1);
         final BlockEntity blockEntity = world.getBlockEntity(below);
         if (!isCopperHopper(blockEntity)) return false;
-        return containsAtLeast((Container) blockEntity, pushedItem, 1);
+        return containsAtLeast((Container) blockEntity, pushedItem, 1, this.nbtMatchEnabledIds);
     }
 
     // ===================================================================================
@@ -257,16 +269,38 @@ public class CopperHopperMod {
      * Returns true if the given inventory contains at least the given number of the given item (across all slots).
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private static boolean containsAtLeast(Container inventory, Item item, int atLeast) {
+    private static boolean containsAtLeast(Container inventory, ItemStack inputItem, int atLeast, Collection<ResourceLocation> nbtMatchEnabledIds) {
         int count = 0;
         for (int i = 0; i < inventory.getContainerSize(); ++i) {
-            ItemStack itemStack = inventory.getItem(i);
-            if (itemStack.getItem().equals(item)) {
-                count += itemStack.getCount();
+            final ItemStack filterStack = inventory.getItem(i);
+            if (isMatch(filterStack, inputItem, nbtMatchEnabledIds)) {
+                count += filterStack.getCount();
                 if (count >= atLeast) return true; // don't bother counting the rest
             }
         }
         return false;
+    }
+
+    private static boolean isMatch(ItemStack first, ItemStack second, Collection<ResourceLocation> nbtMatchEnabledIds) {
+        return first.is(second.getItem()) &&
+                (!nbtMatchEnabledIds.contains(BuiltInRegistries.ITEM.getKey(first.getItem())) ||
+                        areNbtEqual(first, second));
+    }
+
+    private static boolean areNbtEqual(ItemStack left, ItemStack right) {
+        if (left.isEmpty() && right.isEmpty()) {
+            return true;
+        } else if (!left.isEmpty() && !right.isEmpty()) {
+            final TagKey<Item> leftTag = left.getTags().findFirst().orElse(null);
+            final TagKey<Item> rightTag = right.getTags().findFirst().orElse(null);
+            if (leftTag == null && rightTag != null) {
+                return false;
+            } else {
+                return leftTag == null || leftTag.equals(rightTag);
+            }
+        } else {
+            return false;
+        }
     }
 
     /**

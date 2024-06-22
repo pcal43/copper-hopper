@@ -92,12 +92,12 @@ public class CopperHopperMinecartEntity extends MinecartHopper implements Worldl
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction dir) {
-        return !mod().shouldVetoPushInto(this, stack.getItem());
+        return !mod().shouldVetoPushInto(this, stack);
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction dir) {
-        return !mod().shouldVetoPullFrom(this, stack.getItem());
+        return !mod().shouldVetoPullFrom(this, stack);
     }
 
 
