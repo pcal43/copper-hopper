@@ -39,8 +39,8 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-if [ "${CURRENT_BRANCH}" != 'backports/1.20.5' ]; then
-  echo "Releases must be performed on backports/1.20.5.  Currently on '${CURRENT_BRANCH}'"
+if [ "${CURRENT_BRANCH}" != 'backports/1.20.6' ]; then
+  echo "Releases must be performed on backports/1.20.6.  Currently on '${CURRENT_BRANCH}'"
   exit 1
 fi
 
