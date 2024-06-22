@@ -156,7 +156,7 @@ public class CopperHopperMod {
         if (nbtMatchEnabledIds != null) {
             final ImmutableSet.Builder<ResourceLocation> builder = ImmutableSet.builder();
             for (String id : nbtMatchEnabledIds.trim().split("\\s+")) {
-                final ResourceLocation r = new ResourceLocation(id);
+                final ResourceLocation r = ResourceLocation.parse(id);
                 logger.debug(() -> "nbtMatchEnabled for " + r);
                 builder.add(r);
             }
