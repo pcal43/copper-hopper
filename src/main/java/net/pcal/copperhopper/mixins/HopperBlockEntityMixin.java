@@ -64,7 +64,7 @@ public abstract class HopperBlockEntityMixin {
      */
     @Inject(method = "addItem(Lnet/minecraft/world/Container;Lnet/minecraft/world/entity/item/ItemEntity;)Z", at = @At("HEAD"), cancellable = true)
     private static void __extract_itemEntity(Container pullingInventory, ItemEntity pulledEntity, CallbackInfoReturnable<Boolean> returnable) {
-        if (!mod().shouldVetoPullInto(pullingInventory, pulledEntity.getItem())) {
+        if (mod().shouldVetoPullInto(pullingInventory, pulledEntity.getItem())) {
             returnable.setReturnValue(Boolean.FALSE);
         }
     }
