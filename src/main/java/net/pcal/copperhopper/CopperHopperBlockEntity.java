@@ -51,9 +51,9 @@ public class CopperHopperBlockEntity extends HopperBlockEntity implements Worldl
     }
 
     /**
-     * This fixes https://github.com/pcal43/copper-hopper/issues/87 in which we ran afoul of some 
-     * state checking that was evidently added in 1.21.1.  It seems to be rooted in the fact that 
-     * we extend the vanilla hopper block classes, and that isn't something the vanilla code 
+     * This fixes https://github.com/pcal43/copper-hopper/issues/87 in which we ran afoul of some
+     * state checking that was evidently added in 1.21.1.  It seems to be rooted in the fact that
+     * we extend the vanilla hopper block classes, and that isn't something the vanilla code
      * expectes to be happening (at least judging by BlockEntity.validateBlockState() isValidType()).
      *
      * It's not clear to me whether this is the correct way to handle it.
