@@ -75,6 +75,11 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 }
+java {
+  toolchain {
+    languageVersion.set(JavaLanguageVersion.of(21))
+  }
+}
 
 jar {
 	from("LICENSE") {
@@ -125,3 +130,38 @@ curseforge {
 		forgeGradleIntegration = false
 	}
 }
+
+/**
+NOTE TO SELF
+
+
+Thanks very much to naari3 for exaplaining this:
+https://discord.com/channels/507304429255393322/842691768175951942/1237576944174895196
+
+i googled this and find this issue, i changed  java.gradle.buildServer.enabled to off,
+The project is loaded for the time being, but I have a feeling another problem will arise.
+https://github.com/redhat-developer/vscode-java/issues/3423
+So, it looked like a gradle or vscode problem, not a problem around fabric. Thank you kindly for your time!
+
+Just wanted to share something for those who've bumped into similar issues
+as I did using VSCode, like the messages Source.java is a non-project file,
+only syntax errors are reported and ConfigError: The project 'project-name'
+is not a valid Java project. Please note that I am not an expert Java
+programmer, so there could be errors in my explanation.
+
+As you might know, from Minecraft 1.20.5 onwards, the required Java runtime
+has moved to Java 21. Depending on your setup, VSCode might stop loading
+your projects with this new version. Apart from setting the JAVA_HOME
+environment variable, you also need to specify the JDK home that the Gradle
+daemon uses in the VSCode extensions like this:
+
+"java.import.gradle.java.home": "C:\\Program Files\\Java\\jdk-21",
+
+By default, the vscode-java extension uses JDK 17 bundled with the extension
+to launch the Gradle daemon. However, using this setup to deobfuscate version
+1.20.6 with the Gradle plugin fabric-loom results in errors. This issue is due
+to the runtime's major version compatibility, but the extension communicates
+this error in a very unclear way to users, making it seem like the project
+suddenly won't load without any errors.
+
+ */
