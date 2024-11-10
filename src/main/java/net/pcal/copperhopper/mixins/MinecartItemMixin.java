@@ -27,7 +27,6 @@ package net.pcal.copperhopper.mixins;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.entity.vehicle.AbstractMinecart.Type;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MinecartItem;
 import net.pcal.copperhopper.CopperHopperMinecartEntity;
@@ -36,6 +35,9 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
 
 /**
  * Ensure CHMs get placed correctly.
@@ -48,11 +50,11 @@ public abstract class MinecartItemMixin {
 
     @Redirect(method = "useOn",
             at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;createMinecart(Lnet/minecraft/server/level/ServerLevel;DDDLnet/minecraft/world/entity/vehicle/AbstractMinecart$Type;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/entity/vehicle/AbstractMinecart;"))
-    private AbstractMinecart coho__createMinecart(ServerLevel world, double x, double y, double z, Type type, ItemStack itemStack, @Nullable Player player) {
+    private AbstractMinecart coho__createMinecart(ServerLevel world, double x, double y, double z, EntityType<? extends AbstractMinecart> type, ItemStack itemStack, @Nullable Player player) {
         if (((Object) this) instanceof CopperHopperMinecartItem) {
             return new CopperHopperMinecartEntity(world, x, y, z);
         } else {
-            return AbstractMinecart.createMinecart(world, x, y, z, type, itemStack, player);
+            return AbstractMinecart.createMinecart(world, x, y, z, type, EntitySpawnReason.DISPENSER, itemStack, player);
         }
     }
 }

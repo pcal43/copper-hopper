@@ -28,13 +28,15 @@ import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.entity.vehicle.AbstractMinecart.Type;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.pcal.copperhopper.CopperHopperMinecartEntity;
 import net.pcal.copperhopper.CopperHopperMinecartItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+
+import net.minecraft.world.entity.EntitySpawnReason;
 
 /**
  * Ensure CHMs get dispensed correctly.
@@ -43,14 +45,14 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  * @since 0.5.0
  */
 @Mixin(targets = "net/minecraft/world/item/MinecartItem$1") //
-public abstract class MinecartItemDispenserBehaviorMixin {
+public abstract class MinecartItemDispenserBehaviorMixin { //KILL???
     @Redirect(method = "execute(Lnet/minecraft/core/dispenser/BlockSource;Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/ItemStack;",
             at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;createMinecart(Lnet/minecraft/server/level/ServerLevel;DDDLnet/minecraft/world/entity/vehicle/AbstractMinecart$Type;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/entity/vehicle/AbstractMinecart;"))
-    private AbstractMinecart coho__createMinecart(ServerLevel world, double x, double y, double z, Type type, ItemStack stack0, Player player, BlockSource pointer, ItemStack stack) {
+    private AbstractMinecart coho__createMinecart(ServerLevel world, double x, double y, double z, EntityType<? extends AbstractMinecart> type, ItemStack stack0, Player player, BlockSource pointer, ItemStack stack) {
         if (stack.getItem() instanceof CopperHopperMinecartItem) {
             return new CopperHopperMinecartEntity(world, x, y, z);
         } else {
-            return AbstractMinecart.createMinecart(world, x, y, z, type, stack0, player);
+            return AbstractMinecart.createMinecart(world, x, y, z, type, EntitySpawnReason.DISPENSER, stack0, player);
         }
     }
 }
