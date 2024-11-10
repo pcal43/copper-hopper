@@ -29,6 +29,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
@@ -104,7 +105,7 @@ public class CopperHopperMod {
     // Mod-wide values
 
     public Block getBlock() {
-        return BuiltInRegistries.BLOCK.get(COHO_BLOCK_ID);
+        return Registries.BLOCK.get(COHO_BLOCK_ID);  
     }
 
     public Item getMinecartItem() {
