@@ -29,9 +29,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
@@ -105,29 +103,29 @@ public class CopperHopperMod {
     // Mod-wide values
 
     public Block getBlock() {
-        return Registries.BLOCK.get(COHO_BLOCK_ID);  
+        return BuiltInRegistries.BLOCK.getValue(COHO_BLOCK_ID);
     }
 
     public Item getMinecartItem() {
-        return BuiltInRegistries.ITEM.get(COHO_MINECART_ITEM_ID);
+        return BuiltInRegistries.ITEM.getValue(COHO_MINECART_ITEM_ID);
     }
 
+    @SuppressWarnings("unchecked")
     public BlockEntityType<CopperHopperBlockEntity> getBlockEntityType() {
-        //noinspection unchecked
         return (BlockEntityType<CopperHopperBlockEntity>)
-                requireNonNull(BuiltInRegistries.BLOCK_ENTITY_TYPE.get(COHO_BLOCK_ENTITY_TYPE_ID));
+                requireNonNull(BuiltInRegistries.BLOCK_ENTITY_TYPE.getValue(COHO_BLOCK_ENTITY_TYPE_ID));
     }
 
+    @SuppressWarnings("unchecked")
     public EntityType<CopperHopperMinecartEntity> getMinecartEntityType() {
-        //noinspection unchecked
         return (EntityType<CopperHopperMinecartEntity>)
-                requireNonNull(BuiltInRegistries.ENTITY_TYPE.get(COHO_MINECART_ENTITY_TYPE_ID));
+                requireNonNull(BuiltInRegistries.ENTITY_TYPE.getValue(COHO_MINECART_ENTITY_TYPE_ID));
     }
 
+    @SuppressWarnings("unchecked")
     public MenuType<CohoScreenHandler> getScreenHandlerType() {
-        //noinspection unchecked
         return requireNonNull((MenuType<CohoScreenHandler>)
-                BuiltInRegistries.MENU.get(COHO_SCREEN_ID));
+                BuiltInRegistries.MENU.getValue(COHO_SCREEN_ID));
     }
 
     // ===================================================================================
