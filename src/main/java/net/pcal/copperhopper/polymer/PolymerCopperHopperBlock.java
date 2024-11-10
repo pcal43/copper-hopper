@@ -28,13 +28,12 @@ import eu.pb4.polymer.core.api.block.PolymerBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HopperBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pcal.copperhopper.CopperHopperBlock;
+import xyz.nucleoid.packettweaker.PacketContext;
 
 import static net.pcal.copperhopper.CopperHopperMod.mod;
 
@@ -45,12 +44,7 @@ public class PolymerCopperHopperBlock extends CopperHopperBlock implements Polym
     }
 
     @Override
-    public Block getPolymerReplacement(ServerPlayer sp) { //FIXME? this changed in 1.20.5, not sure if this is correct
-        return Blocks.HOPPER;
-    }
-
-    @Override
-    public BlockState getPolymerBlockState(BlockState state) {
+    public BlockState getPolymerBlockState(BlockState state, PacketContext ctx) {    
         return Blocks.HOPPER.defaultBlockState()
                 .setValue(HopperBlock.FACING, state.getValue(HopperBlock.FACING))
                 .setValue(HopperBlock.ENABLED, state.getValue(HopperBlock.ENABLED));
@@ -65,6 +59,5 @@ public class PolymerCopperHopperBlock extends CopperHopperBlock implements Polym
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new PolymerCopperHopperBlockEntity(pos, state);
     }
-
 
 }

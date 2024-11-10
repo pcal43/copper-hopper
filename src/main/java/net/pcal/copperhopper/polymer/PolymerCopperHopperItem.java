@@ -26,13 +26,12 @@ package net.pcal.copperhopper.polymer;
 
 import eu.pb4.polymer.core.api.item.PolymerItem;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.pcal.copperhopper.CopperHopperItem;
-import org.jetbrains.annotations.Nullable;
+import xyz.nucleoid.packettweaker.PacketContext;
 
 import static net.pcal.copperhopper.CopperHopperMod.mod;
 
@@ -43,13 +42,8 @@ public class PolymerCopperHopperItem extends CopperHopperItem implements Polymer
     }
 
     @Override
-    public Item getPolymerItem(ItemStack itemStack, @Nullable ServerPlayer player) {
+    public Item getPolymerItem(ItemStack arg0, PacketContext arg1) {
         return Items.HOPPER;
-    }
-
-    @Override
-    public Component getDescription() {
-        return Component.literal(mod().getPolymerName());
     }
 
     @Override

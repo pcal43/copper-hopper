@@ -42,6 +42,6 @@ public class CohoClientInitializer implements ClientModInitializer {
     public void onInitializeClient() {
         MenuScreens.register(mod().getScreenHandlerType(), CohoScreen::new);
         EntityRendererRegistry.register(mod().getMinecartEntityType(),
-                ctx -> new MinecartRenderer<>(ctx, ModelLayers.HOPPER_MINECART));
+                ctx -> new MinecartRenderer(ctx, ModelLayers.HOPPER_MINECART));
     }
 }

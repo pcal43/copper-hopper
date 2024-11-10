@@ -24,17 +24,18 @@
 
 package net.pcal.copperhopper;
 
-import net.minecraft.world.entity.vehicle.AbstractMinecart.Type;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.MinecartItem;
 
 /**
- * @author pcal
+ * CopperHopperMinecartItem class for Minecraft 1.20.3
+ * 
  * @since 0.5.0
  */
 public class CopperHopperMinecartItem extends MinecartItem {
 
     public CopperHopperMinecartItem(Item.Properties settings) {
-        super(Type.HOPPER, settings);
+        super(EntityType.HOPPER_MINECART, settings);
     }
 }
