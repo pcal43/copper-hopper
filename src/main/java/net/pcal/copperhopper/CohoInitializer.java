@@ -27,9 +27,9 @@ package net.pcal.copperhopper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.flag.FeatureFlags;
@@ -82,6 +82,9 @@ public class CohoInitializer implements ModInitializer {
             } catch (Exception e) {
                 logger.catching(Level.ERROR, e);
                 logger.error(LOG_PREFIX + "Failed to initialize");
+                // We should abort minecraft startup.  Otherwise, existing copper hoppers may be removed from the world as 
+                // invalid blocks.  If that's what they want, they can just disable the mod.
+                throw new RuntimeException(e); 
             }
         }
 
@@ -99,7 +102,8 @@ public class CohoInitializer implements ModInitializer {
             // Register the Block
             //
             final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings());
-            final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Properties());
+            final ResourceKey<Item> itemReourceKey = ResourceKey.create(Registries.ITEM, CopperHopperMod.COHO_ITEM_ID);
+            final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Properties().setId(itemReourceKey));
             ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER, cohoItem));
 
             cohoItem.registerBlocks(Item.BY_BLOCK, cohoItem); // wat
@@ -111,9 +115,12 @@ public class CohoInitializer implements ModInitializer {
             //
             // Register the Minecart
             //
-            final EntityType<CopperHopperMinecartEntity> minecartType = FabricEntityTypeBuilder.<CopperHopperMinecartEntity>create(MobCategory.MISC, CopperHopperMinecartEntity::new).
-                    dimensions(EntityDimensions.fixed(0.98f, 0.7f)).build();
-            final CopperHopperMinecartItem cohoMinecartItem = new CopperHopperMinecartItem(new Item.Properties().stacksTo(1));
+            final ResourceKey<EntityType<?>> minecartResourceKey = ResourceKey.create(Registries.ENTITY_TYPE, CopperHopperMod.COHO_MINECART_ENTITY_TYPE_ID);
+            final EntityType<CopperHopperMinecartEntity> minecartType = EntityType.Builder.<CopperHopperMinecartEntity>of(CopperHopperMinecartEntity::new, MobCategory.MISC).
+                sized(0.98f, 0.7f).build(minecartResourceKey);
+            // ??? dimensions(EntityDimensions.fixed(0.98f, 0.7f)).build(); //??????
+            final ResourceKey<Item> cartItemReourceKey = ResourceKey.create(Registries.ITEM, CopperHopperMod.COHO_MINECART_ITEM_ID);            
+            final CopperHopperMinecartItem cohoMinecartItem = new CopperHopperMinecartItem(new Item.Properties().stacksTo(1).setId(cartItemReourceKey));
             register(BuiltInRegistries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID, minecartType);
             register(BuiltInRegistries.ITEM, COHO_MINECART_ITEM_ID, cohoMinecartItem);
             ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER_MINECART, cohoMinecartItem));

@@ -24,9 +24,13 @@
 
 package net.pcal.copperhopper;
 
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HopperBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -36,8 +40,6 @@ import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
-import org.jetbrains.annotations.Nullable;
-
 import static net.pcal.copperhopper.CopperHopperMod.mod;
 
 public class CopperHopperBlock extends HopperBlock {
@@ -46,7 +48,9 @@ public class CopperHopperBlock extends HopperBlock {
      * Default block settings are shared used by both polymer and non-polymer registrations.
      */
     public static BlockBehaviour.Properties getDefaultSettings() {
-        return FabricBlockSettings.copyOf(Blocks.HOPPER).mapColor(MapColor.COLOR_BROWN);
+		final ResourceKey<Block> rk = ResourceKey.create(Registries.BLOCK, CopperHopperMod.COHO_BLOCK_ID);
+        BlockBehaviour.Properties p = BlockBehaviour.Properties.ofFullCopy(Blocks.HOPPER).mapColor(MapColor.COLOR_BROWN).setId(rk);
+        return p;
     }
 
     public CopperHopperBlock(BlockBehaviour.Properties settings) {
@@ -56,7 +60,7 @@ public class CopperHopperBlock extends HopperBlock {
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        return world.isClientSide ? null : createTickerHelper(type,  mod().getBlockEntityType(), HopperBlockEntity::pushItemsTick);
+        return world.isClientSide ? null : createTickerHelper(type, mod().getBlockEntityType(), HopperBlockEntity::pushItemsTick);
     }
 
     @Override

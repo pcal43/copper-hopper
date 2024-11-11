@@ -6,12 +6,8 @@
     "   "
   ],
   "key": {
-    "C": {
-      "item": "copperhopper:copper_hopper"
-    },
-    "M": {
-      "item": "minecraft:minecart"
-    }
+    "C": "copperhopper:copper_hopper",
+    "M": "minecraft:minecart"
   },
   "result": {
     "id": "copperhopper:copper_hopper_minecart"

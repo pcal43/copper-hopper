@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_16",
   "mixins": [
     "HopperBlockEntityMixin",
-    "MinecartItemMixin",
-    "MinecartItemDispenserBehaviorMixin"
+    "MinecartItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1
