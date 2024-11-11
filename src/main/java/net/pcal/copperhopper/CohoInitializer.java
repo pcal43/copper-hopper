@@ -81,8 +81,10 @@ public class CohoInitializer implements ModInitializer {
                 logger.info(LOG_PREFIX + "Initialized.");
             } catch (Exception e) {
                 logger.catching(Level.ERROR, e);
-                logger.error(LOG_PREFIX + "Failed to initialize", e);
-                throw new RuntimeException(e);
+                logger.error(LOG_PREFIX + "Failed to initialize");
+                // We should abort minecraft startup.  Otherwise, existing copper hoppers may be removed from the world as 
+                // invalid blocks.  If that's what they want, they can just disable the mod.
+                throw new RuntimeException(e); 
             }
         }
 
