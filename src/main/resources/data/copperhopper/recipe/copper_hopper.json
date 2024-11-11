@@ -6,15 +6,9 @@
     " I "
   ],
   "key": {
-    "C": {
-      "item": "minecraft:comparator"
-    },
-    "H": {
-      "item": "minecraft:hopper"
-    },
-    "I": {
-      "item": "minecraft:copper_ingot"
-    }
+    "C": "minecraft:comparator",
+    "H": "minecraft:hopper",
+    "I": "minecraft:copper_ingot"
   },
   "result": {
     "id": "copperhopper:copper_hopper"
