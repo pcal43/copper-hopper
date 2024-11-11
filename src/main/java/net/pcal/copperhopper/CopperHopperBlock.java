@@ -27,7 +27,10 @@ package net.pcal.copperhopper;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HopperBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -45,7 +48,9 @@ public class CopperHopperBlock extends HopperBlock {
      * Default block settings are shared used by both polymer and non-polymer registrations.
      */
     public static BlockBehaviour.Properties getDefaultSettings() {
-        return BlockBehaviour.Properties.ofFullCopy(Blocks.HOPPER).mapColor(MapColor.COLOR_BROWN);
+		final ResourceKey<Block> rk = ResourceKey.create(Registries.BLOCK, CopperHopperMod.COHO_BLOCK_ID);
+        BlockBehaviour.Properties p = BlockBehaviour.Properties.ofFullCopy(Blocks.HOPPER).mapColor(MapColor.COLOR_BROWN).setId(rk);
+        return p;
     }
 
     public CopperHopperBlock(BlockBehaviour.Properties settings) {
