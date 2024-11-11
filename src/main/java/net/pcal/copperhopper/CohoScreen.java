@@ -44,6 +44,7 @@ public class CohoScreen extends HopperScreen {
     protected void renderBg(GuiGraphics context, float delta, int mouseX, int mouseY) {
         int i = (this.width - this.imageWidth) / 2;
         int j = (this.height - this.imageHeight) / 2;
-        context.blit(loc -> RenderType.entityCutout(loc), TEXTURE, i, j, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
+        // FIXME? RenderType here is new in 1.21.3.  Seems to work but no idea if it's correct.
+        context.blit(r->RenderType.guiTextured(TEXTURE), TEXTURE, i, j, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
     }
 }
