@@ -71,15 +71,15 @@ public class CopperHopperMod {
     public static final String LOGGER_NAME = "CopperHopper";
     public static final String LOG_PREFIX = "[CopperHopper] ";
 
-    public static final ResourceLocation COHO_BLOCK_ID = new ResourceLocation("copperhopper:copper_hopper");
-    public static final ResourceLocation COHO_ITEM_ID = new ResourceLocation("copperhopper:copper_hopper");
-    public static final ResourceLocation COHO_SCREEN_ID = new ResourceLocation("copperhopper:copper_hopper");
+    public static final ResourceLocation COHO_BLOCK_ID = ResourceLocation.parse("copperhopper:copper_hopper");
+    public static final ResourceLocation COHO_ITEM_ID = ResourceLocation.parse("copperhopper:copper_hopper");
+    public static final ResourceLocation COHO_SCREEN_ID = ResourceLocation.parse("copperhopper:copper_hopper");
 
     // I guess I shouldn't have added the '_entity' suffix here.  But it's out in the wild now, so too late to change.  *shrug*
-    public static final ResourceLocation COHO_BLOCK_ENTITY_TYPE_ID = new ResourceLocation("copperhopper:copper_hopper_entity");
+    public static final ResourceLocation COHO_BLOCK_ENTITY_TYPE_ID = ResourceLocation.parse("copperhopper:copper_hopper_entity");
 
-    public static final ResourceLocation COHO_MINECART_ITEM_ID = new ResourceLocation("copperhopper:copper_hopper_minecart");
-    public static final ResourceLocation COHO_MINECART_ENTITY_TYPE_ID = new ResourceLocation("copperhopper:copper_hopper_minecart");
+    public static final ResourceLocation COHO_MINECART_ITEM_ID = ResourceLocation.parse("copperhopper:copper_hopper_minecart");
+    public static final ResourceLocation COHO_MINECART_ENTITY_TYPE_ID = ResourceLocation.parse("copperhopper:copper_hopper_minecart");
 
 
     private static final String CONFIG_FILENAME = "copperhopper.properties";
@@ -156,7 +156,7 @@ public class CopperHopperMod {
         if (nbtMatchEnabledIds != null) {
             final ImmutableSet.Builder<ResourceLocation> builder = ImmutableSet.builder();
             for (String id : nbtMatchEnabledIds.trim().split("\\s+")) {
-                final ResourceLocation r = new ResourceLocation(id);
+                final ResourceLocation r = ResourceLocation.parse(id);
                 logger.debug(() -> "nbtMatchEnabled for " + r);
                 builder.add(r);
             }
