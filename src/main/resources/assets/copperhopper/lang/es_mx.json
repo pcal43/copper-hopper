@@ -1,0 +1,5 @@
+{
+  "block.copperhopper.copper_hopper" : "Tolva de cobre",
+  "item.copperhopper.copper_hopper_minecart" : "Vagón con tolva de cobre",
+  "entity.copperhopper.copper_hopper_minecart" : "Vagón con tolva de cobre"
+}
