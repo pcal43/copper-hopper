@@ -26,12 +26,16 @@ package net.pcal.copperhopper;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.HopperScreen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.HopperMenu;
 
+/**
+ * Alternate version of the HopperScreen that displays our texture with the
+ * mesh background in the input slots.
+ */
 public class CohoScreen extends HopperScreen {
 
     private static final ResourceLocation TEXTURE = ResourceLocation.parse("copperhopper:textures/gui/container/copper_hopper.png");
@@ -45,6 +49,6 @@ public class CohoScreen extends HopperScreen {
         int i = (this.width - this.imageWidth) / 2;
         int j = (this.height - this.imageHeight) / 2;
         // FIXME? RenderType here is new in 1.21.3.  Seems to work but no idea if it's correct.
-        context.blit(r->RenderType.guiTextured(TEXTURE), TEXTURE, i, j, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, i, j, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
     }
 }
