@@ -88,8 +88,8 @@ public class CopperHopperBlock extends HopperBlock {
     }
 
     /**
-     * Calculates the redstone strength the same way vanilla does, except that it excludes one item from
-     * each non-empty stack (the filter item).
+     * Calculates the redstone strength the same way vanilla does, except that it excludes the first item
+     * of a given type from the calculations (i.e., it ignores the 'filter items').
      */
     private static int getRedstoneSignalFromContainerExcludingFilterItems(@Nullable BlockEntity blockEntity) {
         if (blockEntity instanceof Container container) {
