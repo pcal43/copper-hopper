@@ -24,6 +24,10 @@
 
 package net.pcal.copperhopper;
 
+import net.minecraft.util.Mth;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -40,6 +44,10 @@ import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import static net.pcal.copperhopper.CopperHopperMod.mod;
 
 public class CopperHopperBlock extends HopperBlock {
@@ -67,4 +75,45 @@ public class CopperHopperBlock extends HopperBlock {
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new CopperHopperBlockEntity(pos, state);
     }
+
+    /**
+     * Override this to optionally exclude the 'filter items' when calculating redstone strength.
+     */
+    protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
+        if (CopperHopperMod.mod().isRedstoneStrengthIgnoresFilterItems()) {
+            return getRedstoneSignalFromContainerExcludingFilterItems(level.getBlockEntity(blockPos));
+        } else {
+            return super.getAnalogOutputSignal(blockState, level, blockPos);
+        }
+    }
+
+    /**
+     * Calculates the redstone strength the same way vanilla does, except that it excludes the first item
+     * of a given type from the calculations (i.e., it ignores the 'filter items').
+     */
+    private static int getRedstoneSignalFromContainerExcludingFilterItems(@Nullable BlockEntity blockEntity) {
+        if (blockEntity instanceof Container container) {
+            float f = 0.0F;
+            final Set<Item> itemTypes = new HashSet<>();
+            for (int i = 0; i < container.getContainerSize(); ++i) {
+                ItemStack itemStack = container.getItem(i);
+                if (!itemStack.isEmpty()) {
+                    final int discount;
+                    if (!itemTypes.contains(itemStack.getItem())) {
+                        // if this is the first stack of the given type of items, we're going to ignore one of them.
+                        discount = 1;
+                        itemTypes.add(itemStack.getItem());
+                    } else {
+                        discount = 0;
+                    }
+                    f += ((float) itemStack.getCount() - discount) / (float) (container.getMaxStackSize(itemStack) - discount);
+                }
+            }
+            f /= (float) container.getContainerSize();
+            return Mth.lerpDiscrete(f, 0, 15);
+        } else {
+            return 0;
+        }
+    }
+
 }
