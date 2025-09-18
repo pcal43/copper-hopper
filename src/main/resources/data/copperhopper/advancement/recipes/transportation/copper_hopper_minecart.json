@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_item": {
+    "has_minecart": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "copperhopper:copper_hopper_minecart"
-            ]
+            "items": "minecraft:minecart"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_item",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_minecart"
     ]
   ],
   "rewards": {
     "recipes": [
       "copperhopper:copper_hopper_minecart"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
