@@ -164,7 +164,7 @@ public class CopperHopperMod {
         }
 
         this.isRedstoneStrengthIgnoresFilterItems = "true".equalsIgnoreCase(config.getProperty("redstoneStrengthIgnoresFilterItems", "false"));
-        logger.debug(() -> "isRedstoneSignalIgnoresFilterItems = "+this.isRedstoneStrengthIgnoresFilterItems);
+        logger.debug(() -> "isRedstoneStrengthIgnoresFilterItems = "+this.isRedstoneStrengthIgnoresFilterItems);
 
         // adjust logging to configured level
         final String configuredLevel = config.getProperty("log-level");
