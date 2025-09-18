@@ -11,6 +11,26 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "has_copper_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:copper_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_comparator": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:comparator"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_the_recipe": {
       "conditions": {
         "recipe": "copperhopper:copper_hopper"
@@ -20,8 +40,10 @@
   },
   "requirements": [
     [
-      "has_the_recipe",
-      "has_hopper"
+      "has_hopper",
+      "has_copper_ingot",
+      "has_comparator",
+      "has_the_recipe"
     ]
   ],
   "rewards": {

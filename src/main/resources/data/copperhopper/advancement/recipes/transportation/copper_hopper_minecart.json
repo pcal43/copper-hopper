@@ -11,6 +11,16 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "has_copper_hopper": {
+      "conditions": {
+        "items": [
+          {
+            "items": "copperhopper:copper_hopper"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_the_recipe": {
       "conditions": {
         "recipe": "copperhopper:copper_hopper_minecart"
@@ -20,8 +30,9 @@
   },
   "requirements": [
     [
-      "has_the_recipe",
-      "has_minecart"
+      "has_minecart",
+      "has_copper_hopper",
+      "has_the_recipe"
     ]
   ],
   "rewards": {
