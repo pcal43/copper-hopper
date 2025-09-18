@@ -135,6 +135,7 @@ public class CopperHopperMod {
     private final Path configFilePath = Paths.get("config", CONFIG_FILENAME);
     private final File configFile = configFilePath.toFile();
     private Collection<ResourceLocation> nbtMatchEnabledIds = Collections.emptySet();
+    private boolean isRedstoneSignalIgnoresFilterItems = false;
 
     // ===================================================================================
     // Mod lifecycle
@@ -161,6 +162,8 @@ public class CopperHopperMod {
             }
             this.nbtMatchEnabledIds = builder.build();
         }
+
+        this.isRedstoneSignalIgnoresFilterItems = "true".equalsIgnoreCase(config.getProperty("redstoneSignalIgnoresFilterItems", "false"));
 
         // adjust logging to configured level
         final String configuredLevel = config.getProperty("log-level");
@@ -229,6 +232,14 @@ public class CopperHopperMod {
      */
     public boolean shouldVetoPullFrom(CopperInventory from, ItemStack pulledItem) {
         return !containsAtLeast(from, pulledItem, 2, this.nbtMatchEnabledIds);
+    }
+
+    /**
+     * Return true if we should exclude the filter items when calculating the strength of the redstone signal
+     * output from a hopper.
+     */
+    public boolean isRedstoneSignalIgnoresFilterItems() {
+        return this.isRedstoneSignalIgnoresFilterItems;
     }
 
     /**

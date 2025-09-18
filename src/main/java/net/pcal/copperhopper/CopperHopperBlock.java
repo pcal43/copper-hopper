@@ -24,6 +24,7 @@
 
 package net.pcal.copperhopper;
 
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -67,4 +68,9 @@ public class CopperHopperBlock extends HopperBlock {
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new CopperHopperBlockEntity(pos, state);
     }
+
+    protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
+        return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(blockPos));
+    }
+
 }
