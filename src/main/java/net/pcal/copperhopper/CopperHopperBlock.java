@@ -24,6 +24,7 @@
 
 package net.pcal.copperhopper;
 
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
@@ -68,7 +69,7 @@ public class CopperHopperBlock extends HopperBlock {
     @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        return world.isClientSide ? null : createTickerHelper(type, mod().getBlockEntityType(), HopperBlockEntity::pushItemsTick);
+        return world.isClientSide() ? null : createTickerHelper(type, mod().getBlockEntityType(), HopperBlockEntity::pushItemsTick);
     }
 
     @Override
@@ -79,11 +80,12 @@ public class CopperHopperBlock extends HopperBlock {
     /**
      * Override this to optionally exclude the 'filter items' when calculating redstone strength.
      */
-    protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
+    @Override
+    protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos, Direction direction) {
         if (CopperHopperMod.mod().isRedstoneStrengthIgnoresFilterItems()) {
             return getRedstoneSignalFromContainerExcludingFilterItems(level.getBlockEntity(blockPos));
         } else {
-            return super.getAnalogOutputSignal(blockState, level, blockPos);
+            return super.getAnalogOutputSignal(blockState, level, blockPos, direction);
         }
     }
 
