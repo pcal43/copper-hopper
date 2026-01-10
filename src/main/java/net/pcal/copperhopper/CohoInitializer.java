@@ -27,6 +27,7 @@ package net.pcal.copperhopper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -124,6 +125,11 @@ public class CohoInitializer implements ModInitializer {
             register(BuiltInRegistries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID, minecartType);
             register(BuiltInRegistries.ITEM, COHO_MINECART_ITEM_ID, cohoMinecartItem);
             ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER_MINECART, cohoMinecartItem));
+
+
+            OxidizableBlocksRegistry.registerOxidizableBlockPair(ModBlocks.MY_COPPER_BLOCK, ModBlocks.EXPOSED_MY_COPPER);
+            OxidizableBlocksRegistry.registerOxidizableBlockPair(ModBlocks.EXPOSED_MY_COPPER, ModBlocks.WEATHERED_MY_COPPER);
+            OxidizableBlocksRegistry.registerOxidizableBlockPair(ModBlocks.WEATHERED_MY_COPPER, ModBlocks.OXIDIZED_MY_COPPER);
         }
     }
 }

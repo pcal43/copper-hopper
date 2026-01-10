@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/hopper_side",
+  "textures": {
+    "particle": "minecraft:block/weathered_copper",
+    "top": "minecraft:block/weathered_copper",
+    "side": "minecraft:block/weathered_copper",
+    "inside": "minecraft:block/jukebox_side"
+  }
+}
+
