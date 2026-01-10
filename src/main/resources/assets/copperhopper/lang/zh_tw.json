@@ -1,5 +1,12 @@
 {
   "block.copperhopper.copper_hopper" : "銅漏斗",
+  "block.copperhopper.exposed_copper_hopper" : "裸露的銅漏斗",
+  "block.copperhopper.weathered_copper_hopper" : "風化的銅漏斗",
+  "block.copperhopper.oxidized_copper_hopper" : "氧化的銅漏斗",
+  "block.copperhopper.waxed_copper_hopper" : "上蠟的銅漏斗",
+  "block.copperhopper.waxed_exposed_copper_hopper" : "上蠟的裸露銅漏斗",
+  "block.copperhopper.waxed_weathered_copper_hopper" : "上蠟的風化銅漏斗",
+  "block.copperhopper.waxed_oxidized_copper_hopper" : "上蠟的氧化銅漏斗",
   "item.copperhopper.copper_hopper_minecart" : "銅漏斗礦車",
   "entity.copperhopper.copper_hopper_minecart" : "銅漏斗礦車"
 }

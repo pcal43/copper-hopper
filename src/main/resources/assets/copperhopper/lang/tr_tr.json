@@ -1,5 +1,12 @@
 {
   "block.copperhopper.copper_hopper" : "Bakır Huni",
+  "block.copperhopper.exposed_copper_hopper" : "Açığa Çıkmış Bakır Huni",
+  "block.copperhopper.weathered_copper_hopper" : "Eskimiş Bakır Huni",
+  "block.copperhopper.oxidized_copper_hopper" : "Oksitlenmiş Bakır Huni",
+  "block.copperhopper.waxed_copper_hopper" : "Mumlanmış Bakır Huni",
+  "block.copperhopper.waxed_exposed_copper_hopper" : "Mumlanmış Açığa Çıkmış Bakır Huni",
+  "block.copperhopper.waxed_weathered_copper_hopper" : "Mumlanmış Eskimiş Bakır Huni",
+  "block.copperhopper.waxed_oxidized_copper_hopper" : "Mumlanmış Oksitlenmiş Bakır Huni",
   "item.copperhopper.copper_hopper_minecart" : "Bakır Hunili Vagon",
   "entity.copperhopper.copper_hopper_minecart" : "Bakır Hunili Vagon"
 }

@@ -1,5 +1,12 @@
 {
   "block.copperhopper.copper_hopper" : "Tolva de cobre",
+  "block.copperhopper.exposed_copper_hopper" : "Tolva de cobre expuesta",
+  "block.copperhopper.weathered_copper_hopper" : "Tolva de cobre envejecida",
+  "block.copperhopper.oxidized_copper_hopper" : "Tolva de cobre oxidada",
+  "block.copperhopper.waxed_copper_hopper" : "Tolva de cobre encerada",
+  "block.copperhopper.waxed_exposed_copper_hopper" : "Tolva de cobre expuesta encerada",
+  "block.copperhopper.waxed_weathered_copper_hopper" : "Tolva de cobre envejecida encerada",
+  "block.copperhopper.waxed_oxidized_copper_hopper" : "Tolva de cobre oxidada encerada",
   "item.copperhopper.copper_hopper_minecart" : "Vagón con tolva de cobre",
   "entity.copperhopper.copper_hopper_minecart" : "Vagón con tolva de cobre"
 }

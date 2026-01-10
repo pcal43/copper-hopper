@@ -1,5 +1,12 @@
 {
   "block.copperhopper.copper_hopper" : "Медная воронка",
+  "block.copperhopper.exposed_copper_hopper" : "Обнажённая медная воронка",
+  "block.copperhopper.weathered_copper_hopper" : "Выветренная медная воронка",
+  "block.copperhopper.oxidized_copper_hopper" : "Окисленная медная воронка",
+  "block.copperhopper.waxed_copper_hopper" : "Вощёная медная воронка",
+  "block.copperhopper.waxed_exposed_copper_hopper" : "Вощёная обнажённая медная воронка",
+  "block.copperhopper.waxed_weathered_copper_hopper" : "Вощёная выветренная медная воронка",
+  "block.copperhopper.waxed_oxidized_copper_hopper" : "Вощёная окисленная медная воронка",
   "item.copperhopper.copper_hopper_minecart" : "Вагонетка с медной воронкой",
   "entity.copperhopper.copper_hopper_minecart" : "Вагонетка с медной воронкой"
 }
