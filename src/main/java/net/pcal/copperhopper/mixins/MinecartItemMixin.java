@@ -49,7 +49,7 @@ import net.minecraft.world.entity.EntityType;
 public abstract class MinecartItemMixin {
 
     @Redirect(method = "useOn",
-            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/entity/vehicle/AbstractMinecart;createMinecart(Lnet/minecraft/world/level/Level;DDDLnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/entity/EntitySpawnReason;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/entity/vehicle/AbstractMinecart;"))
+            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/entity/vehicle/minecart/AbstractMinecart;createMinecart(Lnet/minecraft/world/level/Level;DDDLnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/entity/EntitySpawnReason;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/entity/vehicle/minecart/AbstractMinecart;"))
     private AbstractMinecart coho__createMinecart(Level world, double x, double y, double z, EntityType<? extends AbstractMinecart> type, EntitySpawnReason entitySpawnReason, ItemStack itemStack, @Nullable Player player) {
         if (((Object) this) instanceof CopperHopperMinecartItem) {
             return new CopperHopperMinecartEntity(world, x, y, z);
