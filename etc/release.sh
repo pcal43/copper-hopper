@@ -82,15 +82,14 @@ set +x
 
 
 #
+# Publish to curseforge
+#
+./gradlew publishCurseForge
+
+#
 # Publish to modrinth
 #
 ./gradlew modrinth
-
-
-#
-# Publish to curseforge
-#
-./gradlew curseforge
 
 
 #
