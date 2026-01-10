@@ -28,7 +28,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.HopperScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.HopperMenu;
 
@@ -38,7 +38,7 @@ import net.minecraft.world.inventory.HopperMenu;
  */
 public class CohoScreen extends HopperScreen {
 
-    private static final ResourceLocation TEXTURE = ResourceLocation.parse("copperhopper:textures/gui/container/copper_hopper.png");
+    private static final Identifier TEXTURE = Identifier.parse("copperhopper:textures/gui/container/copper_hopper.png");
 
     public CohoScreen(HopperMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title);

@@ -29,7 +29,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
@@ -70,15 +70,15 @@ public class CopperHopperMod {
     public static final String LOGGER_NAME = "CopperHopper";
     public static final String LOG_PREFIX = "[CopperHopper] ";
 
-    public static final ResourceLocation COHO_BLOCK_ID = ResourceLocation.parse("copperhopper:copper_hopper");
-    public static final ResourceLocation COHO_ITEM_ID = ResourceLocation.parse("copperhopper:copper_hopper");
-    public static final ResourceLocation COHO_SCREEN_ID = ResourceLocation.parse("copperhopper:copper_hopper");
+    public static final Identifier COHO_BLOCK_ID = Identifier.parse("copperhopper:copper_hopper");
+    public static final Identifier COHO_ITEM_ID = Identifier.parse("copperhopper:copper_hopper");
+    public static final Identifier COHO_SCREEN_ID = Identifier.parse("copperhopper:copper_hopper");
 
     // I guess I shouldn't have added the '_entity' suffix here.  But it's out in the wild now, so too late to change.  *shrug*
-    public static final ResourceLocation COHO_BLOCK_ENTITY_TYPE_ID = ResourceLocation.parse("copperhopper:copper_hopper_entity");
+    public static final Identifier COHO_BLOCK_ENTITY_TYPE_ID = Identifier.parse("copperhopper:copper_hopper_entity");
 
-    public static final ResourceLocation COHO_MINECART_ITEM_ID = ResourceLocation.parse("copperhopper:copper_hopper_minecart");
-    public static final ResourceLocation COHO_MINECART_ENTITY_TYPE_ID = ResourceLocation.parse("copperhopper:copper_hopper_minecart");
+    public static final Identifier COHO_MINECART_ITEM_ID = Identifier.parse("copperhopper:copper_hopper_minecart");
+    public static final Identifier COHO_MINECART_ENTITY_TYPE_ID = Identifier.parse("copperhopper:copper_hopper_minecart");
 
 
     private static final String CONFIG_FILENAME = "copperhopper.properties";
@@ -134,7 +134,7 @@ public class CopperHopperMod {
     private final Logger logger = LogManager.getLogger(LOGGER_NAME);
     private final Path configFilePath = Paths.get("config", CONFIG_FILENAME);
     private final File configFile = configFilePath.toFile();
-    private Collection<ResourceLocation> nbtMatchEnabledIds = Collections.emptySet();
+    private Collection<Identifier> nbtMatchEnabledIds = Collections.emptySet();
     private boolean isRedstoneStrengthIgnoresFilterItems = false;
 
     // ===================================================================================
@@ -154,9 +154,9 @@ public class CopperHopperMod {
 
         final String nbtMatchEnabledIds = config.getProperty("nbtMatchEnabledIds");
         if (nbtMatchEnabledIds != null) {
-            final ImmutableSet.Builder<ResourceLocation> builder = ImmutableSet.builder();
+            final ImmutableSet.Builder<Identifier> builder = ImmutableSet.builder();
             for (String id : nbtMatchEnabledIds.trim().split("\\s+")) {
-                final ResourceLocation r = ResourceLocation.parse(id);
+                final Identifier r = Identifier.parse(id);
                 logger.debug(() -> "nbtMatchEnabled for " + r);
                 builder.add(r);
             }
@@ -285,7 +285,7 @@ public class CopperHopperMod {
      * Returns true if the given inventory contains at least the given number of the given item (across all slots).
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private static boolean containsAtLeast(Container inventory, ItemStack inputItem, int atLeast, Collection<ResourceLocation> nbtMatchEnabledIds) {
+    private static boolean containsAtLeast(Container inventory, ItemStack inputItem, int atLeast, Collection<Identifier> nbtMatchEnabledIds) {
         int count = 0;
         for (int i = 0; i < inventory.getContainerSize(); ++i) {
             final ItemStack filterStack = inventory.getItem(i);
@@ -297,7 +297,7 @@ public class CopperHopperMod {
         return false;
     }
 
-    private static boolean isMatch(ItemStack first, ItemStack second, Collection<ResourceLocation> nbtMatchEnabledIds) {
+    private static boolean isMatch(ItemStack first, ItemStack second, Collection<Identifier> nbtMatchEnabledIds) {
         if (second.isEmpty() || first.isEmpty()) return false;
         if (first == second) return true;
         return first.is(second.getItem()) &&
