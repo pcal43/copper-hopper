@@ -24,12 +24,14 @@
 
 package net.pcal.copperhopper;
 
+import com.google.common.collect.ImmutableList;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -46,8 +48,8 @@ import java.util.Properties;
 
 import static net.minecraft.core.Registry.register;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ENTITY_TYPE_ID;
-import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ID;
-import static net.pcal.copperhopper.CopperHopperMod.COHO_ITEM_ID;
+//import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ID;
+//import static net.pcal.copperhopper.CopperHopperMod.COHO_ITEM_ID;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_MINECART_ENTITY_TYPE_ID;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_MINECART_ITEM_ID;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_SCREEN_ID;
@@ -93,25 +95,38 @@ public class CohoInitializer implements ModInitializer {
          * Create and register all of our blocks and items for non-polymer mode.
          */
         private static void doStandardRegistrations() {
-
             //
             // Register the Screen
             //
             register(BuiltInRegistries.MENU, COHO_SCREEN_ID, new MenuType<>(CohoScreenHandler::new, FeatureFlags.VANILLA_SET));
 
             //
-            // Register the Block
+            // Register the Blocks and Items
             //
-            final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings(CopperHopperMod.COHO_BLOCK_ID));
-            final ResourceKey<Item> itemReourceKey = ResourceKey.create(Registries.ITEM, CopperHopperMod.COHO_ITEM_ID);
-            final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Properties().setId(itemReourceKey).useBlockDescriptionPrefix());
-            ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER, cohoItem));
+            final java.util.List<String> ids = ImmutableList.of(
+                    "copperhopper:copper_hopper",
+                    "copperhopper:exposed_copper_hopper",
+                    "copperhopper:weathered_copper_hopper",
+                    "copperhopper:oxidized_copper_hopper",
+                    "copperhopper:waxed_copper_hopper",
+                    "copperhopper:waxed_exposed_copper_hopper",
+                    "copperhopper:waxed_weathered_copper_hopper",
+                    "copperhopper:waxed_oxidized_copper_hopper"
+            );
+            for (final String id : ids) {
+                final Identifier blockId = Identifier.parse(id);
+                final Identifier itemId = blockId;
+                final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings(blockId));
+                final ResourceKey<Item> itemReourceKey = ResourceKey.create(Registries.ITEM, itemId);
+                final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Properties().setId(itemReourceKey).useBlockDescriptionPrefix());
+                ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER, cohoItem));
 
-            cohoItem.registerBlocks(Item.BY_BLOCK, cohoItem); // wat
-            register(BuiltInRegistries.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
-                    FabricBlockEntityTypeBuilder.create(CopperHopperBlockEntity::new, cohoBlock).build(null));
-            register(BuiltInRegistries.ITEM, COHO_ITEM_ID, cohoItem);
-            register(BuiltInRegistries.BLOCK, COHO_BLOCK_ID, cohoBlock);
+                cohoItem.registerBlocks(Item.BY_BLOCK, cohoItem); // wat
+                register(BuiltInRegistries.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
+                        FabricBlockEntityTypeBuilder.create(CopperHopperBlockEntity::new, cohoBlock).build());
+                register(BuiltInRegistries.ITEM, itemId, cohoItem);
+                register(BuiltInRegistries.BLOCK, blockId, cohoBlock);
+            }
 
             //
             // Register the Minecart
