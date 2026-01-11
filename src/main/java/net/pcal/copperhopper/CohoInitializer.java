@@ -102,7 +102,7 @@ public class CohoInitializer implements ModInitializer {
             //
             // Register the Block
             //
-            final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings());
+            final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings(CopperHopperMod.COHO_BLOCK_ID));
             final ResourceKey<Item> itemReourceKey = ResourceKey.create(Registries.ITEM, CopperHopperMod.COHO_ITEM_ID);
             final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Properties().setId(itemReourceKey).useBlockDescriptionPrefix());
             ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER, cohoItem));
@@ -126,10 +126,11 @@ public class CohoInitializer implements ModInitializer {
             register(BuiltInRegistries.ITEM, COHO_MINECART_ITEM_ID, cohoMinecartItem);
             ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER_MINECART, cohoMinecartItem));
 
-
+/**
             OxidizableBlocksRegistry.registerOxidizableBlockPair(ModBlocks.MY_COPPER_BLOCK, ModBlocks.EXPOSED_MY_COPPER);
             OxidizableBlocksRegistry.registerOxidizableBlockPair(ModBlocks.EXPOSED_MY_COPPER, ModBlocks.WEATHERED_MY_COPPER);
             OxidizableBlocksRegistry.registerOxidizableBlockPair(ModBlocks.WEATHERED_MY_COPPER, ModBlocks.OXIDIZED_MY_COPPER);
+ **/
         }
     }
 }

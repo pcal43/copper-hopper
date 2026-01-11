@@ -25,6 +25,7 @@
 package net.pcal.copperhopper;
 
 import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
@@ -56,8 +57,8 @@ public class CopperHopperBlock extends HopperBlock {
     /**
      * Default block settings are shared used by both polymer and non-polymer registrations.
      */
-    public static BlockBehaviour.Properties getDefaultSettings() {
-		final ResourceKey<Block> rk = ResourceKey.create(Registries.BLOCK, CopperHopperMod.COHO_BLOCK_ID);
+    public static BlockBehaviour.Properties getDefaultSettings(final Identifier blockId) {
+		final ResourceKey<Block> rk = ResourceKey.create(Registries.BLOCK, blockId);
         BlockBehaviour.Properties p = BlockBehaviour.Properties.ofFullCopy(Blocks.HOPPER).mapColor(MapColor.COLOR_BROWN).setId(rk);
         return p;
     }
