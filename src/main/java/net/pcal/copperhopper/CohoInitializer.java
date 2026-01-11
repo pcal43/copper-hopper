@@ -44,12 +44,15 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import static net.minecraft.core.Registry.register;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ENTITY_TYPE_ID;
 //import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ID;
 //import static net.pcal.copperhopper.CopperHopperMod.COHO_ITEM_ID;
+import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_IDS;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_MINECART_ENTITY_TYPE_ID;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_MINECART_ITEM_ID;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_SCREEN_ID;
@@ -103,30 +106,24 @@ public class CohoInitializer implements ModInitializer {
             //
             // Register the Blocks and Items
             //
-            final java.util.List<String> ids = ImmutableList.of(
-                    "copperhopper:copper_hopper",
-                    "copperhopper:exposed_copper_hopper",
-                    "copperhopper:weathered_copper_hopper",
-                    "copperhopper:oxidized_copper_hopper",
-                    "copperhopper:waxed_copper_hopper",
-                    "copperhopper:waxed_exposed_copper_hopper",
-                    "copperhopper:waxed_weathered_copper_hopper",
-                    "copperhopper:waxed_oxidized_copper_hopper"
-            );
-            for (final String id : ids) {
+            final List<CopperHopperBlock> cohoBlocks = new ArrayList<>();
+            for (final String id : COHO_BLOCK_IDS) {
                 final Identifier blockId = Identifier.parse(id);
                 final Identifier itemId = blockId;
                 final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings(blockId));
+                cohoBlocks.add(cohoBlock);
                 final ResourceKey<Item> itemReourceKey = ResourceKey.create(Registries.ITEM, itemId);
                 final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Properties().setId(itemReourceKey).useBlockDescriptionPrefix());
                 ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER, cohoItem));
 
                 cohoItem.registerBlocks(Item.BY_BLOCK, cohoItem); // wat
-                register(BuiltInRegistries.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
-                        FabricBlockEntityTypeBuilder.create(CopperHopperBlockEntity::new, cohoBlock).build());
                 register(BuiltInRegistries.ITEM, itemId, cohoItem);
                 register(BuiltInRegistries.BLOCK, blockId, cohoBlock);
             }
+
+            register(BuiltInRegistries.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
+                    FabricBlockEntityTypeBuilder.create(CopperHopperBlockEntity::new,
+                            cohoBlocks.toArray(new CopperHopperBlock[0])).build());
 
             //
             // Register the Minecart
@@ -135,7 +132,7 @@ public class CohoInitializer implements ModInitializer {
             final EntityType<CopperHopperMinecartEntity> minecartType = EntityType.Builder.<CopperHopperMinecartEntity>of(CopperHopperMinecartEntity::new, MobCategory.MISC).
                 sized(0.98f, 0.7f).build(minecartResourceKey);
             // ??? dimensions(EntityDimensions.fixed(0.98f, 0.7f)).build(); //??????
-            final ResourceKey<Item> cartItemReourceKey = ResourceKey.create(Registries.ITEM, CopperHopperMod.COHO_MINECART_ITEM_ID);            
+            final ResourceKey<Item> cartItemReourceKey = ResourceKey.create(Registries.ITEM, CopperHopperMod.COHO_MINECART_ITEM_ID);
             final CopperHopperMinecartItem cohoMinecartItem = new CopperHopperMinecartItem(new Item.Properties().stacksTo(1).setId(cartItemReourceKey));
             register(BuiltInRegistries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID, minecartType);
             register(BuiltInRegistries.ITEM, COHO_MINECART_ITEM_ID, cohoMinecartItem);

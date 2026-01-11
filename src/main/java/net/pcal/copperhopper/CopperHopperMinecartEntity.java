@@ -49,11 +49,11 @@ public class CopperHopperMinecartEntity extends MinecartHopper implements Worldl
 
 
     public CopperHopperMinecartEntity(EntityType<? extends CopperHopperMinecartEntity> entityType, Level world) {
-        super(mod().getMinecartEntityType(), world);
+        super(entityType, world);
     }
 
-    public CopperHopperMinecartEntity(Level world, double x, double y, double z) {
-        super(mod().getMinecartEntityType(), world);
+    public CopperHopperMinecartEntity(Level world, double x, double y, double z, EntityType<? extends CopperHopperMinecartEntity> type) {
+        super(type, world);
         super.xo = x;
         super.yo = y;
         super.zo = z;
@@ -77,12 +77,12 @@ public class CopperHopperMinecartEntity extends MinecartHopper implements Worldl
 
     @Override
     public BlockState getDefaultDisplayBlockState() {
-        return mod().getBlock().defaultBlockState();
+        return mod().getMinecrartHopperBlock().defaultBlockState();
     }
 
     @Override
     public BlockState getDisplayBlockState() {
-        return mod().getBlock().defaultBlockState();
+        return mod().getMinecrartHopperBlock().defaultBlockState();
     }
 
     @Override
