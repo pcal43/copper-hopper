@@ -107,8 +107,7 @@ public class CohoInitializer implements ModInitializer {
             // Register the Blocks and Items
             //
             final List<CopperHopperBlock> cohoBlocks = new ArrayList<>();
-            for (final String id : COHO_BLOCK_IDS) {
-                final Identifier blockId = Identifier.parse(id);
+            for (final Identifier blockId : COHO_BLOCK_IDS) {
                 final Identifier itemId = blockId;
                 final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings(blockId));
                 cohoBlocks.add(cohoBlock);
