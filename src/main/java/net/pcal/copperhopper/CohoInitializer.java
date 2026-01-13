@@ -27,9 +27,12 @@ package net.pcal.copperhopper;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.flag.FeatureFlags;
@@ -37,21 +40,32 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import static net.minecraft.core.Registry.register;
+import static net.minecraft.core.registries.BuiltInRegistries.BLOCK;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ENTITY_TYPE_ID;
-import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ID;
-import static net.pcal.copperhopper.CopperHopperMod.COHO_ITEM_ID;
+import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_IDS;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_MINECART_ENTITY_TYPE_ID;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_MINECART_ITEM_ID;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_SCREEN_ID;
+import static net.pcal.copperhopper.CopperHopperMod.COPPER_HOPPER;
+import static net.pcal.copperhopper.CopperHopperMod.EXPOSED_COPPER_HOPPER;
 import static net.pcal.copperhopper.CopperHopperMod.LOGGER_NAME;
 import static net.pcal.copperhopper.CopperHopperMod.LOG_PREFIX;
+import static net.pcal.copperhopper.CopperHopperMod.OXIDIZED_COPPER_HOPPER;
+import static net.pcal.copperhopper.CopperHopperMod.WEATHERED_COPPER_HOPPER;
+import static net.pcal.copperhopper.CopperHopperMod.WAXED_COPPER_HOPPER;
+import static net.pcal.copperhopper.CopperHopperMod.WAXED_EXPOSED_COPPER_HOPPER;
+import static net.pcal.copperhopper.CopperHopperMod.WAXED_WEATHERED_COPPER_HOPPER;
+import static net.pcal.copperhopper.CopperHopperMod.WAXED_OXIDIZED_COPPER_HOPPER;
 import static net.pcal.copperhopper.CopperHopperMod.mod;
 
 /**
@@ -92,25 +106,33 @@ public class CohoInitializer implements ModInitializer {
          * Create and register all of our blocks and items for non-polymer mode.
          */
         private static void doStandardRegistrations() {
-
             //
             // Register the Screen
             //
             register(BuiltInRegistries.MENU, COHO_SCREEN_ID, new MenuType<>(CohoScreenHandler::new, FeatureFlags.VANILLA_SET));
 
             //
-            // Register the Block
+            // Register the Blocks and Items
             //
-            final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings());
-            final ResourceKey<Item> itemReourceKey = ResourceKey.create(Registries.ITEM, CopperHopperMod.COHO_ITEM_ID);
-            final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Properties().setId(itemReourceKey).useBlockDescriptionPrefix());
-            ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER, cohoItem));
+            final List<CopperHopperBlock> cohoBlocks = new ArrayList<>();
+            for (final Tuple<Identifier, WeatherState> tuple : COHO_BLOCK_IDS) {
+                final Identifier blockId = tuple.getA();
+                final WeatherState weatherState = tuple.getB();
+                final Identifier itemId = blockId;
+                final CopperHopperBlock cohoBlock = new CopperHopperBlock(weatherState, CopperHopperBlock.getDefaultSettings(blockId));
+                cohoBlocks.add(cohoBlock);
+                final ResourceKey<Item> itemReourceKey = ResourceKey.create(Registries.ITEM, itemId);
+                final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Properties().setId(itemReourceKey).useBlockDescriptionPrefix());
+                ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER, cohoItem));
 
-            cohoItem.registerBlocks(Item.BY_BLOCK, cohoItem); // wat
+                cohoItem.registerBlocks(Item.BY_BLOCK, cohoItem); // wat
+                register(BuiltInRegistries.ITEM, itemId, cohoItem);
+                register(BLOCK, blockId, cohoBlock);
+            }
+
             register(BuiltInRegistries.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
-                    FabricBlockEntityTypeBuilder.create(CopperHopperBlockEntity::new, cohoBlock).build(null));
-            register(BuiltInRegistries.ITEM, COHO_ITEM_ID, cohoItem);
-            register(BuiltInRegistries.BLOCK, COHO_BLOCK_ID, cohoBlock);
+                    FabricBlockEntityTypeBuilder.create(CopperHopperBlockEntity::new,
+                            cohoBlocks.toArray(new CopperHopperBlock[0])).build());
 
             //
             // Register the Minecart
@@ -119,11 +141,22 @@ public class CohoInitializer implements ModInitializer {
             final EntityType<CopperHopperMinecartEntity> minecartType = EntityType.Builder.<CopperHopperMinecartEntity>of(CopperHopperMinecartEntity::new, MobCategory.MISC).
                 sized(0.98f, 0.7f).build(minecartResourceKey);
             // ??? dimensions(EntityDimensions.fixed(0.98f, 0.7f)).build(); //??????
-            final ResourceKey<Item> cartItemReourceKey = ResourceKey.create(Registries.ITEM, CopperHopperMod.COHO_MINECART_ITEM_ID);            
+            final ResourceKey<Item> cartItemReourceKey = ResourceKey.create(Registries.ITEM, CopperHopperMod.COHO_MINECART_ITEM_ID);
             final CopperHopperMinecartItem cohoMinecartItem = new CopperHopperMinecartItem(new Item.Properties().stacksTo(1).setId(cartItemReourceKey));
             register(BuiltInRegistries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID, minecartType);
             register(BuiltInRegistries.ITEM, COHO_MINECART_ITEM_ID, cohoMinecartItem);
             ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER_MINECART, cohoMinecartItem));
+
+            OxidizableBlocksRegistry.registerOxidizableBlockPair(BLOCK.getValue(COPPER_HOPPER), BLOCK.getValue(EXPOSED_COPPER_HOPPER));
+            OxidizableBlocksRegistry.registerOxidizableBlockPair(BLOCK.getValue(EXPOSED_COPPER_HOPPER), BLOCK.getValue(WEATHERED_COPPER_HOPPER));
+            OxidizableBlocksRegistry.registerOxidizableBlockPair(BLOCK.getValue(WEATHERED_COPPER_HOPPER), BLOCK.getValue(OXIDIZED_COPPER_HOPPER));
+
+            OxidizableBlocksRegistry.registerWaxableBlockPair(BLOCK.getValue(COPPER_HOPPER), BLOCK.getValue(WAXED_COPPER_HOPPER));
+            OxidizableBlocksRegistry.registerWaxableBlockPair(BLOCK.getValue(EXPOSED_COPPER_HOPPER), BLOCK.getValue(WAXED_EXPOSED_COPPER_HOPPER));
+            OxidizableBlocksRegistry.registerWaxableBlockPair(BLOCK.getValue(WEATHERED_COPPER_HOPPER), BLOCK.getValue(WAXED_WEATHERED_COPPER_HOPPER));
+            OxidizableBlocksRegistry.registerWaxableBlockPair(BLOCK.getValue(OXIDIZED_COPPER_HOPPER), BLOCK.getValue(WAXED_OXIDIZED_COPPER_HOPPER));
         }
     }
+
 }
+

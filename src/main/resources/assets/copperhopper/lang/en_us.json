@@ -1,5 +1,12 @@
 {
   "block.copperhopper.copper_hopper" : "Copper Hopper",
+  "block.copperhopper.exposed_copper_hopper" : "Exposed Copper Hopper",
+  "block.copperhopper.weathered_copper_hopper" : "Weathered Copper Hopper",
+  "block.copperhopper.oxidized_copper_hopper" : "Oxidized Copper Hopper",
+  "block.copperhopper.waxed_copper_hopper" : "Waxed Copper Hopper",
+  "block.copperhopper.waxed_exposed_copper_hopper" : "Waxed Exposed Copper Hopper",
+  "block.copperhopper.waxed_weathered_copper_hopper" : "Waxed Weathered Copper Hopper",
+  "block.copperhopper.waxed_oxidized_copper_hopper" : "Waxed Oxidized Copper Hopper",
   "item.copperhopper.copper_hopper_minecart" : "Minecart with Copper Hopper",
   "entity.copperhopper.copper_hopper_minecart" : "Minecart with Copper Hopper"
 }

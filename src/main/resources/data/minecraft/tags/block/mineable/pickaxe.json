@@ -1,6 +1,13 @@
 {
   "replace": false,
   "values": [
-    "copperhopper:copper_hopper"
+    "copperhopper:copper_hopper",
+    "copperhopper:exposed_copper_hopper",
+    "copperhopper:weathered_copper_hopper",
+    "copperhopper:oxidized_copper_hopper",
+    "copperhopper:waxed_copper_hopper",
+    "copperhopper:waxed_exposed_copper_hopper",
+    "copperhopper:waxed_weathered_copper_hopper",
+    "copperhopper:waxed_oxidized_copper_hopper"
   ]
 }

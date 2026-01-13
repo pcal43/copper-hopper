@@ -60,7 +60,7 @@ public class CopperHopperBlockEntity extends HopperBlockEntity implements Worldl
      */
     @Override
     public boolean isValidBlockState(BlockState blockState) {
-        return mod().getBlock().equals(blockState.getBlock());
+        return blockState.getBlock() instanceof CopperHopperBlock;
     }
 
     @Override
