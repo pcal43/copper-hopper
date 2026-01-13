@@ -40,7 +40,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
