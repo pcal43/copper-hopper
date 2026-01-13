@@ -39,8 +39,8 @@ import static net.pcal.copperhopper.CopperHopperMod.mod;
 
 public class PolymerCopperHopperBlock extends CopperHopperBlock implements PolymerBlock { // PolymerClientDecoded { //, PolymerKeepModel {//, PolymerClientDecoded {
 
-    public PolymerCopperHopperBlock(Properties settings) {
-        super(settings);
+    public PolymerCopperHopperBlock(WeatherState weatherState, Properties settings) {
+        super(weatherState, settings);
     }
 
     @Override

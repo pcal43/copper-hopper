@@ -26,10 +26,13 @@ package net.pcal.copperhopper;
 
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.WeatheringCopper;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -52,7 +55,7 @@ import java.util.Set;
 
 import static net.pcal.copperhopper.CopperHopperMod.mod;
 
-public class CopperHopperBlock extends HopperBlock {
+public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
 
     /**
      * Default block settings are shared used by both polymer and non-polymer registrations.
@@ -63,8 +66,11 @@ public class CopperHopperBlock extends HopperBlock {
         return p;
     }
 
-    public CopperHopperBlock(BlockBehaviour.Properties settings) {
+    private final WeatherState weatherState;
+
+    public CopperHopperBlock(WeatherState weatherState, BlockBehaviour.Properties settings) {
         super(settings);
+        this.weatherState = weatherState;
     }
 
     @Override
@@ -119,4 +125,20 @@ public class CopperHopperBlock extends HopperBlock {
         }
     }
 
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        // This triggers the oxidation check
+        this.changeOverTime(state, level, pos, random);
+    }
+
+    @Override
+    public boolean isRandomlyTicking(BlockState state) {
+        // Ensures the block actually receives ticks if a next stage exists
+        return WeatheringCopper.getNext(state.getBlock()).isPresent();
+    }
+
+    @Override
+    public WeatherState getAge() {
+        return this.weatherState;
+    }
 }

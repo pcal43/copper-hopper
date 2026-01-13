@@ -24,7 +24,6 @@
 
 package net.pcal.copperhopper;
 
-import com.google.common.collect.ImmutableList;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -33,6 +32,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.flag.FeatureFlags;
@@ -40,6 +40,8 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.WeatheringCopper;
+import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,8 +53,6 @@ import java.util.Properties;
 import static net.minecraft.core.Registry.register;
 import static net.minecraft.core.registries.BuiltInRegistries.BLOCK;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ENTITY_TYPE_ID;
-//import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ID;
-//import static net.pcal.copperhopper.CopperHopperMod.COHO_ITEM_ID;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_IDS;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_MINECART_ENTITY_TYPE_ID;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_MINECART_ITEM_ID;
@@ -116,9 +116,11 @@ public class CohoInitializer implements ModInitializer {
             // Register the Blocks and Items
             //
             final List<CopperHopperBlock> cohoBlocks = new ArrayList<>();
-            for (final Identifier blockId : COHO_BLOCK_IDS) {
+            for (final Tuple<Identifier, WeatherState> tuple : COHO_BLOCK_IDS) {
+                final Identifier blockId = tuple.getA();
+                final WeatherState weatherState = tuple.getB();
                 final Identifier itemId = blockId;
-                final CopperHopperBlock cohoBlock = new CopperHopperBlock(CopperHopperBlock.getDefaultSettings(blockId));
+                final CopperHopperBlock cohoBlock = new CopperHopperBlock(weatherState, CopperHopperBlock.getDefaultSettings(blockId));
                 cohoBlocks.add(cohoBlock);
                 final ResourceKey<Item> itemReourceKey = ResourceKey.create(Registries.ITEM, itemId);
                 final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Properties().setId(itemReourceKey).useBlockDescriptionPrefix());
@@ -154,10 +156,8 @@ public class CohoInitializer implements ModInitializer {
             OxidizableBlocksRegistry.registerWaxableBlockPair(BLOCK.getValue(EXPOSED_COPPER_HOPPER), BLOCK.getValue(WAXED_EXPOSED_COPPER_HOPPER));
             OxidizableBlocksRegistry.registerWaxableBlockPair(BLOCK.getValue(WEATHERED_COPPER_HOPPER), BLOCK.getValue(WAXED_WEATHERED_COPPER_HOPPER));
             OxidizableBlocksRegistry.registerWaxableBlockPair(BLOCK.getValue(OXIDIZED_COPPER_HOPPER), BLOCK.getValue(WAXED_OXIDIZED_COPPER_HOPPER));
-
-
-
         }
     }
+
 }
 

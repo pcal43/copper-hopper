@@ -31,6 +31,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
@@ -38,6 +39,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HopperBlock;
+import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.apache.logging.log4j.Level;
@@ -56,6 +58,8 @@ import java.util.Collections;
 import java.util.Properties;
 
 import static java.util.Objects.requireNonNull;
+import static net.minecraft.world.level.block.WeatheringCopper.*;
+import static net.minecraft.world.level.block.WeatheringCopper.WeatherState.*;
 
 /**
  * Central singleton service.
@@ -80,15 +84,15 @@ public class CopperHopperMod {
     public static final Identifier WAXED_WEATHERED_COPPER_HOPPER = Identifier.parse("copperhopper:waxed_weathered_copper_hopper");
     public static final Identifier WAXED_OXIDIZED_COPPER_HOPPER = Identifier.parse("copperhopper:waxed_oxidized_copper_hopper");
 
-    public static final java.util.List<Identifier> COHO_BLOCK_IDS = ImmutableList.of(
-            COPPER_HOPPER,
-            EXPOSED_COPPER_HOPPER,
-            WEATHERED_COPPER_HOPPER,
-            OXIDIZED_COPPER_HOPPER,
-            WAXED_COPPER_HOPPER,
-            WAXED_EXPOSED_COPPER_HOPPER,
-            WAXED_WEATHERED_COPPER_HOPPER,
-            WAXED_OXIDIZED_COPPER_HOPPER
+    public static final java.util.List<Tuple<Identifier, WeatherState>> COHO_BLOCK_IDS = ImmutableList.of(
+            new Tuple(COPPER_HOPPER, UNAFFECTED),
+            new Tuple(EXPOSED_COPPER_HOPPER, EXPOSED),
+            new Tuple(WEATHERED_COPPER_HOPPER, WEATHERED),
+            new Tuple(OXIDIZED_COPPER_HOPPER, OXIDIZED),
+            new Tuple(WAXED_COPPER_HOPPER, UNAFFECTED),
+            new Tuple(WAXED_EXPOSED_COPPER_HOPPER, EXPOSED),
+            new Tuple(WAXED_WEATHERED_COPPER_HOPPER, WEATHERED),
+            new Tuple(WAXED_OXIDIZED_COPPER_HOPPER, OXIDIZED)
     );
 
     public static final Identifier COHO_ITEM_ID = Identifier.parse("copperhopper:copper_hopper");
@@ -130,7 +134,7 @@ public class CopperHopperMod {
 
     public Block getMinecrartHopperBlock() {
         // COHO_BLOCK_IDS stores Identifier instances already — return the block by that Identifier.
-        return BuiltInRegistries.BLOCK.getValue(COHO_BLOCK_IDS.get(0));
+        return BuiltInRegistries.BLOCK.getValue(COPPER_HOPPER);
     }
 
     @SuppressWarnings("unchecked")

@@ -31,12 +31,14 @@ import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityT
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.pcal.copperhopper.CopperHopperBlock;
 import net.pcal.copperhopper.CopperHopperMod;
 
+import static net.minecraft.world.level.block.WeatheringCopper.*;
 import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ENTITY_TYPE_ID;
 
 
@@ -46,9 +48,11 @@ public class PolymerRegistrar implements Runnable {
     @Override
     public void run() {
         PolymerResourcePackUtils.addModAssets("copperhopper");
-        for(final Identifier blockId : CopperHopperMod.COHO_BLOCK_IDS) {
+        for(final Tuple<Identifier, WeatherState> tuple : CopperHopperMod.COHO_BLOCK_IDS) {
+            final Identifier blockId = tuple.getA();
+            final WeatherState weatherState = tuple.getB();
             final Identifier itemId = blockId;
-            final PolymerCopperHopperBlock cohoBlock = new PolymerCopperHopperBlock(CopperHopperBlock.getDefaultSettings(blockId));
+            final PolymerCopperHopperBlock cohoBlock = new PolymerCopperHopperBlock(weatherState, CopperHopperBlock.getDefaultSettings(blockId));
             final BlockEntityType<PolymerCopperHopperBlockEntity> cohoEntityType = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
                     FabricBlockEntityTypeBuilder.create(PolymerCopperHopperBlockEntity::new, cohoBlock).build());
             final PolymerCopperHopperItem cohoItem = new PolymerCopperHopperItem(cohoBlock, new Item.Properties());
