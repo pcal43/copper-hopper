@@ -33,6 +33,7 @@ import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -87,4 +88,17 @@ public class CopperHopperBlockEntity extends HopperBlockEntity implements Worldl
     public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction dir) {
         return !mod().shouldVetoPullFrom(this, stack);
     }
+
+
+    @Override
+    public void onStateReplaced(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
+        // If the new block is not one of your copper hoppers, drop items and remove BE
+        if (!newState.isOf(state.getBlock())) {
+            // Logic to drop items from inventory goes here
+            super.on(state, world, pos, newState, moved);
+        }
+        // If it IS one of your hoppers (just a different weather state), do NOTHING.
+        // The engine will keep the Block Entity alive and attached to the new state.
+    }
+
 }

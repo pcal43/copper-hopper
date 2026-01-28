@@ -33,7 +33,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.WeatheringCopper;
-import net.minecraft.world.level.storage.TagValueInput;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -62,7 +61,7 @@ public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
      * Default block settings are shared used by both polymer and non-polymer registrations.
      */
     public static BlockBehaviour.Properties getDefaultSettings(final Identifier blockId) {
-		final ResourceKey<Block> rk = ResourceKey.create(Registries.BLOCK, blockId);
+        final ResourceKey<Block> rk = ResourceKey.create(Registries.BLOCK, blockId);
         BlockBehaviour.Properties p = BlockBehaviour.Properties.ofFullCopy(Blocks.HOPPER).mapColor(MapColor.COLOR_BROWN).setId(rk);
         return p;
     }
@@ -133,63 +132,9 @@ public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
         this.changeOverTime(state, level, pos, random);
     }
 
-
-@Override
-public void changeOverTime(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-    // Save existing block entity NBT (inventory, custom data, etc.)
-    BlockEntity oldBe = level.getBlockEntity(pos);
-    net.minecraft.nbt.CompoundTag tag = null;
-    if (oldBe != null) {
-        tag = oldBe.saveWithFullMetadata(level.registryAccess());
-    }
-
-    // Compute next weathered state, copying over shared properties
-    Block block = state.getBlock();
-    BlockState nextState = WeatheringCopper.getNext(block)
-        .map(nextBlock -> {
-            BlockState ns = nextBlock.defaultBlockState();
-            for (var entry : state.getValues().entrySet()) {
-                net.minecraft.world.level.block.state.properties.Property<?> property = entry.getKey();
-                Comparable<?> value = entry.getValue();
-                if (ns.hasProperty(property)) {
-                    ns = copyProperty(ns, property, value);
-                }
-            }
-            return ns;
-        })
-        .orElse(null);
-
-    if (nextState != null) {
-        level.setBlock(pos, nextState, Block.UPDATE_ALL);
-    }
-
-    // Restore NBT into the new block entity
-    if (tag != null) {
-        BlockEntity newBe = level.getBlockEntity(pos);
-        if (newBe != null) {
-            // Use the one\-argument load available in your mappings
-            newBe.load(tag);
-            newBe.setChanged();
-        }
-    }
-}
-
-/**
- * Helper to satisfy generics for StateHolder\#setValue.
- */
-@SuppressWarnings({ "rawtypes", "unchecked" })
-private static BlockState copyProperty(
-    BlockState state,
-    net.minecraft.world.level.block.state.properties.Property property,
-    Comparable value
-) {
-    return state.setValue(property, value);
-}
     @Override
-    public boolean isRandomlyTicking(BlockState state) {
-        // Ensures the block actually receives ticks if a next stage exists
-        return WeatheringCopper.getNext(state.getBlock()).isPresent();
-    }
+    public boolean shouldChangedStateKeepBlockEntity(BlockState state) {
+        return true;
 
     @Override
     public WeatherState getAge() {
