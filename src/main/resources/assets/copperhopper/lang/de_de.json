@@ -1,0 +1,12 @@
+{
+  "block.copperhopper.copper_hopper" : "Kupfertrichter",
+  "block.copperhopper.exposed_copper_hopper" : "Angelaufener Kupfertrichter",
+  "block.copperhopper.weathered_copper_hopper" : "Verwitterter Kupfertrichter",
+  "block.copperhopper.oxidized_copper_hopper" : "Oxidierter Kupfertrichter",
+  "block.copperhopper.waxed_copper_hopper" : "Gewachster Kupfertrichter",
+  "block.copperhopper.waxed_exposed_copper_hopper" : "Gewachster angelaufener Kupfertrichter",
+  "block.copperhopper.waxed_weathered_copper_hopper" : "Gewachster verwitterter Kupfertrichter",
+  "block.copperhopper.waxed_oxidized_copper_hopper" : "Gewachster oxidierter Kupfertrichter",
+  "item.copperhopper.copper_hopper_minecart" : "Lore mit Kupfertrichter",
+  "entity.copperhopper.copper_hopper_minecart" : "Lore mit Kupfertrichter"
+}
