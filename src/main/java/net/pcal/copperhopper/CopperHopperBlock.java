@@ -27,6 +27,7 @@ package net.pcal.copperhopper;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
@@ -77,6 +78,11 @@ public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
         return world.isClientSide() ? null : createTickerHelper(type, mod().getBlockEntityType(), HopperBlockEntity::pushItemsTick);
+    }
+
+    @Override
+    public boolean shouldChangedStateKeepBlockEntity(BlockState blockState) {
+        return true;
     }
 
     @Override
