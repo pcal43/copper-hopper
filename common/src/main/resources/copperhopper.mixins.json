@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.pcal.copperhopper.common.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "copperhopper-refmap.json",
+  "mixins": [
+    "HopperBlockEntityMixin",
+    "MinecartItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

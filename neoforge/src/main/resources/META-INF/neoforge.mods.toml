@@ -1,0 +1,20 @@
+modLoader="javafml"
+loaderVersion="[4.0,)"
+license="MIT"
+
+[[mods]]
+modId="copperhopper"
+version="${version}"
+displayName="Copper Hopper"
+description="Vanilla-friendly item filtering."
+authors=["pcal.net"]
+logoFile="assets/copperhopper/textures/item/copper_hopper.png"
+
+[[dependencies.copperhopper]]
+modId="neoforge"
+mandatory=true
+versionRange="[21.1,)"
+
+[[mixins]]
+config = "copperhopper.mixins.json"
+
