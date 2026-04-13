@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2022-2023 pcal.net
+ * Copyright (c) 2022-2026 pcal.net
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,9 +33,9 @@ import net.minecraft.world.item.MinecartItem;
  * 
  * @since 0.5.0
  */
-public class CopperHopperMinecartItem extends MinecartItem {
+public class CohoMinecartItem extends MinecartItem {
 
-    public CopperHopperMinecartItem(Item.Properties settings) {
+    public CohoMinecartItem(Item.Properties settings) {
         super(EntityType.HOPPER_MINECART, settings);
     }
 }

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2022-2023 pcal.net
+ * Copyright (c) 2022-2026 pcal.net
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,8 +25,6 @@
 package net.pcal.copperhopper.common;
 
 
-import static net.pcal.copperhopper.common.CopperHopperMod.mod;
-
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.WorldlyContainer;
@@ -39,20 +37,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import static net.pcal.copperhopper.common.CohoMod.mod;
+
 /**
  * @author pcal
  * @since 0.5.0
  */
-public class CopperHopperMinecartEntity extends MinecartHopper implements WorldlyContainer, CopperInventory {
+public class CohoMinecartEntity extends MinecartHopper implements WorldlyContainer, CohoContainer {
 
     private static final int[] SLOTS = new int[]{0, 1, 2, 3, 4};
 
 
-    public CopperHopperMinecartEntity(EntityType<? extends CopperHopperMinecartEntity> entityType, Level world) {
+    public CohoMinecartEntity(EntityType<? extends CohoMinecartEntity> entityType, Level world) {
         super(entityType, world);
     }
 
-    public CopperHopperMinecartEntity(Level world, double x, double y, double z, EntityType<? extends CopperHopperMinecartEntity> type) {
+    public CohoMinecartEntity(Level world, double x, double y, double z, EntityType<? extends CohoMinecartEntity> type) {
         super(mod().getMinecartEntityType(), world);
         super.xo = x;
         super.yo = y;
@@ -102,4 +102,3 @@ public class CopperHopperMinecartEntity extends MinecartHopper implements Worldl
 
 
 }
-

@@ -14,8 +14,8 @@
   "icon": "assets/copperhopper/textures/item/copper_hopper.png",
   "environment": "*",
   "entrypoints": {
-    "main": ["net.pcal.copperhopper.fabric.CohoInitializer"],
-    "client": ["net.pcal.copperhopper.fabric.CohoClientInitializer"]
+    "main": ["net.pcal.copperhopper.fabric.FabricMainInitializer"],
+    "client": ["net.pcal.copperhopper.fabric.FabricClientInitilizer"]
   },
   "mixins": [
     "copperhopper.mixins.json"

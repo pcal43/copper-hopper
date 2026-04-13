@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2022-2023 pcal.net
+ * Copyright (c) 2022-2026 pcal.net
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,24 +24,20 @@
 
 package net.pcal.copperhopper.common;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.WeatheringCopper;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HopperBlock;
+import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -49,13 +45,14 @@ import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static net.pcal.copperhopper.common.CopperHopperMod.mod;
+import static net.pcal.copperhopper.common.CohoMod.mod;
 
-public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
+public class CohoBlock extends HopperBlock implements WeatheringCopper {
 
     /**
      * Default block settings.
@@ -68,7 +65,7 @@ public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
 
     private final WeatherState weatherState;
 
-    public CopperHopperBlock(WeatherState weatherState, BlockBehaviour.Properties settings) {
+    public CohoBlock(WeatherState weatherState, BlockBehaviour.Properties settings) {
         super(settings);
         this.weatherState = weatherState;
     }
@@ -86,7 +83,7 @@ public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new CopperHopperBlockEntity(pos, state);
+        return new CohoBlockEntity(pos, state);
     }
 
     /**
@@ -94,7 +91,7 @@ public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
      */
     @Override
     protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos, Direction direction) {
-        if (CopperHopperMod.mod().isRedstoneStrengthIgnoresFilterItems()) {
+        if (CohoMod.mod().isRedstoneStrengthIgnoresFilterItems()) {
             return getRedstoneSignalFromContainerExcludingFilterItems(level.getBlockEntity(blockPos));
         } else {
             return super.getAnalogOutputSignal(blockState, level, blockPos, direction);

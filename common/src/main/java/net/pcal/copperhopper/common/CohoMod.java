@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2022-2023 pcal.net
+ * Copyright (c) 2022-2026 pcal.net
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,8 +57,11 @@ import java.util.Collections;
 import java.util.Properties;
 
 import static java.util.Objects.requireNonNull;
-import static net.minecraft.world.level.block.WeatheringCopper.*;
-import static net.minecraft.world.level.block.WeatheringCopper.WeatherState.*;
+import static net.minecraft.world.level.block.WeatheringCopper.WeatherState;
+import static net.minecraft.world.level.block.WeatheringCopper.WeatherState.EXPOSED;
+import static net.minecraft.world.level.block.WeatheringCopper.WeatherState.OXIDIZED;
+import static net.minecraft.world.level.block.WeatheringCopper.WeatherState.UNAFFECTED;
+import static net.minecraft.world.level.block.WeatheringCopper.WeatherState.WEATHERED;
 
 /**
  * Central singleton service.
@@ -66,7 +69,7 @@ import static net.minecraft.world.level.block.WeatheringCopper.WeatherState.*;
  * @author pcal
  * @since 0.0.1
  */
-public class CopperHopperMod {
+public class CohoMod {
 
     // ===================================================================================
     // Constants
@@ -77,13 +80,13 @@ public class CopperHopperMod {
     public static final String NS = "copperhopper";
 
     public static final Identifier COPPER_HOPPER = Identifier.fromNamespaceAndPath(NS, "copper_hopper");
-    public static final Identifier EXPOSED_COPPER_HOPPER = Identifier.parse("copperhopper:exposed_copper_hopper");
-    public static final Identifier WEATHERED_COPPER_HOPPER = Identifier.parse("copperhopper:weathered_copper_hopper");
-    public static final Identifier OXIDIZED_COPPER_HOPPER = Identifier.parse("copperhopper:oxidized_copper_hopper");
-    public static final Identifier WAXED_COPPER_HOPPER = Identifier.parse("copperhopper:waxed_copper_hopper");
-    public static final Identifier WAXED_EXPOSED_COPPER_HOPPER = Identifier.parse("copperhopper:waxed_exposed_copper_hopper");
-    public static final Identifier WAXED_WEATHERED_COPPER_HOPPER = Identifier.parse("copperhopper:waxed_weathered_copper_hopper");
-    public static final Identifier WAXED_OXIDIZED_COPPER_HOPPER = Identifier.parse("copperhopper:waxed_oxidized_copper_hopper");
+    public static final Identifier EXPOSED_COPPER_HOPPER = Identifier.fromNamespaceAndPath(NS, "exposed_copper_hopper");
+    public static final Identifier WEATHERED_COPPER_HOPPER = Identifier.fromNamespaceAndPath(NS, "weathered_copper_hopper");
+    public static final Identifier OXIDIZED_COPPER_HOPPER = Identifier.fromNamespaceAndPath(NS, "oxidized_copper_hopper");
+    public static final Identifier WAXED_COPPER_HOPPER = Identifier.fromNamespaceAndPath(NS, "waxed_copper_hopper");
+    public static final Identifier WAXED_EXPOSED_COPPER_HOPPER = Identifier.fromNamespaceAndPath(NS, "waxed_exposed_copper_hopper");
+    public static final Identifier WAXED_WEATHERED_COPPER_HOPPER = Identifier.fromNamespaceAndPath(NS, "waxed_weathered_copper_hopper");
+    public static final Identifier WAXED_OXIDIZED_COPPER_HOPPER = Identifier.fromNamespaceAndPath(NS, "waxed_oxidized_copper_hopper");
 
     public static final java.util.List<Tuple<Identifier, WeatherState>> COHO_BLOCK_IDS = ImmutableList.of(
             new Tuple(COPPER_HOPPER, UNAFFECTED),
@@ -96,16 +99,13 @@ public class CopperHopperMod {
             new Tuple(WAXED_OXIDIZED_COPPER_HOPPER, OXIDIZED)
     );
 
-    public static final Identifier COHO_ITEM_ID = Identifier.parse("copperhopper:copper_hopper");
-
-
-    public static final Identifier COHO_SCREEN_ID = Identifier.parse("copperhopper:copper_hopper");
+    public static final Identifier COHO_SCREEN_ID = Identifier.fromNamespaceAndPath(NS, "copper_hopper");
 
     // I guess I shouldn't have added the '_entity' suffix here.  But it's out in the wild now, so too late to change.  *shrug*
-    public static final Identifier COHO_BLOCK_ENTITY_TYPE_ID = Identifier.parse("copperhopper:copper_hopper_entity");
+    public static final Identifier COHO_BLOCK_ENTITY_TYPE_ID = Identifier.fromNamespaceAndPath(NS, "copper_hopper_entity");
 
-    public static final Identifier COHO_MINECART_ITEM_ID = Identifier.parse("copperhopper:copper_hopper_minecart");
-    public static final Identifier COHO_MINECART_ENTITY_TYPE_ID = Identifier.parse("copperhopper:copper_hopper_minecart");
+    public static final Identifier COHO_MINECART_ITEM_ID = Identifier.fromNamespaceAndPath(NS, "copper_hopper_minecart");
+    public static final Identifier COHO_MINECART_ENTITY_TYPE_ID = Identifier.fromNamespaceAndPath(NS, "copper_hopper_minecart");
 
 
     private static final String CONFIG_FILENAME = "copperhopper.properties";
@@ -116,13 +116,13 @@ public class CopperHopperMod {
     // Singleton
 
     private static final class SingletonHolder {
-        private static final CopperHopperMod INSTANCE;
+        private static final CohoMod INSTANCE;
         static {
-            INSTANCE = new CopperHopperMod();
+            INSTANCE = new CohoMod();
         }
     }
 
-    public static CopperHopperMod mod() {
+    public static CohoMod mod() {
         return SingletonHolder.INSTANCE;
     }
 
@@ -139,14 +139,14 @@ public class CopperHopperMod {
     }
 
     @SuppressWarnings("unchecked")
-    public BlockEntityType<CopperHopperBlockEntity> getBlockEntityType() {
-        return (BlockEntityType<CopperHopperBlockEntity>)
+    public BlockEntityType<CohoBlockEntity> getBlockEntityType() {
+        return (BlockEntityType<CohoBlockEntity>)
                 requireNonNull(BuiltInRegistries.BLOCK_ENTITY_TYPE.getValue(COHO_BLOCK_ENTITY_TYPE_ID));
     }
 
     @SuppressWarnings("unchecked")
-    public EntityType<CopperHopperMinecartEntity> getMinecartEntityType() {
-        return (EntityType<CopperHopperMinecartEntity>)
+    public EntityType<CohoMinecartEntity> getMinecartEntityType() {
+        return (EntityType<CohoMinecartEntity>)
                 requireNonNull(BuiltInRegistries.ENTITY_TYPE.getValue(COHO_MINECART_ENTITY_TYPE_ID));
     }
 
@@ -241,7 +241,7 @@ public class CopperHopperMod {
      * Return true if we should prevent one of the given Item from being pushed into the given copper hopper or
      * ch minecart.  THese should never accept item types they don't already contain.
      */
-    public boolean shouldVetoPushInto(CopperInventory into, ItemStack pushedItem) {
+    public boolean shouldVetoPushInto(CohoContainer into, ItemStack pushedItem) {
         return !containsAtLeast(into, pushedItem, 1, this.nbtMatchEnabledIds);
     }
 
@@ -257,7 +257,7 @@ public class CopperHopperMod {
      * Return true if we should prevent one of the given Item from being pulled from the given hopper.
      * CopperHoppers should never allow the last item of a given type to be pulled out.
      */
-    public boolean shouldVetoPullFrom(CopperInventory from, ItemStack pulledItem) {
+    public boolean shouldVetoPullFrom(CohoContainer from, ItemStack pulledItem) {
         return !containsAtLeast(from, pulledItem, 2, this.nbtMatchEnabledIds);
     }
 
@@ -288,7 +288,7 @@ public class CopperHopperMod {
         // Check to see if the block below us is also a CopperHopper and if it's trying to filter on the
         // item we're about to push sideways.  If it is, hang onto to instead so the CopperHopper below
         // can pull it down instead.
-        if (((CopperHopperBlockEntity)from).getBlockState().getValue(HopperBlock.FACING) == Direction.DOWN) {
+        if (((CohoBlockEntity)from).getBlockState().getValue(HopperBlock.FACING) == Direction.DOWN) {
             return false; // don't bother with the check if we're pointing down
         }
         final BlockPos below = pos.mutable().relative(Direction.Axis.Y, -1);
@@ -304,14 +304,14 @@ public class CopperHopperMod {
      * Returns true if the given inventory target is an Item Sorter hopper.
      */
     private static boolean isCopperHopper(Container target) {
-        return target instanceof CopperInventory;
+        return target instanceof CohoContainer;
     }
 
     /**
      * Returns true if the given blockEntity is an Item Sorter hopper.
      */
     private static boolean isCopperHopper(BlockEntity blockEntity) {
-        return blockEntity instanceof CopperHopperBlockEntity;
+        return blockEntity instanceof CohoBlockEntity;
     }
 
     /**
@@ -354,6 +354,6 @@ public class CopperHopperMod {
      * Manually adjust our logger's level.  Because changing the log4j config is a PITA.
      */
     private void setLogLevel(Level logLevel) {
-        Configurator.setLevel(CopperHopperMod.class.getName(), logLevel);
+        Configurator.setLevel(CohoMod.class.getName(), logLevel);
     }
 }

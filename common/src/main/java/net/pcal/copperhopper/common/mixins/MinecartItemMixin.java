@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2022-2023 pcal.net
+ * Copyright (c) 2022-2026 pcal.net
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,20 +24,19 @@
 
 package net.pcal.copperhopper.common.mixins;
 
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.Level;
-import net.pcal.copperhopper.common.CopperHopperMinecartEntity;
-import net.pcal.copperhopper.common.CopperHopperMinecartItem;
+import net.pcal.copperhopper.common.CohoMinecartEntity;
+import net.pcal.copperhopper.common.CohoMinecartItem;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
 
 /**
  * Ensure CHMs get placed correctly.
@@ -52,11 +51,10 @@ public abstract class MinecartItemMixin {
             at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/entity/vehicle/minecart/AbstractMinecart;createMinecart(Lnet/minecraft/world/level/Level;DDDLnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/entity/EntitySpawnReason;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/entity/vehicle/minecart/AbstractMinecart;"),
             remap = false)
     private AbstractMinecart coho__createMinecart(Level world, double x, double y, double z, EntityType<? extends AbstractMinecart> type, EntitySpawnReason entitySpawnReason, ItemStack itemStack, @Nullable Player player) {
-        if (((Object) this) instanceof CopperHopperMinecartItem) {
-            return new CopperHopperMinecartEntity(world, x, y, z, (EntityType<? extends CopperHopperMinecartEntity>) type);
+        if (((Object) this) instanceof CohoMinecartItem) {
+            return new CohoMinecartEntity(world, x, y, z, (EntityType<? extends CohoMinecartEntity>) type);
         } else {
             return AbstractMinecart.createMinecart(world, x, y, z, type, EntitySpawnReason.DISPENSER, itemStack, player);
         }
     }
 }
-
