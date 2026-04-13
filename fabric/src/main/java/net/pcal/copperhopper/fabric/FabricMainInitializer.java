@@ -97,7 +97,7 @@ public class FabricMainInitializer implements ModInitializer {
                 logger.error(LOG_PREFIX + "Failed to initialize");
                 // We should abort minecraft startup.  Otherwise, existing copper hoppers may be removed from the world as 
                 // invalid blocks.  If that's what they want, they can just disable the mod.
-                throw new RuntimeException(e); 
+                throw new RuntimeException(e);
             }
         }
 
@@ -122,8 +122,8 @@ public class FabricMainInitializer implements ModInitializer {
                 cohoBlocks.add(cohoBlock);
                 final ResourceKey<Item> itemReourceKey = ResourceKey.create(Registries.ITEM, itemId);
                 final CohoItem cohoItem = new CohoItem(cohoBlock, new Item.Properties().setId(itemReourceKey).useBlockDescriptionPrefix());
-                                CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.REDSTONE_BLOCKS)
-                                                .register(entries -> entries.insertAfter(Items.HOPPER, cohoItem));
+                CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.REDSTONE_BLOCKS)
+                        .register(entries -> entries.insertAfter(Items.HOPPER, cohoItem));
                 cohoItem.registerBlocks(Item.BY_BLOCK, cohoItem); // wat
                 register(BuiltInRegistries.ITEM, itemId, cohoItem);
                 register(BLOCK, blockId, cohoBlock);
@@ -138,16 +138,16 @@ public class FabricMainInitializer implements ModInitializer {
             //
             final ResourceKey<EntityType<?>> minecartResourceKey = ResourceKey.create(Registries.ENTITY_TYPE, CohoMod.COHO_MINECART_ENTITY_TYPE_ID);
             final EntityType<CohoMinecartEntity> minecartType = EntityType.Builder.<CohoMinecartEntity>of(CohoMinecartEntity::new, MobCategory.MISC).
-                sized(0.98f, 0.7f).build(minecartResourceKey);
+                    sized(0.98f, 0.7f).build(minecartResourceKey);
             // ??? dimensions(EntityDimensions.fixed(0.98f, 0.7f)).build(); //??????
             final ResourceKey<Item> cartItemResourceKey = ResourceKey.create(Registries.ITEM, CohoMod.COHO_MINECART_ITEM_ID);
             final CohoMinecartItem cohoMinecartItem = new CohoMinecartItem(new Item.Properties().stacksTo(1).setId(cartItemResourceKey));
             register(BuiltInRegistries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID, minecartType);
             register(BuiltInRegistries.ITEM, COHO_MINECART_ITEM_ID, cohoMinecartItem);
             CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.REDSTONE_BLOCKS)
-.register(entries -> {
-entries.insertAfter(Items.HOPPER_MINECART, cohoMinecartItem);
-});
+                    .register(entries -> {
+                        entries.insertAfter(Items.HOPPER_MINECART, cohoMinecartItem);
+                    });
             OxidizableBlocksRegistry.registerNextStage(BLOCK.getValue(COPPER_HOPPER), BLOCK.getValue(EXPOSED_COPPER_HOPPER));
             OxidizableBlocksRegistry.registerNextStage(BLOCK.getValue(EXPOSED_COPPER_HOPPER), BLOCK.getValue(WEATHERED_COPPER_HOPPER));
             OxidizableBlocksRegistry.registerNextStage(BLOCK.getValue(WEATHERED_COPPER_HOPPER), BLOCK.getValue(OXIDIZED_COPPER_HOPPER));
