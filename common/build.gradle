@@ -24,6 +24,12 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${project.junit_version}"
 }
 
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.compilerArgs += ["-AdefaultObfuscationEnv=named"]
+}
+
 loom {
     // Configure loom to not create run configurations for the common module
     // since it's not meant to run standalone
@@ -33,7 +39,7 @@ loom {
 
     // Configure mixin refmap
     mixin {
-        useLegacyMixinAp = true  // not entirely clear why this is needed
+        useLegacyMixinAp = true
         defaultRefmapName = "copperhopper-refmap.json"
     }
 }
