@@ -4,6 +4,9 @@ clean:
 compile:
     ./gradlew compileJava
 
+compileCommon:
+    ./gradlew :common:compileJava
+
 release:
     ./gradlew release
 
