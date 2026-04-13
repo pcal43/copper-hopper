@@ -28,15 +28,15 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.pcal.copperhopper.common.CopperHopperScreen;
+import net.pcal.copperhopper.common.CohoScreen;
 
-import static net.pcal.copperhopper.common.CopperHopperMod.mod;
+import static net.pcal.copperhopper.common.CohoMod.mod;
 
 @EventBusSubscriber(modid = "copperhopper", value = Dist.CLIENT)
 public class NeoforgeClientInitializer {
 
     @SubscribeEvent
     public static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
-        event.register(mod().getScreenHandlerType(), CopperHopperScreen::new);
+        event.register(mod().getScreenHandlerType(), CohoScreen::new);
     }
 }

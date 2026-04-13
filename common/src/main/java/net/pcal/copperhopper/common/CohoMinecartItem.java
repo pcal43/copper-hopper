@@ -24,13 +24,18 @@
 
 package net.pcal.copperhopper.common;
 
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.MinecartItem;
 
-public class CopperHopperItem extends BlockItem {
+/**
+ * CopperHopperMinecartItem class for Minecraft 1.20.3
+ * 
+ * @since 0.5.0
+ */
+public class CohoMinecartItem extends MinecartItem {
 
-    public CopperHopperItem(Block block, Item.Properties settings) {
-        super(block, settings);
+    public CohoMinecartItem(Item.Properties settings) {
+        super(EntityType.HOPPER_MINECART, settings);
     }
 }

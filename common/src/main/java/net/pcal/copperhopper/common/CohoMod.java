@@ -69,7 +69,7 @@ import static net.minecraft.world.level.block.WeatheringCopper.WeatherState.WEAT
  * @author pcal
  * @since 0.0.1
  */
-public class CopperHopperMod {
+public class CohoMod {
 
     // ===================================================================================
     // Constants
@@ -116,13 +116,13 @@ public class CopperHopperMod {
     // Singleton
 
     private static final class SingletonHolder {
-        private static final CopperHopperMod INSTANCE;
+        private static final CohoMod INSTANCE;
         static {
-            INSTANCE = new CopperHopperMod();
+            INSTANCE = new CohoMod();
         }
     }
 
-    public static CopperHopperMod mod() {
+    public static CohoMod mod() {
         return SingletonHolder.INSTANCE;
     }
 
@@ -139,20 +139,20 @@ public class CopperHopperMod {
     }
 
     @SuppressWarnings("unchecked")
-    public BlockEntityType<CopperHopperBlockEntity> getBlockEntityType() {
-        return (BlockEntityType<CopperHopperBlockEntity>)
+    public BlockEntityType<CohoBlockEntity> getBlockEntityType() {
+        return (BlockEntityType<CohoBlockEntity>)
                 requireNonNull(BuiltInRegistries.BLOCK_ENTITY_TYPE.getValue(COHO_BLOCK_ENTITY_TYPE_ID));
     }
 
     @SuppressWarnings("unchecked")
-    public EntityType<CopperHopperMinecartEntity> getMinecartEntityType() {
-        return (EntityType<CopperHopperMinecartEntity>)
+    public EntityType<CohoMinecartEntity> getMinecartEntityType() {
+        return (EntityType<CohoMinecartEntity>)
                 requireNonNull(BuiltInRegistries.ENTITY_TYPE.getValue(COHO_MINECART_ENTITY_TYPE_ID));
     }
 
     @SuppressWarnings("unchecked")
-    public MenuType<CopperHopperScreenHandler> getScreenHandlerType() {
-        return requireNonNull((MenuType<CopperHopperScreenHandler>)
+    public MenuType<CohoScreenHandler> getScreenHandlerType() {
+        return requireNonNull((MenuType<CohoScreenHandler>)
                 BuiltInRegistries.MENU.getValue(COHO_SCREEN_ID));
     }
 
@@ -241,7 +241,7 @@ public class CopperHopperMod {
      * Return true if we should prevent one of the given Item from being pushed into the given copper hopper or
      * ch minecart.  THese should never accept item types they don't already contain.
      */
-    public boolean shouldVetoPushInto(CopperHopperContainer into, ItemStack pushedItem) {
+    public boolean shouldVetoPushInto(CohoContainer into, ItemStack pushedItem) {
         return !containsAtLeast(into, pushedItem, 1, this.nbtMatchEnabledIds);
     }
 
@@ -257,7 +257,7 @@ public class CopperHopperMod {
      * Return true if we should prevent one of the given Item from being pulled from the given hopper.
      * CopperHoppers should never allow the last item of a given type to be pulled out.
      */
-    public boolean shouldVetoPullFrom(CopperHopperContainer from, ItemStack pulledItem) {
+    public boolean shouldVetoPullFrom(CohoContainer from, ItemStack pulledItem) {
         return !containsAtLeast(from, pulledItem, 2, this.nbtMatchEnabledIds);
     }
 
@@ -288,7 +288,7 @@ public class CopperHopperMod {
         // Check to see if the block below us is also a CopperHopper and if it's trying to filter on the
         // item we're about to push sideways.  If it is, hang onto to instead so the CopperHopper below
         // can pull it down instead.
-        if (((CopperHopperBlockEntity)from).getBlockState().getValue(HopperBlock.FACING) == Direction.DOWN) {
+        if (((CohoBlockEntity)from).getBlockState().getValue(HopperBlock.FACING) == Direction.DOWN) {
             return false; // don't bother with the check if we're pointing down
         }
         final BlockPos below = pos.mutable().relative(Direction.Axis.Y, -1);
@@ -304,14 +304,14 @@ public class CopperHopperMod {
      * Returns true if the given inventory target is an Item Sorter hopper.
      */
     private static boolean isCopperHopper(Container target) {
-        return target instanceof CopperHopperContainer;
+        return target instanceof CohoContainer;
     }
 
     /**
      * Returns true if the given blockEntity is an Item Sorter hopper.
      */
     private static boolean isCopperHopper(BlockEntity blockEntity) {
-        return blockEntity instanceof CopperHopperBlockEntity;
+        return blockEntity instanceof CohoBlockEntity;
     }
 
     /**
@@ -354,6 +354,6 @@ public class CopperHopperMod {
      * Manually adjust our logger's level.  Because changing the log4j config is a PITA.
      */
     private void setLogLevel(Level logLevel) {
-        Configurator.setLevel(CopperHopperMod.class.getName(), logLevel);
+        Configurator.setLevel(CohoMod.class.getName(), logLevel);
     }
 }

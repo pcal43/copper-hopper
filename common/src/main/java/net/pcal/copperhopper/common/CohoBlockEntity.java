@@ -35,13 +35,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import static net.pcal.copperhopper.common.CopperHopperMod.mod;
+import static net.pcal.copperhopper.common.CohoMod.mod;
 
-public class CopperHopperBlockEntity extends HopperBlockEntity implements WorldlyContainer, CopperHopperContainer {
+public class CohoBlockEntity extends HopperBlockEntity implements WorldlyContainer, CohoContainer {
 
     private static final int[] SLOTS = new int[]{0, 1, 2, 3, 4};
 
-    public CopperHopperBlockEntity(BlockPos pos, BlockState state) {
+    public CohoBlockEntity(BlockPos pos, BlockState state) {
         super(pos, state);
     }
 
@@ -60,12 +60,12 @@ public class CopperHopperBlockEntity extends HopperBlockEntity implements Worldl
      */
     @Override
     public boolean isValidBlockState(BlockState blockState) {
-        return blockState.getBlock() instanceof CopperHopperBlock;
+        return blockState.getBlock() instanceof CohoBlock;
     }
 
     @Override
     protected AbstractContainerMenu createMenu(int syncId, Inventory playerInventory) {
-        return new CopperHopperScreenHandler(syncId, playerInventory, this);
+        return new CohoScreenHandler(syncId, playerInventory, this);
     }
 
     @Override

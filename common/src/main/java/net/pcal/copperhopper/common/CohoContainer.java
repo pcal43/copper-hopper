@@ -24,18 +24,13 @@
 
 package net.pcal.copperhopper.common;
 
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.MinecartItem;
+import net.minecraft.world.Container;
 
 /**
- * CopperHopperMinecartItem class for Minecraft 1.20.3
- * 
+ * Interface for accessing the contents of our two inventory-bearing entities.
+ *
+ * @author pcal
  * @since 0.5.0
  */
-public class CopperHopperMinecartItem extends MinecartItem {
-
-    public CopperHopperMinecartItem(Item.Properties settings) {
-        super(EntityType.HOPPER_MINECART, settings);
-    }
+public interface CohoContainer extends Container {
 }

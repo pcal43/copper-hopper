@@ -36,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static net.pcal.copperhopper.common.CopperHopperMod.mod;
+import static net.pcal.copperhopper.common.CohoMod.mod;
 
 @SuppressWarnings("ALL")
 @Mixin(HopperBlockEntity.class)

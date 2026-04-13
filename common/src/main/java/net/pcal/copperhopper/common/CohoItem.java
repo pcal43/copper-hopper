@@ -24,26 +24,13 @@
 
 package net.pcal.copperhopper.common;
 
-import net.minecraft.world.Container;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.HopperMenu;
-import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
-import static net.pcal.copperhopper.common.CopperHopperMod.mod;
+public class CohoItem extends BlockItem {
 
-public class CopperHopperScreenHandler extends HopperMenu {
-
-    public CopperHopperScreenHandler(int syncId, Inventory playerInventory) {
-        super(syncId, playerInventory);
+    public CohoItem(Block block, Item.Properties settings) {
+        super(block, settings);
     }
-
-    public CopperHopperScreenHandler(int syncId, Inventory playerInventory, Container inventory) {
-        super(syncId, playerInventory, inventory);
-    }
-
-    @Override
-    public MenuType<?> getType() {
-        return mod().getScreenHandlerType();
-    }
-
 }

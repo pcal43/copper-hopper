@@ -37,22 +37,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import static net.pcal.copperhopper.common.CopperHopperMod.mod;
+import static net.pcal.copperhopper.common.CohoMod.mod;
 
 /**
  * @author pcal
  * @since 0.5.0
  */
-public class CopperHopperMinecartEntity extends MinecartHopper implements WorldlyContainer, CopperHopperContainer {
+public class CohoMinecartEntity extends MinecartHopper implements WorldlyContainer, CohoContainer {
 
     private static final int[] SLOTS = new int[]{0, 1, 2, 3, 4};
 
 
-    public CopperHopperMinecartEntity(EntityType<? extends CopperHopperMinecartEntity> entityType, Level world) {
+    public CohoMinecartEntity(EntityType<? extends CohoMinecartEntity> entityType, Level world) {
         super(entityType, world);
     }
 
-    public CopperHopperMinecartEntity(Level world, double x, double y, double z, EntityType<? extends CopperHopperMinecartEntity> type) {
+    public CohoMinecartEntity(Level world, double x, double y, double z, EntityType<? extends CohoMinecartEntity> type) {
         super(mod().getMinecartEntityType(), world);
         super.xo = x;
         super.yo = y;
@@ -62,7 +62,7 @@ public class CopperHopperMinecartEntity extends MinecartHopper implements Worldl
 
     @Override
     public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory) {
-        return new CopperHopperScreenHandler(syncId, playerInventory, this);
+        return new CohoScreenHandler(syncId, playerInventory, this);
     }
 
     @Override

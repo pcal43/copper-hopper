@@ -52,9 +52,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-import static net.pcal.copperhopper.common.CopperHopperMod.mod;
+import static net.pcal.copperhopper.common.CohoMod.mod;
 
-public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
+public class CohoBlock extends HopperBlock implements WeatheringCopper {
 
     /**
      * Default block settings.
@@ -67,7 +67,7 @@ public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
 
     private final WeatherState weatherState;
 
-    public CopperHopperBlock(WeatherState weatherState, BlockBehaviour.Properties settings) {
+    public CohoBlock(WeatherState weatherState, BlockBehaviour.Properties settings) {
         super(settings);
         this.weatherState = weatherState;
     }
@@ -85,7 +85,7 @@ public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new CopperHopperBlockEntity(pos, state);
+        return new CohoBlockEntity(pos, state);
     }
 
     /**
@@ -93,7 +93,7 @@ public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
      */
     @Override
     protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos, Direction direction) {
-        if (CopperHopperMod.mod().isRedstoneStrengthIgnoresFilterItems()) {
+        if (CohoMod.mod().isRedstoneStrengthIgnoresFilterItems()) {
             return getRedstoneSignalFromContainerExcludingFilterItems(level.getBlockEntity(blockPos));
         } else {
             return super.getAnalogOutputSignal(blockState, level, blockPos, direction);
