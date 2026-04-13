@@ -36,6 +36,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -48,7 +49,6 @@ import net.pcal.copperhopper.common.CopperHopperBlockEntity;
 import net.pcal.copperhopper.common.CopperHopperItem;
 import net.pcal.copperhopper.common.CopperHopperMinecartEntity;
 import net.pcal.copperhopper.common.CopperHopperMinecartItem;
-import net.pcal.copperhopper.common.CopperHopperMod;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -56,7 +56,12 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.pcal.copperhopper.common.CopperHopperMod.*;
+import static net.pcal.copperhopper.common.CopperHopperMod.COHO_BLOCK_IDS;
+import static net.pcal.copperhopper.common.CopperHopperMod.COHO_MINECART_ENTITY_TYPE_ID;
+import static net.pcal.copperhopper.common.CopperHopperMod.COHO_MINECART_ITEM_ID;
+import static net.pcal.copperhopper.common.CopperHopperMod.LOGGER_NAME;
+import static net.pcal.copperhopper.common.CopperHopperMod.LOG_PREFIX;
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
 @Mod("copperhopper")
 public class NeoForgeCopperHopperMod {
@@ -67,7 +72,7 @@ public class NeoForgeCopperHopperMod {
         LOGGER.info(LOG_PREFIX + "Mod constructor called");
         modBus.addListener(NeoForgeCopperHopperMod::onCommonSetup);
         NeoForge.EVENT_BUS.addListener(NeoForgeCopperHopperMod::onServerStarting);
-        doRegistrations(modBus);
+        registerBlocksAndItems(modBus);
     }
 
     private static void onCommonSetup(FMLCommonSetupEvent event) {
@@ -90,7 +95,7 @@ public class NeoForgeCopperHopperMod {
         }
     }
 
-    private static void doRegistrations(IEventBus modBus) {
+    private static void registerBlocksAndItems(IEventBus modBus) {
         // --- Menu / Screen ---
         DeferredRegister<MenuType<?>> menuTypes = DeferredRegister.create(BuiltInRegistries.MENU, "copperhopper");
         menuTypes.register("copper_hopper", () -> new MenuType<>(CohoScreenHandler::new, FeatureFlags.VANILLA_SET));
@@ -143,4 +148,3 @@ public class NeoForgeCopperHopperMod {
         entityTypes.register(modBus);
     }
 }
-
