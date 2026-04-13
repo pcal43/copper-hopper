@@ -162,12 +162,13 @@ public class CopperHopperMod {
     private final File configFile = configFilePath.toFile();
     private Collection<Identifier> nbtMatchEnabledIds = Collections.emptySet();
     private boolean isRedstoneStrengthIgnoresFilterItems = false;
+    private boolean isWeatheringEnabled = true;
 
     // ===================================================================================
     // Mod lifecycle
 
     /**
-     * Re/loads copperhopper.json.
+     * Re/loads copperhopper.properties.
      */
     public Properties loadConfig() throws IOException {
         final Properties config;
@@ -188,6 +189,10 @@ public class CopperHopperMod {
             }
             this.nbtMatchEnabledIds = builder.build();
         }
+
+        final String weatheringEnabled = config.getProperty("weatheringEnabled");
+        this.isWeatheringEnabled = !("false".equals(weatheringEnabled));
+        logger.info(LOG_PREFIX + "weatheringEnabled: "+isWeatheringEnabled);
 
         this.isRedstoneStrengthIgnoresFilterItems = "true".equalsIgnoreCase(config.getProperty("redstoneStrengthIgnoresFilterItems", "false"));
         logger.debug(() -> "isRedstoneStrengthIgnoresFilterItems = "+this.isRedstoneStrengthIgnoresFilterItems);
@@ -267,6 +272,13 @@ public class CopperHopperMod {
      */
     public boolean isRedstoneStrengthIgnoresFilterItems() {
         return this.isRedstoneStrengthIgnoresFilterItems;
+    }
+
+    /**
+     * Return true if we copper hopper blocks should weather.
+     */
+    public boolean isWeatheringEnabled() {
+        return this.isWeatheringEnabled;
     }
 
     /**

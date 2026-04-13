@@ -128,7 +128,7 @@ public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         // This triggers the oxidation check
-        this.changeOverTime(state, level, pos, random);
+        if (mod().isWeatheringEnabled()) this.changeOverTime(state, level, pos, random);
     }
 
     @Override
