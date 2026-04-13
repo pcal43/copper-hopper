@@ -36,7 +36,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -61,6 +60,7 @@ import static net.pcal.copperhopper.common.CopperHopperMod.COHO_MINECART_ENTITY_
 import static net.pcal.copperhopper.common.CopperHopperMod.COHO_MINECART_ITEM_ID;
 import static net.pcal.copperhopper.common.CopperHopperMod.LOGGER_NAME;
 import static net.pcal.copperhopper.common.CopperHopperMod.LOG_PREFIX;
+import static net.pcal.copperhopper.common.CopperHopperMod.NS;
 import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
 @Mod("copperhopper")
@@ -97,14 +97,14 @@ public class NeoForgeCopperHopperMod {
 
     private static void registerBlocksAndItems(IEventBus modBus) {
         // --- Menu / Screen ---
-        DeferredRegister<MenuType<?>> menuTypes = DeferredRegister.create(BuiltInRegistries.MENU, "copperhopper");
+        DeferredRegister<MenuType<?>> menuTypes = DeferredRegister.create(BuiltInRegistries.MENU, NS);
         menuTypes.register("copper_hopper", () -> new MenuType<>(CohoScreenHandler::new, FeatureFlags.VANILLA_SET));
         menuTypes.register(modBus);
 
         // --- Blocks and Block Items ---
         DeferredRegister<net.minecraft.world.level.block.Block> blocks =
-                DeferredRegister.create(BuiltInRegistries.BLOCK, "copperhopper");
-        DeferredRegister<Item> items = DeferredRegister.create(BuiltInRegistries.ITEM, "copperhopper");
+                DeferredRegister.create(BuiltInRegistries.BLOCK, NS);
+        DeferredRegister<Item> items = DeferredRegister.create(BuiltInRegistries.ITEM, NS);
 
         final List<CopperHopperBlock> cohoBlocks = new ArrayList<>();
         for (final Tuple<Identifier, WeatherState> tuple : COHO_BLOCK_IDS) {
@@ -122,14 +122,14 @@ public class NeoForgeCopperHopperMod {
 
         // --- Block Entity ---
         DeferredRegister<BlockEntityType<?>> blockEntityTypes =
-                DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, "copperhopper");
+                DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, NS);
         final CopperHopperBlock[] cohoBlockArray = cohoBlocks.toArray(new CopperHopperBlock[0]);
         blockEntityTypes.register("copper_hopper_entity",
-                () -> BlockEntityType.Builder.of(CopperHopperBlockEntity::new, cohoBlockArray).build(null));
+                () -> new BlockEntityType<>(CopperHopperBlockEntity::new, cohoBlockArray));
 
         // --- Minecart Entity ---
         DeferredRegister<EntityType<?>> entityTypes =
-                DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, "copperhopper");
+                DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, NS);
         final ResourceKey<EntityType<?>> minecartResourceKey = ResourceKey.create(Registries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID);
         entityTypes.register("copper_hopper_minecart",
                 () -> EntityType.Builder.<CopperHopperMinecartEntity>of(CopperHopperMinecartEntity::new, MobCategory.MISC)

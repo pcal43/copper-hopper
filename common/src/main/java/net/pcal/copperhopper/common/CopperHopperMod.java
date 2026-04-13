@@ -74,7 +74,9 @@ public class CopperHopperMod {
     public static final String LOGGER_NAME = "CopperHopper";
     public static final String LOG_PREFIX = "[CopperHopper] ";
 
-    public static final Identifier COPPER_HOPPER = Identifier.parse("copperhopper:copper_hopper");
+    public static final String NS = "copperhopper";
+
+    public static final Identifier COPPER_HOPPER = Identifier.fromNamespaceAndPath(NS, "copper_hopper");
     public static final Identifier EXPOSED_COPPER_HOPPER = Identifier.parse("copperhopper:exposed_copper_hopper");
     public static final Identifier WEATHERED_COPPER_HOPPER = Identifier.parse("copperhopper:weathered_copper_hopper");
     public static final Identifier OXIDIZED_COPPER_HOPPER = Identifier.parse("copperhopper:oxidized_copper_hopper");
