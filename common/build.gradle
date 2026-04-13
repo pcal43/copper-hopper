@@ -2,8 +2,6 @@ plugins {
     id 'net.fabricmc.fabric-loom'
 }
 
-version = project.mod_version
-group = project.maven_group
 
 repositories {
     maven { url = "https://maven.fabricmc.net/" }

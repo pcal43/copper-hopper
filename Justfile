@@ -4,7 +4,7 @@ clean:
 compile:
     ./gradlew compileJava
 
-compileCommon:
+compile-common:
     ./gradlew :common:compileJava
 
 release:
@@ -25,3 +25,10 @@ deps:
 clearCaches:
     ./gradlew --stop
     rm -rf "$HOME/.gradle/caches" "$HOME/.gradle/wrapper/dists" "$HOME/.gradle/daemon" "$HOME/.gradle/native"
+
+
+run-fabric:
+    ./gradlew :fabric:runClient
+
+run-neoforge:
+    ./gradlew :neoforge:runClient
