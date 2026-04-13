@@ -58,7 +58,7 @@ import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
 
     /**
-     * Default block settings are shared used by both polymer and non-polymer registrations.
+     * Default block settings.
      */
     public static BlockBehaviour.Properties getDefaultSettings(final Identifier blockId) {
 		final ResourceKey<Block> rk = ResourceKey.create(Registries.BLOCK, blockId);

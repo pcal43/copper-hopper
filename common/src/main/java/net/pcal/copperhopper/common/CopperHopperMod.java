@@ -238,13 +238,6 @@ public class CopperHopperMod {
     // Hopper behavior
 
     /**
-     * Name to use in polymer mode.  FIXME i18n?
-     */
-    public String getPolymerName() {
-        return "Item Filter";
-    }
-
-    /**
      * Return true if we should prevent one of the given Item from being pushed into the given copper hopper or
      * ch minecart.  THese should never accept item types they don't already contain.
      */

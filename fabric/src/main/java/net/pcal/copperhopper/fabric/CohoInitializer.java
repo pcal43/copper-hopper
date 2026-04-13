@@ -92,13 +92,7 @@ public class CohoInitializer implements ModInitializer {
             try {
                 final Properties config;
                 mod().createDefaultConfig();
-                config = mod().loadConfig();
-                if ("true".equals(config.getProperty("polymer-enabled"))) {
-                    logger.info("Initializing polymer.");
-                    ((Runnable) Class.forName("net.pcal.copperhopper.fabric.polymer.PolymerRegistrar").getDeclaredConstructor().newInstance()).run();
-                } else {
-                    doStandardRegistrations();
-                }
+                doStandardRegistrations();
                 logger.info(LOG_PREFIX + "Initialized.");
             } catch (Exception e) {
                 logger.catching(Level.ERROR, e);
@@ -110,7 +104,7 @@ public class CohoInitializer implements ModInitializer {
         }
 
         /**
-         * Create and register all of our blocks and items for non-polymer mode.
+         * Create and register all of our blocks and items.
          */
         private static void doStandardRegistrations() {
             //
