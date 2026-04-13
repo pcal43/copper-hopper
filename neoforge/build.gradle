@@ -1,7 +1,7 @@
 plugins {
-    id 'net.neoforged.moddev'
+    id 'net.fabricmc.fabric-loom'
     id 'com.modrinth.minotaur'
-    id 'net.darkhax.curseforgegradle' version '1.1.25'
+    id 'net.darkhax.curseforgegradle'
 }
 
 base {
@@ -47,7 +47,7 @@ dependencies {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 21
+    it.options.release = project.java_version
 }
 
 processResources {
@@ -62,7 +62,7 @@ processResources {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(project.java_version)
     }
     withSourcesJar()
 }

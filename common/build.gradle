@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom'
+    id 'net.fabricmc.fabric-loom'
 }
 
 version = project.mod_version
@@ -14,14 +14,10 @@ repositories {
 dependencies {
     // Minecraft classes with Mojang mappings - needed for compilation
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
 
     // Mixin annotations - using version from gradle.properties for consistency
     compileOnly "org.spongepowered:mixin:${project.spongepowered_version}"
     annotationProcessor "org.spongepowered:mixin:${project.spongepowered_version}:processor"
-
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${project.junit_version}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${project.junit_version}"
 }
 
 
@@ -45,13 +41,13 @@ loom {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 21
+    it.options.release = project.java_version
     options.encoding = "UTF-8"
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(project.java_version)
     }
     withSourcesJar()
 }

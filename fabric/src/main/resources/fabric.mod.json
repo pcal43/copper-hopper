@@ -22,9 +22,8 @@
   ],
   "depends": {
     "fabricloader": ">=0.16.9",
-    "fabric": "*",
-    "minecraft": ">=1.21.2",
-    "java": ">=21"
+    "minecraft": ">=26.0",
+    "java": ">=25"
   },
   "conflicts": {
     "lithium": "<0.10.2"
