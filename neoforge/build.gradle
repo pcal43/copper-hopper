@@ -33,12 +33,14 @@ neoForge {
     mods {
         copperhopper {
             sourceSet sourceSets.main
+            // Also include common module for resources and classes
             sourceSet project(":common").sourceSets.main
         }
     }
 }
 
 dependencies {
+    // Use the compiled common jar - it has proper Mojang mappings from Loom
     implementation project(":common")
     compileOnly "org.spongepowered:mixin:${project.spongepowered_version}"
     annotationProcessor "org.spongepowered:mixin:${project.spongepowered_version}:processor"
@@ -67,14 +69,21 @@ java {
 
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archives_base_name_neoforge}" }
+        rename { "${it}_${project.archives_base_name_neoforge}"}
     }
 
     // Include common classes directly in the jar
     from(project(":common").sourceSets.main.output) {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
+
+    // Include neoforge resources (data maps, etc.)
+    from(sourceSets.main.resources) {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
 }
+
+
 
 // Publishing configuration
 modrinth {
@@ -91,6 +100,7 @@ modrinth {
 import net.darkhax.curseforgegradle.TaskPublishCurseForge
 
 tasks.register('publishCurseForge', TaskPublishCurseForge) {
+    // API Key from environment or fallback
     apiToken = System.getenv("CURSEFORGE_TOKEN") ?: 'CURSEFORGE_TOKEN NOT_SET'
 
     def mainFile = upload(project.curseforge_projectId, jar)
@@ -99,6 +109,6 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
     mainFile.changelogType = "markdown"
     mainFile.addGameVersion(project.minecraft_version)
     mainFile.addModLoader("NeoForge")
+    // Ensure remapJar is finished before this runs
     dependsOn(jar)
 }
-

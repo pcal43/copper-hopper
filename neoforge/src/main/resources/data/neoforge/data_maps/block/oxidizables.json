@@ -1,0 +1,8 @@
+{
+  "values": {
+    "copperhopper:copper_hopper":          { "next_oxidation_stage": "copperhopper:exposed_copper_hopper" },
+    "copperhopper:exposed_copper_hopper":  { "next_oxidation_stage": "copperhopper:weathered_copper_hopper" },
+    "copperhopper:weathered_copper_hopper":{ "next_oxidation_stage": "copperhopper:oxidized_copper_hopper" }
+  }
+}
+

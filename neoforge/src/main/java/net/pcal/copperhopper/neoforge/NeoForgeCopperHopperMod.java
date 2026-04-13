@@ -33,14 +33,20 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.pcal.copperhopper.common.CohoScreenHandler;
 import net.pcal.copperhopper.common.CopperHopperBlock;
@@ -67,10 +73,12 @@ import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 public class NeoForgeCopperHopperMod {
 
     private static final Logger LOGGER = LogManager.getLogger(LOGGER_NAME);
+    private static List<DeferredHolder<Item, CopperHopperItem>> cohoItemHolders;
 
     public NeoForgeCopperHopperMod(IEventBus modBus) {
         LOGGER.info(LOG_PREFIX + "Mod constructor called");
         modBus.addListener(NeoForgeCopperHopperMod::onCommonSetup);
+        modBus.addListener(NeoForgeCopperHopperMod::onBuildCreativeTab);
         NeoForge.EVENT_BUS.addListener(NeoForgeCopperHopperMod::onServerStarting);
         registerBlocksAndItems(modBus);
     }
@@ -82,6 +90,11 @@ public class NeoForgeCopperHopperMod {
         } catch (Exception e) {
             LOGGER.catching(Level.ERROR, e);
             LOGGER.error(LOG_PREFIX + "Failed to create default config");
+        }
+        // All registries are fully bound by FMLCommonSetupEvent — safe to call registerBlocks now
+        for (DeferredHolder<Item, CopperHopperItem> itemHolder : cohoItemHolders) {
+            CopperHopperItem item = itemHolder.get();
+            item.registerBlocks(Item.BY_BLOCK, item);
         }
     }
 
@@ -95,41 +108,58 @@ public class NeoForgeCopperHopperMod {
         }
     }
 
+    private static void onBuildCreativeTab(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() != CreativeModeTabs.REDSTONE_BLOCKS) return;
+        // Add all copper hopper block items after the vanilla hopper
+        for (DeferredHolder<Item, CopperHopperItem> itemHolder : cohoItemHolders) {
+            event.insertAfter(new ItemStack(Items.HOPPER), new ItemStack(itemHolder.get()),
+                    CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        }
+        // Add the minecart item after the vanilla hopper minecart
+        Item minecartItem = BuiltInRegistries.ITEM.getValue(COHO_MINECART_ITEM_ID);
+        event.insertAfter(new ItemStack(Items.HOPPER_MINECART), new ItemStack(minecartItem),
+                CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+    }
+
     private static void registerBlocksAndItems(IEventBus modBus) {
         // --- Menu / Screen ---
-        DeferredRegister<MenuType<?>> menuTypes = DeferredRegister.create(BuiltInRegistries.MENU, NS);
+        DeferredRegister<MenuType<?>> menuTypes = DeferredRegister.create(Registries.MENU, NS);
         menuTypes.register("copper_hopper", () -> new MenuType<>(CohoScreenHandler::new, FeatureFlags.VANILLA_SET));
         menuTypes.register(modBus);
 
         // --- Blocks and Block Items ---
-        DeferredRegister<net.minecraft.world.level.block.Block> blocks =
-                DeferredRegister.create(BuiltInRegistries.BLOCK, NS);
-        DeferredRegister<Item> items = DeferredRegister.create(BuiltInRegistries.ITEM, NS);
+        DeferredRegister<net.minecraft.world.level.block.Block> blocks = DeferredRegister.create(Registries.BLOCK, NS);
+        DeferredRegister<Item> items = DeferredRegister.create(Registries.ITEM, NS);
 
-        final List<CopperHopperBlock> cohoBlocks = new ArrayList<>();
+        final List<DeferredHolder<net.minecraft.world.level.block.Block, CopperHopperBlock>> cohoBlockHolders = new ArrayList<>();
+        cohoItemHolders = new ArrayList<>();
+
         for (final Tuple<Identifier, WeatherState> tuple : COHO_BLOCK_IDS) {
             final Identifier blockId = tuple.getA();
             final WeatherState weatherState = tuple.getB();
             final String path = blockId.getPath();
-            final CopperHopperBlock cohoBlock = new CopperHopperBlock(weatherState, CopperHopperBlock.getDefaultSettings(blockId));
-            cohoBlocks.add(cohoBlock);
-            blocks.register(path, () -> cohoBlock);
+
+            final DeferredHolder<net.minecraft.world.level.block.Block, CopperHopperBlock> blockHolder =
+                    blocks.register(path, () -> new CopperHopperBlock(weatherState, CopperHopperBlock.getDefaultSettings(blockId)));
+            cohoBlockHolders.add(blockHolder);
+
             final ResourceKey<Item> itemResourceKey = ResourceKey.create(Registries.ITEM, blockId);
-            final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Properties().setId(itemResourceKey).useBlockDescriptionPrefix());
-            cohoItem.registerBlocks(Item.BY_BLOCK, cohoItem);
-            items.register(path, () -> cohoItem);
+            final DeferredHolder<Item, CopperHopperItem> itemHolder =
+                    items.register(path, () -> new CopperHopperItem(blockHolder.get(), new Item.Properties().setId(itemResourceKey).useBlockDescriptionPrefix()));
+            cohoItemHolders.add(itemHolder);
         }
 
         // --- Block Entity ---
-        DeferredRegister<BlockEntityType<?>> blockEntityTypes =
-                DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, NS);
-        final CopperHopperBlock[] cohoBlockArray = cohoBlocks.toArray(new CopperHopperBlock[0]);
-        blockEntityTypes.register("copper_hopper_entity",
-                () -> new BlockEntityType<>(CopperHopperBlockEntity::new, cohoBlockArray));
+        DeferredRegister<BlockEntityType<?>> blockEntityTypes = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, NS);
+        blockEntityTypes.register("copper_hopper_entity", () -> {
+            CopperHopperBlock[] cohoBlockArray = cohoBlockHolders.stream()
+                    .map(DeferredHolder::get)
+                    .toArray(CopperHopperBlock[]::new);
+            return new BlockEntityType<>(CopperHopperBlockEntity::new, cohoBlockArray);
+        });
 
         // --- Minecart Entity ---
-        DeferredRegister<EntityType<?>> entityTypes =
-                DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, NS);
+        DeferredRegister<EntityType<?>> entityTypes = DeferredRegister.create(Registries.ENTITY_TYPE, NS);
         final ResourceKey<EntityType<?>> minecartResourceKey = ResourceKey.create(Registries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID);
         entityTypes.register("copper_hopper_minecart",
                 () -> EntityType.Builder.<CopperHopperMinecartEntity>of(CopperHopperMinecartEntity::new, MobCategory.MISC)
@@ -141,10 +171,11 @@ public class NeoForgeCopperHopperMod {
         items.register("copper_hopper_minecart",
                 () -> new CopperHopperMinecartItem(new Item.Properties().stacksTo(1).setId(cartItemResourceKey)));
 
-        // Commit all deferred registers
+        // Commit all deferred registers to the mod event bus
         blocks.register(modBus);
         items.register(modBus);
         blockEntityTypes.register(modBus);
         entityTypes.register(modBus);
     }
 }
+

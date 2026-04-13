@@ -48,7 +48,8 @@ public abstract class HopperBlockEntityMixin {
      * read as empty if they shouldn't be pushed out.
      */
     @Redirect(method = "ejectItems(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/HopperBlockEntity;)Z",
-            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/level/block/entity/HopperBlockEntity;getItem(I)Lnet/minecraft/world/item/ItemStack;"))
+            at = @At(value = "INVOKE", ordinal = 0, target = "Lnet/minecraft/world/level/block/entity/HopperBlockEntity;getItem(I)Lnet/minecraft/world/item/ItemStack;"),
+            remap = false)
     private static ItemStack __getStack(HopperBlockEntity pushingInventory, int slot,
                                         // params from enclosing scope:
                                         Level level, BlockPos blockPos, HopperBlockEntity ignored) {
@@ -62,7 +63,7 @@ public abstract class HopperBlockEntityMixin {
     /**
      * Apply filtering behavior to free floating entities above the hopper.
      */
-    @Inject(method = "addItem(Lnet/minecraft/world/Container;Lnet/minecraft/world/entity/item/ItemEntity;)Z", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "addItem(Lnet/minecraft/world/Container;Lnet/minecraft/world/entity/item/ItemEntity;)Z", at = @At("HEAD"), cancellable = true, remap = false)
     private static void __extract_itemEntity(Container pullingInventory, ItemEntity pulledEntity, CallbackInfoReturnable<Boolean> returnable) {
         if (mod().shouldVetoPullInto(pullingInventory, pulledEntity.getItem())) {
             returnable.setReturnValue(Boolean.FALSE);
