@@ -131,7 +131,7 @@ public class CopperHopperMod {
         return BuiltInRegistries.ITEM.getValue(COHO_MINECART_ITEM_ID);
     }
 
-    public Block getMinecrartHopperBlock() {
+    public Block getMinecartHopperBlock() {
         // COHO_BLOCK_IDS stores Identifier instances already — return the block by that Identifier.
         return BuiltInRegistries.BLOCK.getValue(COPPER_HOPPER);
     }

@@ -141,8 +141,8 @@ public class CohoInitializer implements ModInitializer {
             final EntityType<CopperHopperMinecartEntity> minecartType = EntityType.Builder.<CopperHopperMinecartEntity>of(CopperHopperMinecartEntity::new, MobCategory.MISC).
                 sized(0.98f, 0.7f).build(minecartResourceKey);
             // ??? dimensions(EntityDimensions.fixed(0.98f, 0.7f)).build(); //??????
-            final ResourceKey<Item> cartItemReourceKey = ResourceKey.create(Registries.ITEM, CopperHopperMod.COHO_MINECART_ITEM_ID);
-            final CopperHopperMinecartItem cohoMinecartItem = new CopperHopperMinecartItem(new Item.Properties().stacksTo(1).setId(cartItemReourceKey));
+            final ResourceKey<Item> cartItemResourceKey = ResourceKey.create(Registries.ITEM, CopperHopperMod.COHO_MINECART_ITEM_ID);
+            final CopperHopperMinecartItem cohoMinecartItem = new CopperHopperMinecartItem(new Item.Properties().stacksTo(1).setId(cartItemResourceKey));
             register(BuiltInRegistries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID, minecartType);
             register(BuiltInRegistries.ITEM, COHO_MINECART_ITEM_ID, cohoMinecartItem);
             ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER_MINECART, cohoMinecartItem));
