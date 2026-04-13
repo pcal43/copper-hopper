@@ -49,11 +49,11 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 processResources {
-    inputs.property "version", project.version
+    inputs.property "mod_version", project.mod_version
 
     filesMatching("META-INF/neoforge.mods.toml") {
         filter { line ->
-            line.replace('${version}', project.version.toString())
+            line.replace('${mod_version}', project.mod_version.toString())
         }
     }
 }
