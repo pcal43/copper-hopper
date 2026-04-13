@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2022-2023 pcal.net
+ * Copyright (c) 2022-2026 pcal.net
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -102,4 +102,3 @@ public class CohoMinecartEntity extends MinecartHopper implements WorldlyContain
 
 
 }
-
