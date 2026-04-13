@@ -45,10 +45,10 @@ public class CohoScreen extends HopperScreen {
     }
 
     @Override
-    protected void extractBackground(GuiGraphicsExtractor graphics, float delta, int mouseX, int mouseY) {
+    public void extractBackground(final GuiGraphicsExtractor context, final int mouseX, final int mouseY, final float a) {
         int i = (this.width - this.imageWidth) / 2;
         int j = (this.height - this.imageHeight) / 2;
         // FIXME? RenderType here is new in 1.21.3.  Seems to work but no idea if it's correct.
-        graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, i, j, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, i, j, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
     }
 }
