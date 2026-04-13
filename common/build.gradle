@@ -29,12 +29,6 @@ loom {
     runs {
         // No run configurations needed for common module
     }
-
-    // Configure mixin refmap
-    mixin {
-        //useLegacyMixinAp = true
-        defaultRefmapName = "copperhopper-refmap.json"
-    }
 }
 
 tasks.withType(JavaCompile).configureEach {

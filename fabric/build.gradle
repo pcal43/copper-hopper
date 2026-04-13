@@ -54,9 +54,6 @@ sourceSets {
             srcDir project(":common").file("src/main/resources")
         }
     }
-    test {
-        resources.srcDirs = ["src/test/resources"]
-    }
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -102,7 +99,6 @@ jar {
     from("LICENSE") {
         rename { "${it}_${project.archives_base_name_fabric}"}
     }
-    // Common sources are now part of main sourceSet, so they're automatically included
 }
 
 
