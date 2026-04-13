@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2022-2026 pcal.net
+ * Copyright (c) 2022-2023 pcal.net
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,43 +42,44 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.pcal.copperhopper.common.CohoScreenHandler;
-import net.pcal.copperhopper.common.CohoBlock;
-import net.pcal.copperhopper.common.CohoBlockEntity;
-import net.pcal.copperhopper.common.CohoItem;
-import net.pcal.copperhopper.common.CohoMinecartEntity;
-import net.pcal.copperhopper.common.CohoMinecartItem;
-import net.pcal.copperhopper.common.CohoMod;
+import net.pcal.copperhopper.common.CopperHopperBlock;
+import net.pcal.copperhopper.common.CopperHopperBlockEntity;
+import net.pcal.copperhopper.common.CopperHopperItem;
+import net.pcal.copperhopper.common.CopperHopperMinecartEntity;
+import net.pcal.copperhopper.common.CopperHopperMinecartItem;
+import net.pcal.copperhopper.common.CopperHopperMod;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import static net.minecraft.core.Registry.register;
 import static net.minecraft.core.registries.BuiltInRegistries.BLOCK;
-import static net.pcal.copperhopper.common.CohoMod.COHO_BLOCK_ENTITY_TYPE_ID;
-import static net.pcal.copperhopper.common.CohoMod.COHO_BLOCK_IDS;
-import static net.pcal.copperhopper.common.CohoMod.COHO_MINECART_ENTITY_TYPE_ID;
-import static net.pcal.copperhopper.common.CohoMod.COHO_MINECART_ITEM_ID;
-import static net.pcal.copperhopper.common.CohoMod.COHO_SCREEN_ID;
-import static net.pcal.copperhopper.common.CohoMod.COPPER_HOPPER;
-import static net.pcal.copperhopper.common.CohoMod.EXPOSED_COPPER_HOPPER;
-import static net.pcal.copperhopper.common.CohoMod.LOGGER_NAME;
-import static net.pcal.copperhopper.common.CohoMod.LOG_PREFIX;
-import static net.pcal.copperhopper.common.CohoMod.OXIDIZED_COPPER_HOPPER;
-import static net.pcal.copperhopper.common.CohoMod.WAXED_COPPER_HOPPER;
-import static net.pcal.copperhopper.common.CohoMod.WAXED_EXPOSED_COPPER_HOPPER;
-import static net.pcal.copperhopper.common.CohoMod.WAXED_OXIDIZED_COPPER_HOPPER;
-import static net.pcal.copperhopper.common.CohoMod.WAXED_WEATHERED_COPPER_HOPPER;
-import static net.pcal.copperhopper.common.CohoMod.WEATHERED_COPPER_HOPPER;
-import static net.pcal.copperhopper.common.CohoMod.mod;
+import static net.pcal.copperhopper.common.CopperHopperMod.COHO_BLOCK_ENTITY_TYPE_ID;
+import static net.pcal.copperhopper.common.CopperHopperMod.COHO_BLOCK_IDS;
+import static net.pcal.copperhopper.common.CopperHopperMod.COHO_MINECART_ENTITY_TYPE_ID;
+import static net.pcal.copperhopper.common.CopperHopperMod.COHO_MINECART_ITEM_ID;
+import static net.pcal.copperhopper.common.CopperHopperMod.COHO_SCREEN_ID;
+import static net.pcal.copperhopper.common.CopperHopperMod.COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.EXPOSED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.LOGGER_NAME;
+import static net.pcal.copperhopper.common.CopperHopperMod.LOG_PREFIX;
+import static net.pcal.copperhopper.common.CopperHopperMod.OXIDIZED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.WEATHERED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.WAXED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.WAXED_EXPOSED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.WAXED_WEATHERED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.WAXED_OXIDIZED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
 /**
  * @author pcal
  * @since 0.0.1
  */
-public class FabricMainInitializer implements ModInitializer {
+public class CohoInitializer implements ModInitializer {
 
     @Override
     public void onInitialize() {
@@ -89,6 +90,7 @@ public class FabricMainInitializer implements ModInitializer {
         static {
             final Logger logger = LogManager.getLogger(LOGGER_NAME);
             try {
+                final Properties config;
                 mod().createDefaultConfig();
                 doStandardRegistrations();
                 logger.info(LOG_PREFIX + "Initialized.");
@@ -113,15 +115,15 @@ public class FabricMainInitializer implements ModInitializer {
             //
             // Register the Blocks and Items
             //
-            final List<CohoBlock> cohoBlocks = new ArrayList<>();
+            final List<CopperHopperBlock> cohoBlocks = new ArrayList<>();
             for (final Tuple<Identifier, WeatherState> tuple : COHO_BLOCK_IDS) {
                 final Identifier blockId = tuple.getA();
                 final WeatherState weatherState = tuple.getB();
                 final Identifier itemId = blockId;
-                final CohoBlock cohoBlock = new CohoBlock(weatherState, CohoBlock.getDefaultSettings(blockId));
+                final CopperHopperBlock cohoBlock = new CopperHopperBlock(weatherState, CopperHopperBlock.getDefaultSettings(blockId));
                 cohoBlocks.add(cohoBlock);
                 final ResourceKey<Item> itemReourceKey = ResourceKey.create(Registries.ITEM, itemId);
-                final CohoItem cohoItem = new CohoItem(cohoBlock, new Item.Properties().setId(itemReourceKey).useBlockDescriptionPrefix());
+                final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Properties().setId(itemReourceKey).useBlockDescriptionPrefix());
                 ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER, cohoItem));
 
                 cohoItem.registerBlocks(Item.BY_BLOCK, cohoItem); // wat
@@ -130,18 +132,18 @@ public class FabricMainInitializer implements ModInitializer {
             }
 
             register(BuiltInRegistries.BLOCK_ENTITY_TYPE, COHO_BLOCK_ENTITY_TYPE_ID,
-                    FabricBlockEntityTypeBuilder.create(CohoBlockEntity::new,
-                            cohoBlocks.toArray(new CohoBlock[0])).build());
+                    FabricBlockEntityTypeBuilder.create(CopperHopperBlockEntity::new,
+                            cohoBlocks.toArray(new CopperHopperBlock[0])).build());
 
             //
             // Register the Minecart
             //
-            final ResourceKey<EntityType<?>> minecartResourceKey = ResourceKey.create(Registries.ENTITY_TYPE, CohoMod.COHO_MINECART_ENTITY_TYPE_ID);
-            final EntityType<CohoMinecartEntity> minecartType = EntityType.Builder.<CohoMinecartEntity>of(CohoMinecartEntity::new, MobCategory.MISC).
+            final ResourceKey<EntityType<?>> minecartResourceKey = ResourceKey.create(Registries.ENTITY_TYPE, CopperHopperMod.COHO_MINECART_ENTITY_TYPE_ID);
+            final EntityType<CopperHopperMinecartEntity> minecartType = EntityType.Builder.<CopperHopperMinecartEntity>of(CopperHopperMinecartEntity::new, MobCategory.MISC).
                 sized(0.98f, 0.7f).build(minecartResourceKey);
             // ??? dimensions(EntityDimensions.fixed(0.98f, 0.7f)).build(); //??????
-            final ResourceKey<Item> cartItemResourceKey = ResourceKey.create(Registries.ITEM, CohoMod.COHO_MINECART_ITEM_ID);
-            final CohoMinecartItem cohoMinecartItem = new CohoMinecartItem(new Item.Properties().stacksTo(1).setId(cartItemResourceKey));
+            final ResourceKey<Item> cartItemResourceKey = ResourceKey.create(Registries.ITEM, CopperHopperMod.COHO_MINECART_ITEM_ID);
+            final CopperHopperMinecartItem cohoMinecartItem = new CopperHopperMinecartItem(new Item.Properties().stacksTo(1).setId(cartItemResourceKey));
             register(BuiltInRegistries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID, minecartType);
             register(BuiltInRegistries.ITEM, COHO_MINECART_ITEM_ID, cohoMinecartItem);
             ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER_MINECART, cohoMinecartItem));
@@ -158,3 +160,4 @@ public class FabricMainInitializer implements ModInitializer {
     }
 
 }
+

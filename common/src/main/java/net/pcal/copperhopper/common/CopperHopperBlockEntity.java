@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2022-2026 pcal.net
+ * Copyright (c) 2022-2023 pcal.net
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,8 @@
 
 package net.pcal.copperhopper.common;
 
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -35,13 +37,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import static net.pcal.copperhopper.common.CohoMod.mod;
-
-public class CohoBlockEntity extends HopperBlockEntity implements WorldlyContainer, CohoContainer {
+public class CopperHopperBlockEntity extends HopperBlockEntity implements WorldlyContainer, CopperInventory {
 
     private static final int[] SLOTS = new int[]{0, 1, 2, 3, 4};
 
-    public CohoBlockEntity(BlockPos pos, BlockState state) {
+    public CopperHopperBlockEntity(BlockPos pos, BlockState state) {
         super(pos, state);
     }
 
@@ -60,7 +60,7 @@ public class CohoBlockEntity extends HopperBlockEntity implements WorldlyContain
      */
     @Override
     public boolean isValidBlockState(BlockState blockState) {
-        return blockState.getBlock() instanceof CohoBlock;
+        return blockState.getBlock() instanceof CopperHopperBlock;
     }
 
     @Override

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2022-2026 pcal.net
+ * Copyright (c) 2022-2023 pcal.net
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,10 +27,10 @@ package net.pcal.copperhopper.common;
 import net.minecraft.world.Container;
 
 /**
- * Interface for accessing the contents of our two inventory-bearing entities.
+ * Marker interface for our two inventory-bearing entities.
  *
  * @author pcal
  * @since 0.5.0
  */
-public interface CohoContainer extends Container {
+public interface CopperInventory extends Container {
 }
