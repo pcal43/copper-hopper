@@ -25,7 +25,7 @@
 package net.pcal.copperhopper;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.registry.OxidizableBlocksRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -86,12 +86,7 @@ public class CohoInitializer implements ModInitializer {
                 final Properties config;
                 mod().createDefaultConfig();
                 config = mod().loadConfig();
-                if ("true".equals(config.getProperty("polymer-enabled"))) {
-                    logger.info("Initializing polymer.");
-                    ((Runnable) Class.forName("net.pcal.copperhopper.polymer.PolymerRegistrar").getDeclaredConstructor().newInstance()).run();
-                } else {
-                    doStandardRegistrations();
-                }
+                doStandardRegistrations();
                 logger.info(LOG_PREFIX + "Initialized.");
             } catch (Exception e) {
                 logger.catching(Level.ERROR, e);
@@ -103,7 +98,7 @@ public class CohoInitializer implements ModInitializer {
         }
 
         /**
-         * Create and register all of our blocks and items for non-polymer mode.
+         * Create and register all of our blocks and items.
          */
         private static void doStandardRegistrations() {
             //
@@ -123,7 +118,8 @@ public class CohoInitializer implements ModInitializer {
                 cohoBlocks.add(cohoBlock);
                 final ResourceKey<Item> itemReourceKey = ResourceKey.create(Registries.ITEM, itemId);
                 final CopperHopperItem cohoItem = new CopperHopperItem(cohoBlock, new Item.Properties().setId(itemReourceKey).useBlockDescriptionPrefix());
-                ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER, cohoItem));
+                CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.REDSTONE_BLOCKS)
+                        .register(entries -> entries.insertAfter(Items.HOPPER, cohoItem));
 
                 cohoItem.registerBlocks(Item.BY_BLOCK, cohoItem); // wat
                 register(BuiltInRegistries.ITEM, itemId, cohoItem);
@@ -145,18 +141,20 @@ public class CohoInitializer implements ModInitializer {
             final CopperHopperMinecartItem cohoMinecartItem = new CopperHopperMinecartItem(new Item.Properties().stacksTo(1).setId(cartItemResourceKey));
             register(BuiltInRegistries.ENTITY_TYPE, COHO_MINECART_ENTITY_TYPE_ID, minecartType);
             register(BuiltInRegistries.ITEM, COHO_MINECART_ITEM_ID, cohoMinecartItem);
-            ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(entries -> entries.addAfter(Items.HOPPER_MINECART, cohoMinecartItem));
+            CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.REDSTONE_BLOCKS)
+                    .register(entries -> {
+                        entries.insertAfter(Items.HOPPER_MINECART, cohoMinecartItem);
+                    });
 
-            OxidizableBlocksRegistry.registerOxidizableBlockPair(BLOCK.getValue(COPPER_HOPPER), BLOCK.getValue(EXPOSED_COPPER_HOPPER));
-            OxidizableBlocksRegistry.registerOxidizableBlockPair(BLOCK.getValue(EXPOSED_COPPER_HOPPER), BLOCK.getValue(WEATHERED_COPPER_HOPPER));
-            OxidizableBlocksRegistry.registerOxidizableBlockPair(BLOCK.getValue(WEATHERED_COPPER_HOPPER), BLOCK.getValue(OXIDIZED_COPPER_HOPPER));
+            OxidizableBlocksRegistry.registerNextStage(BLOCK.getValue(COPPER_HOPPER), BLOCK.getValue(EXPOSED_COPPER_HOPPER));
+            OxidizableBlocksRegistry.registerNextStage(BLOCK.getValue(EXPOSED_COPPER_HOPPER), BLOCK.getValue(WEATHERED_COPPER_HOPPER));
+            OxidizableBlocksRegistry.registerNextStage(BLOCK.getValue(WEATHERED_COPPER_HOPPER), BLOCK.getValue(OXIDIZED_COPPER_HOPPER));
 
-            OxidizableBlocksRegistry.registerWaxableBlockPair(BLOCK.getValue(COPPER_HOPPER), BLOCK.getValue(WAXED_COPPER_HOPPER));
-            OxidizableBlocksRegistry.registerWaxableBlockPair(BLOCK.getValue(EXPOSED_COPPER_HOPPER), BLOCK.getValue(WAXED_EXPOSED_COPPER_HOPPER));
-            OxidizableBlocksRegistry.registerWaxableBlockPair(BLOCK.getValue(WEATHERED_COPPER_HOPPER), BLOCK.getValue(WAXED_WEATHERED_COPPER_HOPPER));
-            OxidizableBlocksRegistry.registerWaxableBlockPair(BLOCK.getValue(OXIDIZED_COPPER_HOPPER), BLOCK.getValue(WAXED_OXIDIZED_COPPER_HOPPER));
+            OxidizableBlocksRegistry.registerWaxable(BLOCK.getValue(COPPER_HOPPER), BLOCK.getValue(WAXED_COPPER_HOPPER));
+            OxidizableBlocksRegistry.registerWaxable(BLOCK.getValue(EXPOSED_COPPER_HOPPER), BLOCK.getValue(WAXED_EXPOSED_COPPER_HOPPER));
+            OxidizableBlocksRegistry.registerWaxable(BLOCK.getValue(WEATHERED_COPPER_HOPPER), BLOCK.getValue(WAXED_WEATHERED_COPPER_HOPPER));
+            OxidizableBlocksRegistry.registerWaxable(BLOCK.getValue(OXIDIZED_COPPER_HOPPER), BLOCK.getValue(WAXED_OXIDIZED_COPPER_HOPPER));
         }
     }
 
 }
-
