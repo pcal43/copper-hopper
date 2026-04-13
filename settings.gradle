@@ -4,7 +4,25 @@ pluginManagement {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
         }
+        maven {
+            name = 'NeoForge'
+            url = 'https://maven.neoforged.net/'
+        }
         mavenCentral()
         gradlePluginPortal()
     }
 }
+
+dependencyResolutionManagement {
+    repositories {
+        maven {
+            name = 'nucleoid'
+            url = 'https://maven.nucleoid.xyz/'
+        }
+    }
+}
+
+rootProject.name = 'copperhopper'
+include 'common'
+include 'fabric'
+include 'neoforge'
