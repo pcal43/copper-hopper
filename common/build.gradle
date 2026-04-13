@@ -33,7 +33,8 @@ loom {
 
     // Configure mixin refmap
     mixin {
-        defaultRefmapName = "copperhopper-common-refmap.json"
+        useLegacyMixinAp = true  // not entirely clear why this is needed
+        defaultRefmapName = "copperhopper-refmap.json"
     }
 }
 

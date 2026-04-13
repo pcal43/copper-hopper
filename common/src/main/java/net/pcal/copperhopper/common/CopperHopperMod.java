@@ -107,7 +107,7 @@ public class CopperHopperMod {
 
 
     private static final String CONFIG_FILENAME = "copperhopper.properties";
-    private static final String DEFAULT_CONFIG_FILENAME = "common/src/main/resources/default-copperhopper.properties";
+    private static final String DEFAULT_CONFIG_FILENAME = "default-copperhopper.properties";
 
 
     // ===================================================================================
