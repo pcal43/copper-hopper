@@ -25,8 +25,6 @@
 package net.pcal.copperhopper.common;
 
 
-import static net.pcal.copperhopper.common.CopperHopperMod.mod;
-
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.WorldlyContainer;
@@ -39,11 +37,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
+
 /**
  * @author pcal
  * @since 0.5.0
  */
-public class CopperHopperMinecartEntity extends MinecartHopper implements WorldlyContainer, CopperInventory {
+public class CopperHopperMinecartEntity extends MinecartHopper implements WorldlyContainer, CopperHopperContainer {
 
     private static final int[] SLOTS = new int[]{0, 1, 2, 3, 4};
 
@@ -62,7 +62,7 @@ public class CopperHopperMinecartEntity extends MinecartHopper implements Worldl
 
     @Override
     public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory) {
-        return new CohoScreenHandler(syncId, playerInventory, this);
+        return new CopperHopperScreenHandler(syncId, playerInventory, this);
     }
 
     @Override

@@ -48,7 +48,7 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.pcal.copperhopper.common.CohoScreenHandler;
+import net.pcal.copperhopper.common.CopperHopperScreenHandler;
 import net.pcal.copperhopper.common.CopperHopperBlock;
 import net.pcal.copperhopper.common.CopperHopperBlockEntity;
 import net.pcal.copperhopper.common.CopperHopperItem;
@@ -70,16 +70,16 @@ import static net.pcal.copperhopper.common.CopperHopperMod.NS;
 import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
 @Mod("copperhopper")
-public class NeoForgeCopperHopperMod {
+public class NeoforgeMainInitializer {
 
     private static final Logger LOGGER = LogManager.getLogger(LOGGER_NAME);
     private static List<DeferredHolder<Item, CopperHopperItem>> cohoItemHolders;
 
-    public NeoForgeCopperHopperMod(IEventBus modBus) {
+    public NeoforgeMainInitializer(IEventBus modBus) {
         LOGGER.info(LOG_PREFIX + "Mod constructor called");
-        modBus.addListener(NeoForgeCopperHopperMod::onCommonSetup);
-        modBus.addListener(NeoForgeCopperHopperMod::onBuildCreativeTab);
-        NeoForge.EVENT_BUS.addListener(NeoForgeCopperHopperMod::onServerStarting);
+        modBus.addListener(NeoforgeMainInitializer::onCommonSetup);
+        modBus.addListener(NeoforgeMainInitializer::onBuildCreativeTab);
+        NeoForge.EVENT_BUS.addListener(NeoforgeMainInitializer::onServerStarting);
         registerBlocksAndItems(modBus);
     }
 
@@ -124,7 +124,7 @@ public class NeoForgeCopperHopperMod {
     private static void registerBlocksAndItems(IEventBus modBus) {
         // --- Menu / Screen ---
         DeferredRegister<MenuType<?>> menuTypes = DeferredRegister.create(Registries.MENU, NS);
-        menuTypes.register("copper_hopper", () -> new MenuType<>(CohoScreenHandler::new, FeatureFlags.VANILLA_SET));
+        menuTypes.register("copper_hopper", () -> new MenuType<>(CopperHopperScreenHandler::new, FeatureFlags.VANILLA_SET));
         menuTypes.register(modBus);
 
         // --- Blocks and Block Items ---

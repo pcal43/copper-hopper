@@ -41,7 +41,7 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
-import net.pcal.copperhopper.common.CohoScreenHandler;
+import net.pcal.copperhopper.common.CopperHopperScreenHandler;
 import net.pcal.copperhopper.common.CopperHopperBlock;
 import net.pcal.copperhopper.common.CopperHopperBlockEntity;
 import net.pcal.copperhopper.common.CopperHopperItem;
@@ -54,7 +54,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import static net.minecraft.core.Registry.register;
 import static net.minecraft.core.registries.BuiltInRegistries.BLOCK;
@@ -68,18 +67,18 @@ import static net.pcal.copperhopper.common.CopperHopperMod.EXPOSED_COPPER_HOPPER
 import static net.pcal.copperhopper.common.CopperHopperMod.LOGGER_NAME;
 import static net.pcal.copperhopper.common.CopperHopperMod.LOG_PREFIX;
 import static net.pcal.copperhopper.common.CopperHopperMod.OXIDIZED_COPPER_HOPPER;
-import static net.pcal.copperhopper.common.CopperHopperMod.WEATHERED_COPPER_HOPPER;
 import static net.pcal.copperhopper.common.CopperHopperMod.WAXED_COPPER_HOPPER;
 import static net.pcal.copperhopper.common.CopperHopperMod.WAXED_EXPOSED_COPPER_HOPPER;
-import static net.pcal.copperhopper.common.CopperHopperMod.WAXED_WEATHERED_COPPER_HOPPER;
 import static net.pcal.copperhopper.common.CopperHopperMod.WAXED_OXIDIZED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.WAXED_WEATHERED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.WEATHERED_COPPER_HOPPER;
 import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
 /**
  * @author pcal
  * @since 0.0.1
  */
-public class CohoInitializer implements ModInitializer {
+public class FabricMainInitializer implements ModInitializer {
 
     @Override
     public void onInitialize() {
@@ -90,7 +89,6 @@ public class CohoInitializer implements ModInitializer {
         static {
             final Logger logger = LogManager.getLogger(LOGGER_NAME);
             try {
-                final Properties config;
                 mod().createDefaultConfig();
                 doStandardRegistrations();
                 logger.info(LOG_PREFIX + "Initialized.");
@@ -110,7 +108,7 @@ public class CohoInitializer implements ModInitializer {
             //
             // Register the Screen
             //
-            register(BuiltInRegistries.MENU, COHO_SCREEN_ID, new MenuType<>(CohoScreenHandler::new, FeatureFlags.VANILLA_SET));
+            register(BuiltInRegistries.MENU, COHO_SCREEN_ID, new MenuType<>(CopperHopperScreenHandler::new, FeatureFlags.VANILLA_SET));
 
             //
             // Register the Blocks and Items

@@ -29,7 +29,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
-import net.pcal.copperhopper.common.CohoScreen;
+import net.pcal.copperhopper.common.CopperHopperScreen;
 
 import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
@@ -37,11 +37,11 @@ import static net.pcal.copperhopper.common.CopperHopperMod.mod;
  * @author pcal
  * @since 0.0.1
  */
-public class CohoClientInitializer implements ClientModInitializer {
+public class FabricClientInitializer implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        MenuScreens.register(mod().getScreenHandlerType(), CohoScreen::new);
+        MenuScreens.register(mod().getScreenHandlerType(), CopperHopperScreen::new);
         EntityRendererRegistry.register(mod().getMinecartEntityType(),
                 ctx -> new MinecartRenderer(ctx, ModelLayers.HOPPER_MINECART));
     }

@@ -25,12 +25,25 @@
 package net.pcal.copperhopper.common;
 
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.HopperMenu;
+import net.minecraft.world.inventory.MenuType;
 
-/**
- * Marker interface for our two inventory-bearing entities.
- *
- * @author pcal
- * @since 0.5.0
- */
-public interface CopperInventory extends Container {
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
+
+public class CopperHopperScreenHandler extends HopperMenu {
+
+    public CopperHopperScreenHandler(int syncId, Inventory playerInventory) {
+        super(syncId, playerInventory);
+    }
+
+    public CopperHopperScreenHandler(int syncId, Inventory playerInventory, Container inventory) {
+        super(syncId, playerInventory, inventory);
+    }
+
+    @Override
+    public MenuType<?> getType() {
+        return mod().getScreenHandlerType();
+    }
+
 }
