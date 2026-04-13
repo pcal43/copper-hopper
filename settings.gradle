@@ -8,27 +8,6 @@ pluginManagement {
             name = 'NeoForge'
             url = 'https://maven.neoforged.net/'
         }
-        maven {
-            name = 'spongepowered'
-            url = 'https://repo.spongepowered.org/maven/'
-        }
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
-
-dependencyResolutionManagement {
-
-    repositories {
-        maven {
-            name = 'Fabric'
-            url = 'https://maven.fabricmc.net/'
-        }
-
-        maven {
-            name = 'spongepowered'
-            url = 'https://repo.spongepowered.org/maven/'
-        }
         mavenCentral()
         gradlePluginPortal()
     }
