@@ -76,10 +76,6 @@ loom {
         }
     }
 
-    mixin {
-        defaultRefmapName = "copperhopper-refmap.json"
-    }
-
     // Common sources are now part of main sourceSet
     mods {
         "copperhopper" {
