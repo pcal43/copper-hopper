@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2022-2026 pcal.net
+ * Copyright (c) 2022-2023 pcal.net
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,27 +22,21 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper.fabric;
+package net.pcal.copperhopper.neoforge;
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.entity.MinecartRenderer;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.pcal.copperhopper.common.CohoScreen;
 
-import static net.pcal.copperhopper.common.CohoMod.mod;
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
-/**
- * @author pcal
- * @since 0.0.1
- */
-public class FabricClientInitializer implements ClientModInitializer {
+@EventBusSubscriber(modid = "copperhopper", value = Dist.CLIENT)
+public class NeoForgeCopperHopperClientMod {
 
-    @Override
-    public void onInitializeClient() {
-        MenuScreens.register(mod().getScreenHandlerType(), CohoScreen::new);
-        EntityRendererRegistry.register(mod().getMinecartEntityType(),
-                ctx -> new MinecartRenderer(ctx, ModelLayers.HOPPER_MINECART));
+    @SubscribeEvent
+    public static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
+        event.register(mod().getScreenHandlerType(), CohoScreen::new);
     }
 }

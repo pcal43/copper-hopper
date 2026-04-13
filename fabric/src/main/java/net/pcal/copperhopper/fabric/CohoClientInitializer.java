@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2022-2026 pcal.net
+ * Copyright (c) 2022-2023 pcal.net
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,15 +22,27 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper.common;
+package net.pcal.copperhopper.fabric;
 
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.entity.MinecartRenderer;
+import net.pcal.copperhopper.common.CohoScreen;
 
-public class CohoItem extends BlockItem {
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
-    public CohoItem(Block block, Item.Properties settings) {
-        super(block, settings);
+/**
+ * @author pcal
+ * @since 0.0.1
+ */
+public class CohoClientInitializer implements ClientModInitializer {
+
+    @Override
+    public void onInitializeClient() {
+        MenuScreens.register(mod().getScreenHandlerType(), CohoScreen::new);
+        EntityRendererRegistry.register(mod().getMinecartEntityType(),
+                ctx -> new MinecartRenderer(ctx, ModelLayers.HOPPER_MINECART));
     }
 }

@@ -22,21 +22,15 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper.neoforge;
+package net.pcal.copperhopper.common;
 
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.pcal.copperhopper.common.CohoScreen;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
-import static net.pcal.copperhopper.common.CohoMod.mod;
+public class CopperHopperItem extends BlockItem {
 
-@EventBusSubscriber(modid = "copperhopper", value = Dist.CLIENT)
-public class NeoforgeClientInitializer {
-
-    @SubscribeEvent
-    public static void onRegisterMenuScreens(RegisterMenuScreensEvent event) {
-        event.register(mod().getScreenHandlerType(), CohoScreen::new);
+    public CopperHopperItem(Block block, Item.Properties settings) {
+        super(block, settings);
     }
 }
