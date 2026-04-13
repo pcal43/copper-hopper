@@ -1,0 +1,12 @@
+{
+  "block.copperhopper.copper_hopper" : "Miedziany lej",
+  "block.copperhopper.exposed_copper_hopper" : "Odsłonięty miedziany lej",
+  "block.copperhopper.weathered_copper_hopper" : "Zwietrzały miedziany lej",
+  "block.copperhopper.oxidized_copper_hopper" : "Utleniony miedziany lej",
+  "block.copperhopper.waxed_copper_hopper" : "Woskowany miedziany lej",
+  "block.copperhopper.waxed_exposed_copper_hopper" : "Woskowany odsłonięty miedziany lej",
+  "block.copperhopper.waxed_weathered_copper_hopper" : "Woskowany zwietrzały miedziany lej",
+  "block.copperhopper.waxed_oxidized_copper_hopper" : "Woskowany utleniony miedziany lej",
+  "item.copperhopper.copper_hopper_minecart" : "Wagonik z miedzianym lejem",
+  "entity.copperhopper.copper_hopper_minecart" : "Wagonik z miedzianym lejem"
+}
