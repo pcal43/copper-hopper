@@ -18,3 +18,7 @@ prs:
 
 deps:
     ./gradlew -q dependencies --configuration runtimeClasspath
+
+clearCaches:
+    ./gradlew --stop
+    rm -rf "$HOME/.gradle/caches" "$HOME/.gradle/wrapper/dists" "$HOME/.gradle/daemon" "$HOME/.gradle/native"

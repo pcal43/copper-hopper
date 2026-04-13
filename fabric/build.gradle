@@ -60,7 +60,7 @@ sourceSets {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = project.java_version
+    it.options.release = Integer.parseInt(project.java_version)
 }
 
 loom {
@@ -114,7 +114,7 @@ modrinth {
     projectId = "${project.modrinth_projectId}"
     versionNumber = project.mod_version
     versionType = "release"
-    uploadFile = remapJar
+    uploadFile = jar
     changelog = "<p><a href='${project.github_projectUrl}/releases/tag/${project.mod_version}'>${project.github_projectUrl}/releases/tag/${project.mod_version}</a></p>"
     gameVersions = ["${project.minecraft_version}"]
     loaders = ["fabric"]
@@ -131,7 +131,7 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
 
     // Configure the main artifact
     // The plugin automatically detects Fabric & Java version from your Loom setup
-    def mainFile = upload(project.curseforge_projectId, remapJar)
+    def mainFile = upload(project.curseforge_projectId, jar)
 
     mainFile.releaseType = "release"
     mainFile.changelog = "${project.github_projectUrl}/releases/tag/${project.mod_version}"
@@ -140,6 +140,6 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
     mainFile.addGameVersion(project.minecraft_version)
     mainFile.addModLoader("Fabric")
 
-    // Ensure remapJar is finished before this runs
-    dependsOn(remapJar)
+    // Ensure jar is finished before this runs
+    dependsOn(jar)
 }

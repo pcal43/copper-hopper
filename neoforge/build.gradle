@@ -1,5 +1,5 @@
 plugins {
-    id 'net.fabricmc.fabric-loom'
+    id 'net.neoforged.moddev'
     id 'com.modrinth.minotaur'
     id 'net.darkhax.curseforgegradle'
 }
@@ -47,7 +47,7 @@ dependencies {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = project.java_version
+    it.options.release = Integer.parseInt(project.java_version)
 }
 
 processResources {
@@ -109,6 +109,6 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
     mainFile.changelogType = "markdown"
     mainFile.addGameVersion(project.minecraft_version)
     mainFile.addModLoader("NeoForge")
-    // Ensure remapJar is finished before this runs
+    // Ensure jar is finished before this runs
     dependsOn(jar)
 }

@@ -12,10 +12,9 @@ repositories {
 }
 
 dependencies {
-    // Minecraft classes with Mojang mappings - needed for compilation
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-
-    // Mixin annotations - using version from gradle.properties for consistency
+    implementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
     compileOnly "org.spongepowered:mixin:${project.spongepowered_version}"
     annotationProcessor "org.spongepowered:mixin:${project.spongepowered_version}:processor"
 }
@@ -35,13 +34,13 @@ loom {
 
     // Configure mixin refmap
     mixin {
-        useLegacyMixinAp = true
+
         defaultRefmapName = "copperhopper-refmap.json"
     }
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = project.java_version
+    it.options.release = Integer.parseInt(project.java_version)
     options.encoding = "UTF-8"
 }
 
