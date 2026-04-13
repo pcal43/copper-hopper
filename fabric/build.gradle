@@ -11,15 +11,16 @@ base {
 version = project.mod_version
 group = project.maven_group
 
-repositories {
-    maven { url = 'https://maven.fabricmc.net/' }
-    maven { url = "https://repo.spongepowered.org/maven/" }
-    mavenCentral()
-}
-
 configurations {
     // Create a configuration for the common module that won't be included in dev
     commonDev
+}
+
+repositories {
+    maven { url = "https://maven.fabricmc.net/" }
+    maven { url = "https://repo.spongepowered.org/maven/" }
+    maven {url = 'https://maven.nucleoid.xyz/' }
+    mavenCentral()
 }
 
 dependencies {

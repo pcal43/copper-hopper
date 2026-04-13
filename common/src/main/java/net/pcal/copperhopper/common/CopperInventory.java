@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper;
+package net.pcal.copperhopper.common;
 
 import net.minecraft.world.Container;
 

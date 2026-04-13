@@ -22,12 +22,11 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper;
+package net.pcal.copperhopper.common;
 
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
@@ -54,7 +53,7 @@ import net.minecraft.world.level.material.MapColor;
 import java.util.HashSet;
 import java.util.Set;
 
-import static net.pcal.copperhopper.CopperHopperMod.mod;
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
 public class CopperHopperBlock extends HopperBlock implements WeatheringCopper {
 

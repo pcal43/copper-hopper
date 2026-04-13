@@ -22,10 +22,10 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper;
+package net.pcal.copperhopper.common;
 
 
-import static net.pcal.copperhopper.CopperHopperMod.mod;
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;

@@ -22,15 +22,15 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper.mixins;
+package net.pcal.copperhopper.common.mixins;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MinecartItem;
 import net.minecraft.world.level.Level;
-import net.pcal.copperhopper.CopperHopperMinecartEntity;
-import net.pcal.copperhopper.CopperHopperMinecartItem;
+import net.pcal.copperhopper.common.CopperHopperMinecartEntity;
+import net.pcal.copperhopper.common.CopperHopperMinecartItem;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

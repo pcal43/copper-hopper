@@ -22,26 +22,32 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper;
+package net.pcal.copperhopper.fabric.polymer;
 
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.entity.MinecartRenderer;
+import eu.pb4.polymer.core.api.item.PolymerItem;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.pcal.copperhopper.common.CopperHopperItem;
+import xyz.nucleoid.packettweaker.PacketContext;
 
-import static net.pcal.copperhopper.CopperHopperMod.mod;
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
-/**
- * @author pcal
- * @since 0.0.1
- */
-public class CohoClientInitializer implements ClientModInitializer {
+public class PolymerCopperHopperItem extends CopperHopperItem implements PolymerItem {//}, PolymerKeepModel, PolymerClientDecoded {
+
+    public PolymerCopperHopperItem(Block block, Properties settings) {
+        super(block, settings);
+    }
 
     @Override
-    public void onInitializeClient() {
-        MenuScreens.register(mod().getScreenHandlerType(), CohoScreen::new);
-        EntityRendererRegistry.register(mod().getMinecartEntityType(),
-                ctx -> new MinecartRenderer(ctx, ModelLayers.HOPPER_MINECART));
+    public Item getPolymerItem(ItemStack arg0, PacketContext arg1) {
+        return Items.HOPPER;
+    }
+
+    @Override
+    public Component getName(ItemStack stack) {
+        return Component.literal(mod().getPolymerName());
     }
 }

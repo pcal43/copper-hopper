@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper;
+package net.pcal.copperhopper.fabric;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -41,6 +41,13 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
+import net.pcal.copperhopper.common.CohoScreenHandler;
+import net.pcal.copperhopper.common.CopperHopperBlock;
+import net.pcal.copperhopper.common.CopperHopperBlockEntity;
+import net.pcal.copperhopper.common.CopperHopperItem;
+import net.pcal.copperhopper.common.CopperHopperMinecartEntity;
+import net.pcal.copperhopper.common.CopperHopperMinecartItem;
+import net.pcal.copperhopper.common.CopperHopperMod;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,22 +58,22 @@ import java.util.Properties;
 
 import static net.minecraft.core.Registry.register;
 import static net.minecraft.core.registries.BuiltInRegistries.BLOCK;
-import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ENTITY_TYPE_ID;
-import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_IDS;
-import static net.pcal.copperhopper.CopperHopperMod.COHO_MINECART_ENTITY_TYPE_ID;
-import static net.pcal.copperhopper.CopperHopperMod.COHO_MINECART_ITEM_ID;
-import static net.pcal.copperhopper.CopperHopperMod.COHO_SCREEN_ID;
-import static net.pcal.copperhopper.CopperHopperMod.COPPER_HOPPER;
-import static net.pcal.copperhopper.CopperHopperMod.EXPOSED_COPPER_HOPPER;
-import static net.pcal.copperhopper.CopperHopperMod.LOGGER_NAME;
-import static net.pcal.copperhopper.CopperHopperMod.LOG_PREFIX;
-import static net.pcal.copperhopper.CopperHopperMod.OXIDIZED_COPPER_HOPPER;
-import static net.pcal.copperhopper.CopperHopperMod.WEATHERED_COPPER_HOPPER;
-import static net.pcal.copperhopper.CopperHopperMod.WAXED_COPPER_HOPPER;
-import static net.pcal.copperhopper.CopperHopperMod.WAXED_EXPOSED_COPPER_HOPPER;
-import static net.pcal.copperhopper.CopperHopperMod.WAXED_WEATHERED_COPPER_HOPPER;
-import static net.pcal.copperhopper.CopperHopperMod.WAXED_OXIDIZED_COPPER_HOPPER;
-import static net.pcal.copperhopper.CopperHopperMod.mod;
+import static net.pcal.copperhopper.common.CopperHopperMod.COHO_BLOCK_ENTITY_TYPE_ID;
+import static net.pcal.copperhopper.common.CopperHopperMod.COHO_BLOCK_IDS;
+import static net.pcal.copperhopper.common.CopperHopperMod.COHO_MINECART_ENTITY_TYPE_ID;
+import static net.pcal.copperhopper.common.CopperHopperMod.COHO_MINECART_ITEM_ID;
+import static net.pcal.copperhopper.common.CopperHopperMod.COHO_SCREEN_ID;
+import static net.pcal.copperhopper.common.CopperHopperMod.COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.EXPOSED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.LOGGER_NAME;
+import static net.pcal.copperhopper.common.CopperHopperMod.LOG_PREFIX;
+import static net.pcal.copperhopper.common.CopperHopperMod.OXIDIZED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.WEATHERED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.WAXED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.WAXED_EXPOSED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.WAXED_WEATHERED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.WAXED_OXIDIZED_COPPER_HOPPER;
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
 /**
  * @author pcal
@@ -88,7 +95,7 @@ public class CohoInitializer implements ModInitializer {
                 config = mod().loadConfig();
                 if ("true".equals(config.getProperty("polymer-enabled"))) {
                     logger.info("Initializing polymer.");
-                    ((Runnable) Class.forName("net.pcal.copperhopper.polymer.PolymerRegistrar").getDeclaredConstructor().newInstance()).run();
+                    ((Runnable) Class.forName("net.pcal.copperhopper.fabric.polymer.PolymerRegistrar").getDeclaredConstructor().newInstance()).run();
                 } else {
                     doStandardRegistrations();
                 }

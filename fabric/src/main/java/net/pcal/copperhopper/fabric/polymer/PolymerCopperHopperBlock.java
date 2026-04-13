@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper.polymer;
+package net.pcal.copperhopper.fabric.polymer;
 
 import eu.pb4.polymer.core.api.block.PolymerBlock;
 import net.minecraft.core.BlockPos;
@@ -32,10 +32,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HopperBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.pcal.copperhopper.CopperHopperBlock;
+import net.pcal.copperhopper.common.CopperHopperBlock;
 import xyz.nucleoid.packettweaker.PacketContext;
 
-import static net.pcal.copperhopper.CopperHopperMod.mod;
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
 public class PolymerCopperHopperBlock extends CopperHopperBlock implements PolymerBlock { // PolymerClientDecoded { //, PolymerKeepModel {//, PolymerClientDecoded {
 

@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper.polymer;
+package net.pcal.copperhopper.fabric.polymer;
 
 import eu.pb4.polymer.core.api.block.PolymerBlockUtils;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
@@ -35,11 +35,11 @@ import net.minecraft.util.Tuple;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.pcal.copperhopper.CopperHopperBlock;
-import net.pcal.copperhopper.CopperHopperMod;
+import net.pcal.copperhopper.common.CopperHopperBlock;
+import net.pcal.copperhopper.common.CopperHopperMod;
 
 import static net.minecraft.world.level.block.WeatheringCopper.*;
-import static net.pcal.copperhopper.CopperHopperMod.COHO_BLOCK_ENTITY_TYPE_ID;
+import static net.pcal.copperhopper.common.CopperHopperMod.COHO_BLOCK_ENTITY_TYPE_ID;
 
 
 @SuppressWarnings("unused")

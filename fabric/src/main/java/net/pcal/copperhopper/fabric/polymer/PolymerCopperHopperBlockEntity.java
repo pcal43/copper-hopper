@@ -22,33 +22,42 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper;
+package net.pcal.copperhopper.fabric.polymer;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.HopperScreen;
-import net.minecraft.client.renderer.RenderPipelines;
+import net.pcal.copperhopper.common.CopperHopperBlockEntity;
+
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
+
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.HopperMenu;
+import net.minecraft.world.level.block.state.BlockState;
 
-/**
- * Alternate version of the HopperScreen that displays our texture with the
- * mesh background in the input slots.
- */
-public class CohoScreen extends HopperScreen {
+public class PolymerCopperHopperBlockEntity extends CopperHopperBlockEntity  {
 
-    private static final Identifier TEXTURE = Identifier.parse("copperhopper:textures/gui/container/copper_hopper.png");
-
-    public CohoScreen(HopperMenu handler, Inventory inventory, Component title) {
-        super(handler, inventory, title);
+    public PolymerCopperHopperBlockEntity(BlockPos pos, BlockState state) {
+        super(pos, state);
     }
 
     @Override
-    protected void renderBg(GuiGraphics context, float delta, int mouseX, int mouseY) {
-        int i = (this.width - this.imageWidth) / 2;
-        int j = (this.height - this.imageHeight) / 2;
-        // FIXME? RenderType here is new in 1.21.3.  Seems to work but no idea if it's correct.
-        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, i, j, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+    protected AbstractContainerMenu createMenu(int syncId, Inventory playerInventory) {
+        return new HopperMenu(syncId, playerInventory, this);
+    }
+
+    @Override
+    public Component getName() {
+        return Component.literal(mod().getPolymerName());
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.literal(mod().getPolymerName());
+    }
+
+    @Override
+    public Component getCustomName() {
+        return Component.literal(mod().getPolymerName());
     }
 }

@@ -22,15 +22,27 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper;
+package net.pcal.copperhopper.fabric;
 
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.renderer.entity.MinecartRenderer;
+import net.pcal.copperhopper.common.CohoScreen;
 
-public class CopperHopperItem extends BlockItem {
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
-    public CopperHopperItem(Block block, Item.Properties settings) {
-        super(block, settings);
+/**
+ * @author pcal
+ * @since 0.0.1
+ */
+public class CohoClientInitializer implements ClientModInitializer {
+
+    @Override
+    public void onInitializeClient() {
+        MenuScreens.register(mod().getScreenHandlerType(), CohoScreen::new);
+        EntityRendererRegistry.register(mod().getMinecartEntityType(),
+                ctx -> new MinecartRenderer(ctx, ModelLayers.HOPPER_MINECART));
     }
 }

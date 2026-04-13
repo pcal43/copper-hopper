@@ -22,28 +22,33 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper;
+package net.pcal.copperhopper.common;
 
-import static net.pcal.copperhopper.CopperHopperMod.mod;
-
-import net.minecraft.world.Container;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.HopperScreen;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.HopperMenu;
-import net.minecraft.world.inventory.MenuType;
 
-public class CohoScreenHandler extends HopperMenu {
+/**
+ * Alternate version of the HopperScreen that displays our texture with the
+ * mesh background in the input slots.
+ */
+public class CohoScreen extends HopperScreen {
 
-    public CohoScreenHandler(int syncId, Inventory playerInventory) {
-        super(syncId, playerInventory);
-    }
+    private static final Identifier TEXTURE = Identifier.parse("copperhopper:textures/gui/container/copper_hopper.png");
 
-    public CohoScreenHandler(int syncId, Inventory playerInventory, Container inventory) {
-        super(syncId, playerInventory, inventory);
+    public CohoScreen(HopperMenu handler, Inventory inventory, Component title) {
+        super(handler, inventory, title);
     }
 
     @Override
-    public MenuType<?> getType() {
-        return mod().getScreenHandlerType();
+    protected void renderBg(GuiGraphics context, float delta, int mouseX, int mouseY) {
+        int i = (this.width - this.imageWidth) / 2;
+        int j = (this.height - this.imageHeight) / 2;
+        // FIXME? RenderType here is new in 1.21.3.  Seems to work but no idea if it's correct.
+        context.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, i, j, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
     }
-
 }

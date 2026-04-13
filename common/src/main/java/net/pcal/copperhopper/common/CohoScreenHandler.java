@@ -22,42 +22,28 @@
  * THE SOFTWARE.
  */
 
-package net.pcal.copperhopper.polymer;
+package net.pcal.copperhopper.common;
 
-import net.pcal.copperhopper.CopperHopperBlockEntity;
+import static net.pcal.copperhopper.common.CopperHopperMod.mod;
 
-import static net.pcal.copperhopper.CopperHopperMod.mod;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.HopperMenu;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.inventory.MenuType;
 
-public class PolymerCopperHopperBlockEntity extends CopperHopperBlockEntity  {
+public class CohoScreenHandler extends HopperMenu {
 
-    public PolymerCopperHopperBlockEntity(BlockPos pos, BlockState state) {
-        super(pos, state);
+    public CohoScreenHandler(int syncId, Inventory playerInventory) {
+        super(syncId, playerInventory);
+    }
+
+    public CohoScreenHandler(int syncId, Inventory playerInventory, Container inventory) {
+        super(syncId, playerInventory, inventory);
     }
 
     @Override
-    protected AbstractContainerMenu createMenu(int syncId, Inventory playerInventory) {
-        return new HopperMenu(syncId, playerInventory, this);
+    public MenuType<?> getType() {
+        return mod().getScreenHandlerType();
     }
 
-    @Override
-    public Component getName() {
-        return Component.literal(mod().getPolymerName());
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return Component.literal(mod().getPolymerName());
-    }
-
-    @Override
-    public Component getCustomName() {
-        return Component.literal(mod().getPolymerName());
-    }
 }
