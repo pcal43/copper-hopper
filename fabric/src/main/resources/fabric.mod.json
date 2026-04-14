@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "copperhopper",
-  "version": "${version}",
+  "version": "${mod_version}",
   "name": "Copper Hopper",
   "description": "Vanilla-friendly item filtering.",
   "authors": ["pcal.net"],
@@ -15,16 +15,15 @@
   "environment": "*",
   "entrypoints": {
     "main": ["net.pcal.copperhopper.fabric.FabricMainInitializer"],
-    "client": ["net.pcal.copperhopper.fabric.FabricClientInitilizer"]
+    "client": ["net.pcal.copperhopper.fabric.FabricClientInitializer"]
   },
   "mixins": [
     "copperhopper.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.16.9",
-    "fabric": "*",
-    "minecraft": ">=1.21.2",
-    "java": ">=21"
+    "minecraft": ">=26.0",
+    "java": ">=25"
   },
   "conflicts": {
     "lithium": "<0.10.2"

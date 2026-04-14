@@ -4,6 +4,15 @@ clean:
 compile:
     ./gradlew compileJava
 
+jar:
+    ./gradlew jar
+
+release-jars:
+    ./gradlew buildReleaseJars
+
+compile-common:
+    ./gradlew :common:compileJava
+
 release:
     ./gradlew release
 
@@ -18,3 +27,14 @@ prs:
 
 deps:
     ./gradlew -q dependencies --configuration runtimeClasspath
+
+clearCaches:
+    ./gradlew --stop
+    rm -rf "$HOME/.gradle/caches" "$HOME/.gradle/wrapper/dists" "$HOME/.gradle/daemon" "$HOME/.gradle/native"
+
+
+run-fabric:
+    ./gradlew :fabric:runClient
+
+run-neoforge:
+    ./gradlew :neoforge:runClient

@@ -1,12 +1,33 @@
 plugins {
-	id 'fabric-loom' version '1.16-SNAPSHOT' apply false
-	id 'net.neoforged.moddev' version '2.0.116' apply false
+	id 'net.fabricmc.fabric-loom' version '1.16-SNAPSHOT' apply false
+	id 'net.neoforged.moddev' version '2.0.140' apply false
 	id 'com.modrinth.minotaur' version '2.+' apply false
-	id 'net.darkhax.curseforgegradle' version '1.1.25'
+	id 'net.darkhax.curseforgegradle' version '1.1.25' apply false
 }
 
-version = project.mod_version
-group = project.maven_group
+subprojects {
+	// Setting 'version' is necessary to ensure it gets tacked on to the final jars.
+	// I'm not 100% clear on why; it's something loom is expecting.
+    version = project.mod_version
+    group = project.maven_group
+
+    def javaVersionInt = Integer.parseInt(project.java_version)
+
+    pluginManager.withPlugin('java') {
+        java {
+            toolchain {
+                languageVersion = JavaLanguageVersion.of(javaVersionInt)
+            }
+            withSourcesJar()
+        }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        it.options.release = javaVersionInt
+		it.options.encoding = "UTF-8"
+    }
+}
+
 
 // ============================================================================
 // Release Tasks

@@ -4,7 +4,7 @@ license="MIT"
 
 [[mods]]
 modId="copperhopper"
-version="${version}"
+version="${mod_version}"
 displayName="Copper Hopper"
 description="Vanilla-friendly item filtering."
 authors=["pcal.net"]
@@ -13,7 +13,7 @@ logoFile="assets/copperhopper/textures/item/copper_hopper.png"
 [[dependencies.copperhopper]]
 modId="neoforge"
 mandatory=true
-versionRange="[21.1,)"
+versionRange="[26.0,)"
 
 [[mixins]]
 config = "copperhopper.mixins.json"

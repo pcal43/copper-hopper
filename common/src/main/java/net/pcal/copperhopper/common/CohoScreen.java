@@ -24,7 +24,7 @@
 
 package net.pcal.copperhopper.common;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.HopperScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -45,7 +45,7 @@ public class CohoScreen extends HopperScreen {
     }
 
     @Override
-    protected void renderBg(GuiGraphics context, float delta, int mouseX, int mouseY) {
+    public void extractBackground(final GuiGraphicsExtractor context, final int mouseX, final int mouseY, final float a) {
         int i = (this.width - this.imageWidth) / 2;
         int j = (this.height - this.imageHeight) / 2;
         // FIXME? RenderType here is new in 1.21.3.  Seems to work but no idea if it's correct.
