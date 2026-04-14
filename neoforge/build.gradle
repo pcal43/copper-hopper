@@ -8,7 +8,6 @@ base {
     archivesName = project.archives_base_name_neoforge
 }
 
-
 repositories {
     mavenCentral()
     maven { url = 'https://maven.neoforged.net/releases' }
@@ -30,18 +29,6 @@ neoForge {
     }
 }
 
-sourceSets {
-    main {
-        java {
-            srcDir project(":common").file("src/main/java")
-        }
-        resources {
-            srcDir project(":common").file("src/main/resources")
-        }
-    }
-}
-
-
 dependencies {
     // Use the compiled common jar - it has proper Mojang mappings from Loom
     implementation project(":common")
@@ -49,8 +36,24 @@ dependencies {
     annotationProcessor "org.spongepowered:mixin:${project.spongepowered_version}:processor"
 }
 
+
 tasks.withType(JavaCompile).configureEach {
     it.options.release = Integer.parseInt(project.java_version)
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(project.java_version)
+    }
+    withSourcesJar()
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir project(":common").file("src/main/resources")
+        }
+    }
 }
 
 processResources {
@@ -62,36 +65,20 @@ processResources {
     }
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(project.java_version)
-    }
-    withSourcesJar()
-}
 
 jar {
     from("LICENSE") {
         rename { "${it}_${project.archives_base_name_neoforge}"}
     }
-
-    // Include common classes directly in the jar
-    from(project(":common").sourceSets.main.output) {
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    }
-
-    // Include neoforge resources (data maps, etc.)
-    from(sourceSets.main.resources) {
-        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    }
+    from(project(":common").sourceSets.main.output)
 }
-
-
 
 // Publishing configuration
 modrinth {
     token = System.getenv("MODRINTH_TOKEN")
     projectId = "${project.modrinth_projectId}"
     versionNumber = project.mod_version
+    versionName = "${project.mod_version} (neoforge)"
     versionType = "release"
     uploadFile = jar
     changelog = "<p><a href='${project.github_projectUrl}/releases/tag/${project.mod_version}'>${project.github_projectUrl}/releases/tag/${project.mod_version}</a></p>"
