@@ -36,18 +36,6 @@ dependencies {
     annotationProcessor "org.spongepowered:mixin:${project.spongepowered_version}:processor"
 }
 
-
-tasks.withType(JavaCompile).configureEach {
-    it.options.release = Integer.parseInt(project.java_version)
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(project.java_version)
-    }
-    withSourcesJar()
-}
-
 sourceSets {
     main {
         resources {
