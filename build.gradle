@@ -10,18 +10,20 @@ group = project.maven_group
 
 
 subprojects {
-	def javaVersionInt = Integer.parseInt(project.java_version)
+    def javaVersionInt = Integer.parseInt(project.java_version)
 
-	java {
-		toolchain {
-			languageVersion = JavaLanguageVersion.of(javaVersionInt)
-		}
-		withSourcesJar()
-	}
+    pluginManager.withPlugin('java') {
+        java {
+            toolchain {
+                languageVersion = JavaLanguageVersion.of(javaVersionInt)
+            }
+            withSourcesJar()
+        }
+    }
 
-	tasks.withType(JavaCompile).configureEach {
-		it.options.release = javaVersionInt
-	}
+    tasks.withType(JavaCompile).configureEach {
+        it.options.release = javaVersionInt
+    }
 }
 
 
