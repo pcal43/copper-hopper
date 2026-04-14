@@ -2,7 +2,6 @@ plugins {
     id 'net.fabricmc.fabric-loom'
 }
 
-
 repositories {
     maven { url = "https://maven.fabricmc.net/" }
     maven { url = "https://repo.spongepowered.org/maven/" }
@@ -15,33 +14,8 @@ dependencies {
     annotationProcessor "org.spongepowered:mixin:${project.spongepowered_version}:processor"
 }
 
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8"
-    options.compilerArgs += ["-AdefaultObfuscationEnv=named"]
-}
-
 loom {
     runs {
         // No run configurations needed for common module
     }
 }
-
-tasks.withType(JavaCompile).configureEach {
-    it.options.release = Integer.parseInt(project.java_version)
-    options.encoding = "UTF-8"
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(project.java_version)
-    }
-    withSourcesJar()
-}
-
-jar {
-    from("LICENSE") {
-        rename { "${it}_${project.archives_base_name_common}"}
-    }
-}
-
