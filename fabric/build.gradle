@@ -8,11 +8,6 @@ base {
     archivesName = project.archives_base_name_fabric
 }
 
-configurations {
-    // Create a configuration for the common module that won't be included in dev
-    commonDev
-}
-
 repositories {
     maven { url = "https://maven.fabricmc.net/" }
     mavenCentral()
@@ -56,15 +51,7 @@ loom {
             runDir("run")
         }
     }
-
-    // Common sources are now part of main sourceSet
-    mods {
-        "copperhopper" {
-            sourceSet sourceSets.main
-        }
-    }
 }
-
 
 jar {
     from("LICENSE") {
@@ -74,17 +61,16 @@ jar {
 }
 
 
-
-
 // Publishing configuration
 modrinth {
     token = System.getenv("MODRINTH_TOKEN")
-    projectId = "${project.modrinth_projectId}"
+    projectId = project.modrinth_projectId
     versionNumber = project.mod_version
+    versionName = "${project.mod_version} (fabric)"
     versionType = "release"
     uploadFile = jar
     changelog = "<p><a href='${project.github_projectUrl}/releases/tag/${project.mod_version}'>${project.github_projectUrl}/releases/tag/${project.mod_version}</a></p>"
-    gameVersions = ["${project.minecraft_version}"]
+    gameVersions = [ project.minecraft_version ]
     loaders = ["fabric"]
     dependencies {
         required.project "fabric-api"

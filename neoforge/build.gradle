@@ -73,13 +73,13 @@ jar {
 // Publishing configuration
 modrinth {
     token = System.getenv("MODRINTH_TOKEN")
-    projectId = "${project.modrinth_projectId}"
+    projectId = project.modrinth_projectId
     versionNumber = project.mod_version
     versionName = "${project.mod_version} (neoforge)"
     versionType = "release"
     uploadFile = jar
     changelog = "<p><a href='${project.github_projectUrl}/releases/tag/${project.mod_version}'>${project.github_projectUrl}/releases/tag/${project.mod_version}</a></p>"
-    gameVersions = ["${project.minecraft_version}"]
+    gameVersions = [ project.minecraft_version ]
     loaders = ["neoforge"]
 }
 
