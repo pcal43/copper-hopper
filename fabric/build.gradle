@@ -41,8 +41,6 @@ processResources {
 
 sourceSets {
     main {
-        // Add common module sources to fabric's main sourceSet
-        // This ensures they're compiled and remapped together
         java {
             srcDir project(":common").file("src/main/java")
         }

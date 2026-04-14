@@ -28,14 +28,19 @@ neoForge {
             gameDirectory = file("${project.projectDir}/run")
         }
     }
-    mods {
-        copperhopper {
-            sourceSet sourceSets.main
-            // Also include common module for resources and classes
-            sourceSet project(":common").sourceSets.main
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir project(":common").file("src/main/java")
+        }
+        resources {
+            srcDir project(":common").file("src/main/resources")
         }
     }
 }
+
 
 dependencies {
     // Use the compiled common jar - it has proper Mojang mappings from Loom

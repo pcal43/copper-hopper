@@ -22,8 +22,6 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 loom {
-    // Configure loom to not create run configurations for the common module
-    // since it's not meant to run standalone
     runs {
         // No run configurations needed for common module
     }
@@ -41,7 +39,6 @@ java {
     withSourcesJar()
 }
 
-// Don't remap the common jar - the loader-specific modules will handle that
 jar {
     from("LICENSE") {
         rename { "${it}_${project.archives_base_name_common}"}
