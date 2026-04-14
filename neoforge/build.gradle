@@ -32,10 +32,7 @@ neoForge {
 dependencies {
     // Use the compiled common jar - it has proper Mojang mappings from Loom
     implementation project(":common")
-    compileOnly "org.spongepowered:mixin:${project.spongepowered_version}"
-    annotationProcessor "org.spongepowered:mixin:${project.spongepowered_version}:processor"
 }
-
 
 tasks.withType(JavaCompile).configureEach {
     it.options.release = Integer.parseInt(project.java_version)
@@ -57,6 +54,7 @@ sourceSets {
 }
 
 processResources {
+    // Insert the current version into the neoforge metadata
     inputs.property "project.version", project.version
     filesMatching("META-INF/neoforge.mods.toml") {
         filter { line ->
@@ -64,7 +62,6 @@ processResources {
         }
     }
 }
-
 
 jar {
     from("LICENSE") {
