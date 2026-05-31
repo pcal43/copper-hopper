@@ -8,24 +8,24 @@ plugins {
 subprojects {
 	// Setting 'version' is necessary to ensure it gets tacked on to the final jars.
 	// I'm not 100% clear on why; it's something loom is expecting.
-    version = project.mod_version
-    group = project.maven_group
+	version = project.mod_version
+	group = project.maven_group
 
-    def javaVersionInt = Integer.parseInt(project.java_version)
+	def javaVersionInt = Integer.parseInt(project.java_version)
 
-    pluginManager.withPlugin('java') {
-        java {
-            toolchain {
-                languageVersion = JavaLanguageVersion.of(javaVersionInt)
-            }
-            withSourcesJar()
-        }
-    }
+	pluginManager.withPlugin('java') {
+		java {
+			toolchain {
+				languageVersion = JavaLanguageVersion.of(javaVersionInt)
+			}
+			withSourcesJar()
+		}
+	}
 
-    tasks.withType(JavaCompile).configureEach {
-        it.options.release = javaVersionInt
+	tasks.withType(JavaCompile).configureEach {
+		it.options.release = javaVersionInt
 		it.options.encoding = "UTF-8"
-    }
+	}
 }
 
 
