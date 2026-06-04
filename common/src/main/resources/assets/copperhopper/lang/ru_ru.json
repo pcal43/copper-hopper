@@ -1,4 +1,5 @@
-{
+{ 
+  "modmenu.descriptionTranslation.copperhopper": "Ванильная фильтрация предметов с оттенками меди",
   "block.copperhopper.copper_hopper" : "Медная воронка",
   "block.copperhopper.exposed_copper_hopper" : "Потемневшая медная воронка",
   "block.copperhopper.weathered_copper_hopper" : "Состаренная медная воронка",
