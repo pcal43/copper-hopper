@@ -24,7 +24,7 @@
 
 package net.pcal.copperhopper.common;
 
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.MinecartItem;
 
@@ -36,6 +36,6 @@ import net.minecraft.world.item.MinecartItem;
 public class CohoMinecartItem extends MinecartItem {
 
     public CohoMinecartItem(Item.Properties settings) {
-        super(EntityType.HOPPER_MINECART, settings);
+        super(EntityTypes.HOPPER_MINECART, settings);
     }
 }

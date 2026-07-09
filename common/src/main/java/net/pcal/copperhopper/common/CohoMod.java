@@ -31,7 +31,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.MenuType;
@@ -71,6 +70,8 @@ import static net.minecraft.world.level.block.WeatheringCopper.WeatherState.WEAT
  */
 public class CohoMod {
 
+    public record CohoBlockId(Identifier blockId, WeatherState weatherState) {}
+
     // ===================================================================================
     // Constants
 
@@ -88,15 +89,15 @@ public class CohoMod {
     public static final Identifier WAXED_WEATHERED_COPPER_HOPPER = Identifier.fromNamespaceAndPath(NS, "waxed_weathered_copper_hopper");
     public static final Identifier WAXED_OXIDIZED_COPPER_HOPPER = Identifier.fromNamespaceAndPath(NS, "waxed_oxidized_copper_hopper");
 
-    public static final java.util.List<Tuple<Identifier, WeatherState>> COHO_BLOCK_IDS = ImmutableList.of(
-            new Tuple(COPPER_HOPPER, UNAFFECTED),
-            new Tuple(EXPOSED_COPPER_HOPPER, EXPOSED),
-            new Tuple(WEATHERED_COPPER_HOPPER, WEATHERED),
-            new Tuple(OXIDIZED_COPPER_HOPPER, OXIDIZED),
-            new Tuple(WAXED_COPPER_HOPPER, UNAFFECTED),
-            new Tuple(WAXED_EXPOSED_COPPER_HOPPER, EXPOSED),
-            new Tuple(WAXED_WEATHERED_COPPER_HOPPER, WEATHERED),
-            new Tuple(WAXED_OXIDIZED_COPPER_HOPPER, OXIDIZED)
+    public static final java.util.List<CohoBlockId> COHO_BLOCK_IDS = ImmutableList.of(
+            new CohoBlockId(COPPER_HOPPER, UNAFFECTED),
+            new CohoBlockId(EXPOSED_COPPER_HOPPER, EXPOSED),
+            new CohoBlockId(WEATHERED_COPPER_HOPPER, WEATHERED),
+            new CohoBlockId(OXIDIZED_COPPER_HOPPER, OXIDIZED),
+            new CohoBlockId(WAXED_COPPER_HOPPER, UNAFFECTED),
+            new CohoBlockId(WAXED_EXPOSED_COPPER_HOPPER, EXPOSED),
+            new CohoBlockId(WAXED_WEATHERED_COPPER_HOPPER, WEATHERED),
+            new CohoBlockId(WAXED_OXIDIZED_COPPER_HOPPER, OXIDIZED)
     );
 
     public static final Identifier COHO_SCREEN_ID = Identifier.fromNamespaceAndPath(NS, "copper_hopper");
