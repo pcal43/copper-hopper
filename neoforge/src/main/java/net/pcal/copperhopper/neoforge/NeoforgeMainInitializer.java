@@ -28,7 +28,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.flag.FeatureFlags;
@@ -54,6 +53,7 @@ import net.pcal.copperhopper.common.CohoBlockEntity;
 import net.pcal.copperhopper.common.CohoItem;
 import net.pcal.copperhopper.common.CohoMinecartEntity;
 import net.pcal.copperhopper.common.CohoMinecartItem;
+import net.pcal.copperhopper.common.CohoMod.CohoBlockId;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -134,9 +134,9 @@ public class NeoforgeMainInitializer {
         final List<DeferredHolder<net.minecraft.world.level.block.Block, CohoBlock>> cohoBlockHolders = new ArrayList<>();
         cohoItemHolders = new ArrayList<>();
 
-        for (final Tuple<Identifier, WeatherState> tuple : COHO_BLOCK_IDS) {
-            final Identifier blockId = tuple.getA();
-            final WeatherState weatherState = tuple.getB();
+        for (final CohoBlockId tuple : COHO_BLOCK_IDS) {
+            final Identifier blockId = tuple.blockId();
+            final WeatherState weatherState = tuple.weatherState();
             final String path = blockId.getPath();
 
             final DeferredHolder<net.minecraft.world.level.block.Block, CohoBlock> blockHolder =
