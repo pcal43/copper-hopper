@@ -90,6 +90,7 @@ public class FabricMainInitializer implements ModInitializer {
             final Logger logger = LogManager.getLogger(LOGGER_NAME);
             try {
                 mod().createDefaultConfig();
+                mod().loadConfig();
                 doStandardRegistrations();
                 logger.info(LOG_PREFIX + "Initialized.");
             } catch (Exception e) {
