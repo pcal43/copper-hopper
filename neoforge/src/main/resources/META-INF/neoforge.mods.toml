@@ -13,8 +13,12 @@ logoFile="assets/copperhopper/textures/item/copper_hopper.png"
 [[dependencies.copperhopper]]
 modId="neoforge"
 mandatory=true
-versionRange="[26.0,)"
+versionRange="[26.3,)"
+
+[[dependencies.copperhopper]]
+modId="minecraft"
+mandatory=true
+versionRange="[26.3]"
 
 [[mixins]]
 config = "copperhopper.mixins.json"
-
