@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "copperhopper:copper_hopper_minecart"
+        "recipes": "copperhopper:copper_hopper_minecart"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
