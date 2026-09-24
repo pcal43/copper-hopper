@@ -22,4 +22,4 @@ jobs:
           cache-read-only: true
 
       - name: Execute Gradle build
-        run: ./gradlew build
+        run: ./gradlew clean ciBuild --console=plain
